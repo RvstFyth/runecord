@@ -12,5 +12,15 @@ module.exports = {
                else resolve(rows[0]);
             });
         });
+    },
+
+    async getForName(name)
+    {
+        return new Promise(resolve => {
+            db.query(`SELECT * FROM ${this.table} WHERE LOWER(name) = ?`, [name], (err, rows) => {
+                if(err) console.log(err);
+                else resolve(rows[0]);
+            });
+        });
     }
 };

@@ -35,7 +35,7 @@ module.exports = {
         return new Promise(resolve => {
             db.query(`SELECT * FROM ${this.table} WHERE user_id = ? AND item_id = ? AND prefix = ?`, [userID, itemID, prefix], (err, rows) => {
                 if(err) console.log(err);
-                else resolve(rows[0]);
+                else resolve(rows);
             })
         });
     },
@@ -64,10 +64,43 @@ module.exports = {
         });
     },
 
+    async setAmount(userID, itemID, amount, prefix = '')
+    {
+          // if(amount < 1) return this.deleteFor(userID, itemID, prefix);
+
+          amount = parseInt(amount);
+          return new Promise(resolve => {
+                db.query(`UPDATE ${this.table} SET amount = ? WHERE user_id = ? AND item_id = ? AND prefix = ?`, [amount, userID, itemID, prefix], (err) => {
+                    if(err) console.log(err);
+                    else resolve(true);
+                })
+          });
+    },
+
+    async deleteFor(userID, itemID, prefix='')
+    {
+        return new Promise(resolve => {
+            db.query(`DELETE FROM ${this.table} WHERE user_id = ? AND item_id = ? AND prefix = ?`, [userID, itemID, prefix], (err) => {
+                if(err) console.log(err);
+                else resolve(true);
+            });
+        });
+    },
+
+    async delete(id)
+    {
+        return new Promise(resolve => {
+            db.query(`DELETE FROM ${this.table} WHERE id = ?`, [id], (err) => {
+                if(err) console.log(err);
+                else resolve(true);
+            });
+        });
+    },
+
     async getOccupiedSlotCount(userID)
     {
         return new Promise(resolve => {
-            db.query(`SELECT SUM(amount) AS total FROM ${this.table} WHERE user_id = ?`, [userID], (err, rows) => {
+            db.query(`SELECT COUNT(*) AS total FROM ${this.table} WHERE user_id = ?`, [userID], (err, rows) => {
                 if(err) console.log(err);
                 else resolve(rows[0] && !isNaN(rows[0].total) ? parseInt(rows[0].total) : 0);
             });
