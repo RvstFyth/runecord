@@ -1,0 +1,83 @@
+module.exports = {
+
+
+    isValidColourString(str)
+    {
+        if(!str) return false;
+        return str.match(/^#[a-f0-9]{6}$/i) !== null;
+    },
+
+    formattedDifferenceBetweenTimestamp(ts, cd, returnString = false)
+    {
+        const currentTimestamp = this.currentTimestamp();
+        // get total seconds between the times
+        let delta = Math.abs((ts + cd) - currentTimestamp);
+        let days = Math.floor(delta / 86400);
+        delta -= days * 86400;
+        let hours = Math.floor(delta / 3600) % 24;
+        delta -= hours * 3600;
+        let minutes = Math.floor(delta / 60) % 60;
+        delta -= minutes * 60; // Seconds
+        let seconds = delta % 60;  // in theory the modulus is not required
+
+        const parsed = {days, hours, minutes, seconds};
+
+        if(returnString) {
+            let msgString = '';
+            if(parsed.days) msgString += `${parsed.days}d `;
+            if(parsed.hours) msgString += `${parsed.hours}h `;
+            if(parsed.minutes) msgString += `${parsed.minutes}m `;
+            msgString += `${parsed.seconds}s`;
+            return msgString;
+        }
+
+        return parsed;
+
+    },
+
+    sumArray(arr)
+    {
+        return arr.reduce((sum, x) => sum + x);
+    },
+
+    uniqueArray(arr)
+    {
+        return [...new Set(arr)];
+    },
+
+    randomArrayValue(arr)
+    {
+        return arr[Math.floor(Math.random()*arr.length)];
+    },
+
+    shuffleArray(a)
+    {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    },
+
+    formatXP(xp)
+    {
+        return xp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
+
+    currentTimestamp()
+    {
+        return Date.now() / 1000 | 0;
+    },
+
+    timestampToDate(ts)
+    {
+        const u = new Date(ts*1000);
+
+        return u.getUTCFullYear() +
+            '-' + ('0' + u.getUTCMonth()).slice(-2) +
+            '-' + ('0' + u.getUTCDate()).slice(-2) +
+            ' ' + ('0' + u.getUTCHours()).slice(-2) +
+            ':' + ('0' + u.getUTCMinutes()).slice(-2) +
+            ':' + ('0' + u.getUTCSeconds()).slice(-2);
+    }
+};
