@@ -11,9 +11,15 @@ module.exports = {
 
         const fields = [];
         for(let i in userSkills) {
+            const level = skillsHelper.levelForXp(userSkills[i].xp);
+            const totalForNextLevel = skillsHelper.xpForLevel(level + 1);
+            const totalXp = parseInt(userSkills[i].xp);
+            const remainder = totalForNextLevel - totalXp;
+
             fields.push({
-                name: valuesHelper.ucfirst(userSkills[i].skill),
-                value: `Level: ${skillsHelper.levelForXp(userSkills[i].xp)}\nXP: ${userSkills[i].xp}`,
+                name: `${valuesHelper.ucfirst(userSkills[i].skill)} (${level})`,
+                value: `XP: ${userSkills[i].xp}\nTill next level: ${remainder}`,
+                //value: `Level: ${level}\nXP: ${userSkills[i].xp}\nNext level: ${totalForNextLevel}\nRemainder: ${remainder}`,
                 inline: true
             });
         }
