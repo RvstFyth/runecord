@@ -20,15 +20,24 @@ module.exports = {
                 npcs: [],
                 area: require(`.${path}/${d}/${d}.json`)
             };
-            const dirsToLoop = ['locations', 'npcs'];
-            for(let z of dirsToLoop) {
-                fs.readdirSync(`${path}/${d}/${z}`).forEach(file => {
-                    if (file.match(/\.js$/) !== null) {
-                        _areasCache[d][z][file.replace('.js', '')] = require(`.${path}/${d}/${z}/${file}`);
-                        console.log(_areasCache[d][z][file.replace('.js', '')].label);
-                    }
-                })
-            }
+
+            const z = 'locations';
+
+            fs.readdirSync(`${path}/${d}/${z}`).forEach(file => {
+                const locationName = file.replace('.js', '');
+                _areasCache[d][z][locationName] = require(`.${path}/${d}/${z}/${locationName}/${file}`);
+                _areasCache[d][z][locationName].npcs = {};
+                const npcFolder = `${path}/${d}/locations/${locationName}/npcs`;
+                if(fs.existsSync(npcFolder)) {
+                    const npcFiles = fs.readdirSync(npcFolder);
+                    npcFiles.forEach((file) => {
+                        if (file.match(/\.js$/) !== null && file !== 'index.js') {
+                            const npcName = file.replace('.js', '');
+                            _areasCache[d][z][locationName].npcs[npcName] = require(`.${path}/${d}/locations/${locationName}/npcs/${file}`);
+                        }
+                    })
+                }
+            });
         }
     },
 
