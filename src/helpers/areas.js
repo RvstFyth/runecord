@@ -45,5 +45,14 @@ module.exports = {
     {
         if(_areasCache[area]) return _areasCache[area];
         return null;
+    },
+
+    getLocationNameForLabelAndArea(area, locationLabel)
+    {
+        const locations = _areasCache[area].locations;
+        for(let i in locations) {
+            if(locations[i].label.toLowerCase() === locationLabel.toLowerCase()) return i;
+        }
+        return false;
     }
 };

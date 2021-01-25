@@ -6,6 +6,7 @@ const db = require('./db');
 const config = require('./config');
 const commandsHelper = require('./helpers/commands');
 const logger = require('./helpers/logger');
+const valuesHelper = require('./helpers/values');
 
 // Initialize modules
 db.init();
@@ -14,6 +15,7 @@ logger.init();
 
 const usersModel = require('./models/users');
 const guildSettingsModel = require('./models/guildSettings');
+const usersLocksModel = require('./models/usersLocks');
 
 const client = new discord.Client();
 
@@ -56,6 +58,12 @@ client.on('message', async msg => {
 
             const user = await usersModel.getForDiscordID(msg.author.id);
             if(!user && ['start', 'help'].indexOf(command.toLowerCase()) < 0) return msg.channel.send(`**${msg.author.username}** you are not registered yet, use \`${prefix}start\` to create a account`);
+
+            const lockRecord = await usersLocksModel.getFor(user.id);
+            if(lockRecord) {
+                const timeLeft = valuesHelper.formattedDifferenceBetweenTimestamp(parseInt(lockRecord.end_timestamp), 0, true);
+                return msg.channel.send(`**${user.name}**, ${lockRecord.message}. ${timeLeft} left..`);
+            }
 
             const args = commandsHelper.parseArguments(msg, [prefix, command, prefix+command]);
             const module = commandsHelper.getModuleForCommand(command);
