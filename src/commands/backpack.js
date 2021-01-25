@@ -20,10 +20,15 @@ module.exports = {
             }
         }
 
-
+        fields.push({
+            name: '\u200b',
+            value: `` +
+                `\`${data.prefix}drop [item]\` to drop a item\n` +
+                `\`${data.prefix}drop [amount] [item]\` to drop x amount of items`
+        });
 
         const embed = {
-            title: `Lorem Ipsum`,
+            title: `${data.user.name}'s backpack`,
             fields,
             footer: {
                 text: `${occupiedSlots}/28`
