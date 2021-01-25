@@ -46,6 +46,7 @@ module.exports = {
 
     sumArray(arr)
     {
+        if(!arr.length) return 0;
         return arr.reduce((sum, x) => sum + x);
     },
 
