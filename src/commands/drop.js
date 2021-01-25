@@ -11,6 +11,7 @@ module.exports = {
         let amount;
         if(!isNaN(args[0])) {
             amount = parseInt(args[0]);
+            if(!amount) return msg.channel.send(`**${data.user.name}** invalid amount provided..`);
             args = args.splice(1);
         }
         else amount = 1;
