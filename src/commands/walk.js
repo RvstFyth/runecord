@@ -24,10 +24,15 @@ module.exports = {
         const requestedLocation = areasHelper.getLocationNameForLabelAndArea(data.user.area, input);
         if(requestedLocation === data.user.location) return msg.channel.send(`**${data.user.name}** you are already at ${input}..`);
 
-        const ts = parseInt(valuesHelper.currentTimestamp()) + 60;
+        const time = 60;
+        const ts = parseInt(valuesHelper.currentTimestamp()) + time;
 
         await usersLocksModel.create(data.user.id, `You are walking towards ${input}`, ts);
         await usersModel.setLocation(data.user.id, requestedLocation);
+
+        setTimeout(() => {
+            return msg.channel.send(`**${data.user.name}** arrived at ${input}`);
+        }, time * 1000);
 
         return msg.channel.send(`**${data.user.name}** started to walk towards ${input}`);
     },
