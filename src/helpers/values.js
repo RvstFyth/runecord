@@ -40,6 +40,10 @@ module.exports = {
 
     },
 
+    replaceAll(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    },
+
     sumArray(arr)
     {
         return arr.reduce((sum, x) => sum + x);
