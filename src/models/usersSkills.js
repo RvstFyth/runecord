@@ -14,6 +14,16 @@ module.exports = {
         });
     },
 
+    async getFor(userID, skill)
+    {
+        return new Promise(resolve => {
+            db.query(`SELECT * FROM ${this.table} WHERE user_id = ? AND skill = ?`, [userID, skill], (err, rows) => {
+                if(err) console.log(err);
+                else resolve(rows[0]);
+            })
+        })
+    },
+
     async getAllFor(userID)
     {
         return new Promise(resolve => {
@@ -21,6 +31,16 @@ module.exports = {
                 if(err) console.log(err);
                 else resolve(rows);
             })
+        });
+    },
+
+    async addXp(id, xp)
+    {
+        return new Promise(resolve => {
+            db.query(`UPDATE ${this.table} SET xp = xp + ? where id = ?`, [xp, id], (err) => {
+                if(err) console.log(err);
+                else resolve(true);
+            });
         });
     }
 };

@@ -47,6 +47,11 @@ module.exports = {
         return null;
     },
 
+    getLocation(area, location)
+    {
+        return _areasCache[area].locations[location];
+    },
+
     getLocationNameForLabelAndArea(area, locationLabel)
     {
         const locations = _areasCache[area].locations;
