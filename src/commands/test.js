@@ -4,6 +4,7 @@ module.exports = {
 
     async run(msg, args, data)
     {
-        await inventoryModel.add(data.user.id, 2, 1);
+        await inventoryModel.add(data.user.id, 2, 12, '');
+        msg.channel.send('nerd')
     }
 };

@@ -44,9 +44,10 @@ module.exports = {
     {
         const item = await itemsModel.get(itemID);
         if(item.stacks) {
-            const existingRecord = await this.getFor(userID, itemID, prefix);
-            if(existingRecord) return this.addAmountFor(userID, itemID, amount, prefix);
-            else return this.create(userID, itemID, amount, prefix);
+            console.log(1)
+            const existingRecords = await this.getFor(userID, itemID, prefix);
+            if(existingRecords && existingRecords.length) return this.setAmount(existingRecords[0].id, parseInt(existingRecords[0].amount) + amount);
+            return this.create(userID, itemID, amount, prefix);
         }
 
         for(let i = 0; i < amount; i++) {
