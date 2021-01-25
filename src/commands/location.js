@@ -3,6 +3,8 @@ const valuesHelper = require('../helpers/values');
 
 module.exports = {
 
+    aliasses: ['loc'],
+
     async run(msg, args, data)
     {
         const areaData = await areasHelper.getAreaModules(data.user.area);
