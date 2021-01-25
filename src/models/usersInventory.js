@@ -64,13 +64,13 @@ module.exports = {
         });
     },
 
-    async setAmount(userID, itemID, amount, prefix = '')
+    async setAmount(id, amount)
     {
           // if(amount < 1) return this.deleteFor(userID, itemID, prefix);
 
           amount = parseInt(amount);
           return new Promise(resolve => {
-                db.query(`UPDATE ${this.table} SET amount = ? WHERE user_id = ? AND item_id = ? AND prefix = ?`, [amount, userID, itemID, prefix], (err) => {
+                db.query(`UPDATE ${this.table} SET amount = ? WHERE id = ?`, [amount, id], (err) => {
                     if(err) console.log(err);
                     else resolve(true);
                 })
