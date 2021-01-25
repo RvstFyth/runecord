@@ -17,7 +17,7 @@ const guildSettingsModel = require('./models/guildSettings');
 
 const client = new discord.Client();
 
-
+require('./helpers/areas').init('./areas');
 
 client.on('ready', async () => {
     logger.info(`Logged in as ${client.user.tag}!`);
