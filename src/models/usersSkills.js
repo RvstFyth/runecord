@@ -1,4 +1,5 @@
 const db = require('../db').getConnection();
+const skillsHelper = require('../helpers/skills');
 
 module.exports = {
 
@@ -19,7 +20,12 @@ module.exports = {
         return new Promise(resolve => {
             db.query(`SELECT * FROM ${this.table} WHERE user_id = ? AND skill = ?`, [userID, skill], (err, rows) => {
                 if(err) console.log(err);
-                else resolve(rows[0]);
+                else if(rows[0]) {
+                    rows[0].level = skillsHelper.levelForXp(rows[0].xp);
+                    resolve(rows[0]);
+                }
+
+                resolve(false);
             })
         })
     },
