@@ -22,6 +22,9 @@ module.exports = {
             await skillsModel.create(userID, s);
         }
 
+        const skillRecord = await skillsModel.getFor(userID, 'hitpoints');
+        await skillsModel.addXp(skillRecord.id, 1154);
+
         return msg.channel.send(`**${msg.author.username}** successfully registered as ${charName}! See \`${data.prefix}tutorial\` to get started.`);
     }
 };
