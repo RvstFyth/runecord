@@ -54,5 +54,25 @@ module.exports = {
             if(locations[i].label.toLowerCase() === locationLabel.toLowerCase()) return i;
         }
         return false;
+    },
+
+    getNPCsForLocation(area, location)
+    {
+        return _areasCache[area][location].npcs;
+    },
+
+    getNpcLabelsForLocation(area, location)
+    {
+        return Object.values(_areasCache[area].locations[location].npcs).map(n => n.label)[0];
+    },
+
+    getNpcForLabel(area, location, label)
+    {
+        const npcs = _areasCache[area].locations[location].npcs;
+        for(let i in npcs) {
+            if(npcs[i].label.toLowerCase() === label.toLowerCase()) return npcs[i];
+        }
+
+        return false;
     }
 };
