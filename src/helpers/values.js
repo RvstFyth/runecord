@@ -7,6 +7,11 @@ module.exports = {
         return str.match(/^#[a-f0-9]{6}$/i) !== null;
     },
 
+    ucfirst(val)
+    {
+        return val.charAt(0).toUpperCase() + val.slice(1);
+    },
+
     formattedDifferenceBetweenTimestamp(ts, cd, returnString = false)
     {
         const currentTimestamp = this.currentTimestamp();
