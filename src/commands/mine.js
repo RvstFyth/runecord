@@ -3,13 +3,14 @@ const areasHelper = require('../helpers/areas');
 const skillsModel = require('../models/usersSkills');
 
 const resultMapping = {
+    clay: {xp: 5, id: 5, label: 'clay'},
     copper: {xp: 17, id: 3, label: 'copper ore'},
     tin: {xp: 17, id: 4, label: 'tin ore'},
 };
 
 const areaMapping = {
     tutorial: {
-        mines: ['copper', 'tin']
+        mines: ['copper', 'tin', 'clay']
     }
 };
 
