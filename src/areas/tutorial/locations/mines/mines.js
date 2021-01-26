@@ -11,12 +11,12 @@ module.exports = {
             },
             tin: {
                 xp: 17,
-                id: 3,
+                id: 4,
                 label: 'tin ore'
             },
             clay: {
                 xp: 17,
-                id: 3,
+                id: 5,
                 label: 'clay'
             },
         }

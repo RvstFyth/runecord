@@ -1,6 +1,7 @@
 const inventoryModel = require('../models/usersInventory');
 const areasHelper = require('../helpers/areas');
 const skillsModel = require('../models/usersSkills');
+const skillsHelper = require('../helpers/skills');
 
 module.exports = {
 
@@ -19,9 +20,14 @@ module.exports = {
 
         const result = locationDetails.commands.mine[args[0]];
 
-        await skillsModel.addXp(skillRecord.id, result.xp);
+        if(data.user.max_area === 'tutorial' && (parseInt(skillRecord.xp) + result.xp > skillsHelper.xpForLevel(3))) {
+            let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);
+            if(diff < 0) diff = 0;
+            result.xp = diff;
+        }
+        if(result.xp > 0) await skillsModel.addXp(skillRecord.id, result.xp);
         await inventoryModel.add(data.user.id, result.id, 1);
 
-        return msg.channel.send(`**${data.user.name}** got 1 ${result.label} and ${result.xp}xp!`);
+        return msg.channel.send(`**${data.user.name}** got 1 ${result.label} ${result.xp > 0 ? `and ${result.xp}xp!` : ''}`);
     }
 };
