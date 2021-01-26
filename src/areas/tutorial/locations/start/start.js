@@ -1,8 +1,7 @@
 module.exports = {
 
     label: 'Starter location',
-    description: `Welcome to Tutorial island! This is where you start your adventure in runecord\n\n` +
-        `To travel to a other location you can use the \`%prefix%walk [location]\` command.\n` +
-        `To see what locations are in your current area, you can use the \`%prefix%area\` command \n` +
-        `To see more info about your current location, you can use the \`%prefix%location\` command`
+    description: `Welcome to Tutorial island! Talk with the \`Runecord guide\` to get started.\n\n` +
+        `To talk with a NPC you can use the \`%prefix%talk\` command.\n` +
+        `Now enter \`%prefix%talk runecord guide\` to talk with him!`
 };
