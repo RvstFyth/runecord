@@ -41,6 +41,11 @@ module.exports = {
         }, 60 * 1000);
     },
 
+    getWorlds()
+    {
+        return worlds;
+    },
+
     getPlayersOnLocation(world, area, location)
     {
         const wData = getWorldForId(world);
