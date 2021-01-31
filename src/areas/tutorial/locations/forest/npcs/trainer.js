@@ -21,6 +21,15 @@ module.exports = {
         const secondQuest = await questsModel.getFor(data.userID, 2);
         if(secondQuest && !secondQuest.completed) return `Did you chop that tree already? We really need it to continue...`;
 
+        const thirdQuest = await questsModel.getFor(data.userID, 3);
+        if(!thirdQuest) {
+            await questsModel.create(data.userID, 3);
+            return `Chop a tree is completed here... New quests will be make a fire`;
+        }
+        if(thirdQuest && !thirdQuest.completed) return `You have to make a fire to to continue..`;
+
+
+
 
 
         return `I learned you all that is possible in this short time. You should find the mining trainer now.`;
