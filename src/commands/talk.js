@@ -12,7 +12,7 @@ module.exports = {
 
         const embed = {
             title: npc.label,
-            description: await npc.talk({userID: data.user.id})
+            description: await npc.talk({userID: data.user.id, msg: msg})
         };
 
         return msg.channel.send({embed});
