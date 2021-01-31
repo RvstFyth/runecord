@@ -16,10 +16,13 @@ logger.init();
 const usersModel = require('./models/users');
 const guildSettingsModel = require('./models/guildSettings');
 const usersLocksModel = require('./models/usersLocks');
+const worldsHelper = require('./helpers/worlds');
 
 const client = new discord.Client();
 
 require('./helpers/areas').init('./areas');
+
+worldsHelper.init();
 
 client.on('ready', async () => {
     logger.info(`Logged in as ${client.user.tag}!`);
@@ -59,10 +62,14 @@ client.on('message', async msg => {
             const user = await usersModel.getForDiscordID(msg.author.id);
             if(!user && ['start', 'help'].indexOf(command.toLowerCase()) < 0) return msg.channel.send(`**${msg.author.username}** you are not registered yet, use \`${prefix}start\` to create a account`);
 
-            const lockRecord = await usersLocksModel.getFor(user.id);
-            if(lockRecord) {
-                const timeLeft = valuesHelper.formattedDifferenceBetweenTimestamp(parseInt(lockRecord.end_timestamp), 0, true);
-                return msg.channel.send(`**${user.name}**, ${lockRecord.message}. ${timeLeft} left..`);
+            if(user) {
+                const lockRecord = await usersLocksModel.getFor(user.id);
+                if (lockRecord) {
+                    const timeLeft = valuesHelper.formattedDifferenceBetweenTimestamp(parseInt(lockRecord.end_timestamp), 0, true);
+                    return msg.channel.send(`**${user.name}**, ${lockRecord.message}. ${timeLeft} left..`);
+                }
+
+                worldsHelper.registerPlayer(user.world, user.name, user.id, user.location, user.area);
             }
 
             const args = commandsHelper.parseArguments(msg, [prefix, command, prefix+command]);
@@ -71,6 +78,7 @@ client.on('message', async msg => {
                 prefix,
                 user
             };
+
             if(args[0] && module.sub[args[0]]) {
                 module.sub[args[0]].run(msg, args, data);
             }

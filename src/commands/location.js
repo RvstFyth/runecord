@@ -1,5 +1,6 @@
 const areasHelper = require('../helpers/areas');
 const valuesHelper = require('../helpers/values');
+const worldsHelper = require('../helpers/worlds');
 
 module.exports = {
 
@@ -29,6 +30,15 @@ module.exports = {
             }
             fields.push(resourcesField);
         }
+
+        const players = worldsHelper.getPlayersOnLocation(data.user.world, data.user.area, data.user.location);
+        console.log(players)
+        if(players && players.length) {
+            const playersFields = {name: `Players`, value: ``, inline: true};
+            for(let i of players) playersFields.value += `${i}\n`;
+            fields.push(playersFields);
+        }
+
         const embed = {
             title: areaData.locations[data.user.location].label,
             description: valuesHelper.replaceAll(areaData.locations[data.user.location].description, '%prefix%', data.prefix),
