@@ -33,12 +33,16 @@ module.exports = {
         // Set interval to remove inactive players
         setInterval(() => {
             for(let w of worlds) {
-                console.log(`running cleanup for world ${w.name}`)
                 for(let p in w.players) {
                     if(w.players[p].ts + 60 < valuesHelper.currentTimestamp()) delete w.players[p];
                 }
             }
-        }, 60 * 1000);
+        }, 2 * 1000);
+    },
+
+    getWorldForId(id)
+    {
+        return worlds.filter(w => w.id === id)[0];
     },
 
     getWorlds()

@@ -48,5 +48,15 @@ module.exports = {
                 else resolve(true);
             });
         });
+    },
+
+    async setWorld(id, world)
+    {
+        return new Promise(resolve => {
+            db.query(`UPDATE ${this.table} SET world = ? WHERE id = ?`, [world, id], (err) => {
+                if(err) console.log(err);
+                else resolve(true);
+            });
+        });
     }
 };
