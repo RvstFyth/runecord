@@ -32,7 +32,7 @@ module.exports = {
         }
 
         const players = worldsHelper.getPlayersOnLocation(data.user.world, data.user.area, data.user.location);
-        console.log(players)
+
         if(players && players.length) {
             const playersFields = {name: `Players`, value: ``, inline: true};
             for(let i of players) playersFields.value += `${i}\n`;
