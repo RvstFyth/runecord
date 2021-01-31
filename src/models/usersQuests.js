@@ -41,5 +41,15 @@ module.exports = {
                     else resolve(rows);
                 })
         });
+    },
+
+    async setCompleted(id)
+    {
+        return new Promise(resolve => {
+            db.query(`UPDATE ${this.table} SET completed = 1 WHERE id = ?`, [id], (err) => {
+                if(err) console.log(err);
+                else resolve(true);
+            });
+        });
     }
 };
