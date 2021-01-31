@@ -64,6 +64,16 @@ module.exports = {
                             const sModule = require(commandsDirectory + name +'/'+ sFile);
                             commands[name].sub[sName] = sModule;
                             allowedCommands.push(sName);
+                            if(sModule.aliasses && sModule.aliasses.length) {
+                                for(let al of sModule.aliasses) {
+                                    commands[al] = {
+                                        main: sModule,
+                                        sub: {}
+                                    };
+                                    allowedCommands.push(al);
+                                    aliasses[al] = al;
+                                }
+                            }
                             logger.info(`Loaded sub module ${name}|${sName}`)
                         }
                     });

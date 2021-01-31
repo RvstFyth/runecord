@@ -74,13 +74,14 @@ client.on('message', async msg => {
 
             const args = commandsHelper.parseArguments(msg, [prefix, command, prefix+command]);
             const module = commandsHelper.getModuleForCommand(command);
+
             const data = {
                 prefix,
                 user
             };
 
-            if(args[0] && module.sub[args[0]]) {
-                module.sub[args[0]].run(msg, args, data);
+            if(args[0] && module.sub && module.sub[args[0]]) {
+                module.sub[args[0]].run(msg, args.splice(1), data);
             }
             else module.main.run(msg, args, data)
         }
