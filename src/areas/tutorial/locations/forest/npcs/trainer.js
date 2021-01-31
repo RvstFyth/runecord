@@ -9,7 +9,9 @@ module.exports = {
         const firstQuest = await questsModel.getFor(data.userID, 1);
         if(firstQuest) {
             if(!firstQuest.completed) {
-                await questsModel.setCompleted(firstQuest.id);
+                await questsModel.setCompleted(firstQuest.user_id, firstQuest.quest_id);
+                await data.msg.channel.send({embed: {title: `${data.user.name} quest completed!`, description: firstQuest.name}});
+
                 await questsModel.create(data.userID, 2);
                 return `**TODO (text):**\nFirst quest is completed here. SE should introduce himself a bit, and a new quest is given here: chop a tree`;
             }

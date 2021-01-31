@@ -3,6 +3,7 @@ const skillsModel = require('../models/usersSkills');
 const inventoryModel = require('../models/usersInventory');
 const itemsModel = require('../models/items');
 const skillsHelper = require('../helpers/skills');
+const questsHelper = require('../helpers/quests');
 
 module.exports = {
 
@@ -30,6 +31,8 @@ module.exports = {
         }
         if(reward.xp > 0) await skillsModel.addXp(skillRecord.id, reward.xp);
         await inventoryModel.add(data.user.id, reward.id, 1);
+
+        await questsHelper.check('chop', args[0], 1, data.user, msg);
 
         const item = await itemsModel.get(reward.id);
         return msg.channel.send(`**${data.user.name}** chopped a tree and got a ${item.name} ${reward.xp > 0 ? `and ${reward.xp}xp!` : ''}`);
