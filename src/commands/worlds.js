@@ -20,7 +20,7 @@ module.exports = {
                 {
                     name: '\u200b',
                     value: `` +
-                        `\`~worlds switch [id]\` to switch to a other world.\n` +
+                        `\`~eworld [id]\` to switch to a other world.\n` +
                         `Premium worlds can only be entered by players with the supporter role on the [support server](https://google.nl)`
                 }
             ]

@@ -3,13 +3,15 @@ const worldsHelper = require('../../helpers/worlds');
 
 module.exports = {
 
-    aliasses: ['s', 'e'],
+    subAliasses: ['enter', 's', 'e'],
+
+    aliasses: ['eworld'],
 
     async run(msg, args, data)
     {
-        if(!args[1]) return msg.channel.send(`**${data.user.name}** enter a world id to switch to..`);
+        if(!args[0]) return msg.channel.send(`**${data.user.name}** enter a world id to switch to..`);
 
-        const world = worldsHelper.getWorldForId(parseInt(args[1]));
+        const world = worldsHelper.getWorldForId(parseInt(args[0]));
         if(!world) return msg.channel.send(`**${data.user.name}** world not found...`);
 
         if(parseInt(data.user.world) === world.id) return msg.channel.send(`**${data.user.name}** you are already on ${world.name}..`);
