@@ -40,6 +40,16 @@ module.exports = {
         });
     },
 
+    async getTotalAmountFor(userID, itemID, prefix = '')
+    {
+        return new Promise(resolve => {
+            db.query(`SELECT SUM(amount) AS total FROM ${this.table} WHERE user_id = ? AND item_id = ? AND prefix = ?`, [userID, itemID, prefix], (err, rows) => {
+                if(err) console.log(err);
+                else resolve(rows[0] && rows[0].total ? parseInt(rows[0].total) : 0);
+            })
+        });
+    },
+
     async add(userID, itemID, amount, prefix = '')
     {
         const item = await itemsModel.get(itemID);
