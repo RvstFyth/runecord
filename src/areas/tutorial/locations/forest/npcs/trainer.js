@@ -28,7 +28,12 @@ module.exports = {
         }
         if(thirdQuest && !thirdQuest.completed) return `You have to make a fire to to continue..`;
 
-
+        const fourthQuest = await questsModel.getFor(data.userID, 4);
+        if(!fourthQuest) {
+            await questsModel.create(data.userID, 4);
+            return `Make a fire is completed here... New quests will be catch some shrimps`;
+        }
+        if(fourthQuest && !fourthQuest.completed) return `You have the raw shrimps already?`;
 
 
 

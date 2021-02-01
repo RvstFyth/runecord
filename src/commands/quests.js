@@ -9,7 +9,7 @@ module.exports = {
         const fields = [];
         for(let i in quests) {
             fields.push({
-                name: quests[i].name,
+                name: `${quests[i].name} ${quests[i].totalAmount ? `(${quests[i].amount}/${quests[i].totalAmount})` : ''}`,
                 value: quests[i].description
             })
         }

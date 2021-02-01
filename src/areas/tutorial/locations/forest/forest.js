@@ -9,7 +9,16 @@ module.exports = {
             tree: {
                 xp: 25,
                 id: 1,
+                level: 1,
                 label: 'logs'
+            }
+        },
+        fish: {
+            shrimps: {
+                xp: 10,
+                id: 33,
+                level: 1,
+                label: 'raw shrimps'
             }
         }
     }

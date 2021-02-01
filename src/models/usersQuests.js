@@ -47,7 +47,7 @@ module.exports = {
     {
         return new Promise(resolve => {
             db.query(`
-                    SELECT uq.*, q.name, q.description
+                    SELECT uq.*, q.name, q.description, q.totalAmount, uq.amount
                     FROM ${this.table} AS uq
                     INNER JOIN quests AS q ON uq.quest_id = q.id
                     WHERE uq.user_id = ? AND uq.completed = 0`,
@@ -71,7 +71,7 @@ module.exports = {
     async addAmount(userID, questID, val)
     {
         return new Promise(resolve => {
-            db.query(`UPDATE ${this.table} SET amount = amount + ? WHERE user_id = ? AND quest_id = ?`, [userID, questID, id], (err) => {
+            db.query(`UPDATE ${this.table} SET amount = amount + ? WHERE user_id = ? AND quest_id = ?`, [val, userID, questID], (err) => {
                 if(err) console.log(err);
                 else resolve(true);
             })
