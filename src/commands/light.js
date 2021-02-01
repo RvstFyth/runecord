@@ -2,6 +2,7 @@ const inventoryModel = require('../models/usersInventory');
 const areasHelper = require('../helpers/areas');
 const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
+const questsHelper = require('../helpers/quests');
 
 const logsMapping = {
     logs: { id: 1, label: 'logs', level: 1, xp: 40 },
@@ -32,6 +33,8 @@ module.exports = {
         }
         if(logType.xp > 0) await skillsModel.addXp(skillRecord.id, logType.xp);
         await inventoryModel.setAmount(userLogs.id, parseInt(userLogs.amount) - 1);
+
+        await questsHelper.check('light', args[0], 1, data.user, msg);
 
         return msg.channel.send(`**${data.user.name}** lighted made a fire and got ${logType.xp}xp`)
     }
