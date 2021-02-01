@@ -30,13 +30,11 @@ module.exports = {
 
     init()
     {
-        // Set interval to remove inactive players
         setInterval(() => {
             for(let w of worlds) {
                 for(let p in w.players) {
                     if(w.players[p].ts + 60 < valuesHelper.currentTimestamp()) delete w.players[p];
                 }
-                    // if(w.objects[o].expires < valuesHelper.currentTimestamp()) delete w.objects[o];
                 for(let area in w.objects) {
                     for(let location in w.objects[area]) {
                         for(let ob in w.objects[area][location]) {
