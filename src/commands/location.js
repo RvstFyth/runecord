@@ -39,6 +39,13 @@ module.exports = {
             fields.push(playersFields);
         }
 
+        const objects = worldsHelper.getObjectsOnLocation(data.user.world, data.user.area, data.user.location);
+        if(objects && objects.length) {
+            const objectsField = {name: 'Objects', value: ``, inline: true};
+            for(let i of objects) objectsField.value += `${i.name}\n`;
+            fields.push(objectsField)
+        }
+
         const embed = {
             title: areaData.locations[data.user.location].label,
             description: valuesHelper.replaceAll(areaData.locations[data.user.location].description, '%prefix%', data.prefix),

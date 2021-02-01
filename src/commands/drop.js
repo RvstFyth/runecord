@@ -1,6 +1,7 @@
 const itemsModel = require('../models/items');
 const inventoryModel = require('../models/usersInventory');
 const valuesHelper = require('../helpers/values');
+const worldsHelper = require('../helpers/worlds');
 
 module.exports = {
 
@@ -29,6 +30,8 @@ module.exports = {
         if(amount > totalUserHas) amount = totalUserHas;
 
         let remaining = amount;
+        worldsHelper.addObjectToWorld(data.user.world, item.name, data.user.area, data.user.location);
+
         for(let i = 0, iEnd = userItems.length; i < iEnd; i++) {
             const rAmount = parseInt(userItems[i].amount);
             if(rAmount > amount) await inventoryModel.setAmount(userItems[i].id, rAmount - amount);
