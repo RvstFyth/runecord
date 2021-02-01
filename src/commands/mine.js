@@ -18,7 +18,7 @@ module.exports = {
 
         const skillRecord = await skillsModel.getFor(data.user.id, 'mining');
 
-        const result = locationDetails.commands.mine[args[0]];
+        const result = {...locationDetails.commands.mine[args[0]]};
 
         if(data.user.max_area === 'tutorial' && (parseInt(skillRecord.xp) + result.xp > skillsHelper.xpForLevel(3))) {
             let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);

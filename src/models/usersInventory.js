@@ -66,7 +66,7 @@ module.exports = {
 
     async setAmount(id, amount)
     {
-          // if(amount < 1) return this.deleteFor(userID, itemID, prefix);
+          if(amount < 1) return this.delete(id);
 
           amount = parseInt(amount);
           return new Promise(resolve => {
