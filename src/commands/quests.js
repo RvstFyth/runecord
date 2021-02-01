@@ -16,9 +16,17 @@ module.exports = {
 
         const embed = {
             title: `${data.user.name}'s quests`,
-            fields
+            fields,
+            thumbnail: {
+                url: `attachment://quest.png`
+            }
         };
 
-        return msg.channel.send({embed});
+        return msg.channel.send({
+            embed,
+            files: [
+                {name: 'quest.png', attachment: `./assets/images/quest.png`}
+            ]
+        });
     }
 };

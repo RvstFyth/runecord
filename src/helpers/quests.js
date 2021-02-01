@@ -13,8 +13,14 @@ module.exports = {
                     await msg.channel.send({
                         embed: {
                             title: `${user.name} quest completed!`,
-                            description: `${quest.name}\n\n${quest.end_message ? quest.end_message : ''}`
-                        }
+                            description: `${quest.name}\n\n${quest.end_message ? quest.end_message : ''}`,
+                            thumbnail: {
+                                url: `attachment://quest.png`
+                            }
+                        },
+                        files: [
+                            {name: 'quest.png', attachment: `./assets/images/quest.png`}
+                        ]
                     });
                     continue;
                 }
