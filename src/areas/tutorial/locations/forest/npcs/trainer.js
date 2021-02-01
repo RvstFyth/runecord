@@ -35,7 +35,12 @@ module.exports = {
         }
         if(fourthQuest && !fourthQuest.completed) return `You have the raw shrimps already?`;
 
-
+        const fifthQuest = await questsModel.getFor(data.userID, 5);
+        if(!fifthQuest) {
+            await questsModel.create(data.userID, 5);
+            return `User caught shrimps... New quests will be cook shrimps`;
+        }
+        if(fifthQuest && !fifthQuest.completed) return msg.channel.send(`**${data.user.name}** did you cook those shrimps already?`);
 
         return `I learned you all that is possible in this short time. You should find the mining trainer now.`;
     }

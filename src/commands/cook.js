@@ -51,6 +51,7 @@ module.exports = {
             else {
                 tmpItem = await itemsModel.get(requestedItem.resultId);
                 successCount++;
+                await questsHelper.check('cook', args[0], 1, data.user, msg);
             }
 
             await inventoryModel.add(data.user.id, tmpItem.id, 1);
