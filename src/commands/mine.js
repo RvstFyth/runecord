@@ -2,6 +2,7 @@ const inventoryModel = require('../models/usersInventory');
 const areasHelper = require('../helpers/areas');
 const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
+const questHelper = require('../helpers/quests');
 
 module.exports = {
 
@@ -27,6 +28,8 @@ module.exports = {
         }
         if(result.xp > 0) await skillsModel.addXp(skillRecord.id, result.xp);
         await inventoryModel.add(data.user.id, result.id, 1);
+
+        await questHelper.check('mine', args[0], 1, data.user, msg)
 
         return msg.channel.send(`**${data.user.name}** got 1 ${result.label} ${result.xp > 0 ? `and ${result.xp}xp!` : ''}`);
     }
