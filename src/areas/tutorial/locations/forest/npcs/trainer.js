@@ -40,7 +40,7 @@ module.exports = {
             await questsModel.create(data.userID, 5);
             return `User caught shrimps... New quests will be cook shrimps`;
         }
-        if(fifthQuest && !fifthQuest.completed) return msg.channel.send(`**${data.user.name}** did you cook those shrimps already?`);
+        if(fifthQuest && !fifthQuest.completed) return `**${data.user.name}** did you cook those shrimps already?`
 
         return `I learned you all that is possible in this short time. You should find the mining trainer now.`;
     }
