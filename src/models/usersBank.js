@@ -57,4 +57,17 @@ module.exports = {
             );
         });
     },
+
+    async setAmount(userID, itemID, amount) {
+        return new Promise((resolve) => {
+            db.query(
+                `UPDATE ${this.table} SET amount = ? WHERE user_id = ? AND item_id = ?`,
+                [amount, userID, itemID],
+                (err) => {
+                    if (err) console.log(err);
+                    else resolve(true);
+                }
+            );
+        });
+    },
 };
