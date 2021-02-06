@@ -20,6 +20,13 @@ module.exports = {
             }
         }
 
+        const goldEmoji = msg.client.emojis.cache.get('807562416854401094');
+
+        fields.push({
+            name: '\u200b',
+            value: `${goldEmoji} ${data.user.gold}`
+        });
+
         fields.push({
             name: '\u200b',
             value: `` +
