@@ -24,9 +24,14 @@ module.exports = {
                 `**${data.user.name}** there is no item with the name ${input}..`
             );
 
-        const occupiedSlots = await inventoryModel.getOccupiedSlotCount(data.user.id);
+        const occupiedSlots = await inventoryModel.getOccupiedSlotCount(
+            data.user.id
+        );
         const freeSlots = 28 - occupiedSlots;
-        if(freeSlots < 1) return msg.channel.send(`**${data.user.name}** your backpack is full..`);
+        if (freeSlots < 1)
+            return msg.channel.send(
+                `**${data.user.name}** your backpack is full..`
+            );
 
         const bankRecord = await bankModel.getFor(data.user.id, item.id);
         if (!bankRecord || bankRecord.amount < 1)

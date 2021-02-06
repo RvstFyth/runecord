@@ -1,21 +1,17 @@
 const winston = require('winston');
 
 module.exports = {
-
     winstonInstance: null,
 
-    init()
-    {
+    init() {
         winston.remove(winston.transports.Console);
-        winston.add(new winston.transports.Console, {
-            colorize: true
+        winston.add(new winston.transports.Console(), {
+            colorize: true,
         });
         winston.level = 'debug';
     },
 
-    info(msg)
-    {
+    info(msg) {
         winston.info(msg);
-    }
-
+    },
 };

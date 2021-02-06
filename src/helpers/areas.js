@@ -2,82 +2,86 @@ const fs = require('fs');
 
 function getDirectories(path) {
     return fs.readdirSync(path).filter(function (file) {
-        return fs.statSync(path+'/'+file).isDirectory();
+        return fs.statSync(path + '/' + file).isDirectory();
     });
 }
 
 const _areasCache = {};
 
 module.exports = {
-
-
-    async init(path)
-    {
+    async init(path) {
         const directories = getDirectories(path);
-        for(let d of directories) {
+        for (let d of directories) {
             _areasCache[d] = {
                 locations: [],
                 npcs: [],
-                area: require(`.${path}/${d}/${d}.json`)
+                area: require(`.${path}/${d}/${d}.json`),
             };
 
             const z = 'locations';
 
-            fs.readdirSync(`${path}/${d}/${z}`).forEach(file => {
+            fs.readdirSync(`${path}/${d}/${z}`).forEach((file) => {
                 const locationName = file.replace('.js', '');
-                _areasCache[d][z][locationName] = require(`.${path}/${d}/${z}/${locationName}/${file}`);
+                _areasCache[d][z][
+                    locationName
+                ] = require(`.${path}/${d}/${z}/${locationName}/${file}`);
                 _areasCache[d][z][locationName].npcs = {};
                 const npcFolder = `${path}/${d}/locations/${locationName}/npcs`;
-                if(fs.existsSync(npcFolder)) {
+                if (fs.existsSync(npcFolder)) {
                     const npcFiles = fs.readdirSync(npcFolder);
                     npcFiles.forEach((file) => {
-                        if (file.match(/\.js$/) !== null && file !== 'index.js') {
+                        if (
+                            file.match(/\.js$/) !== null &&
+                            file !== 'index.js'
+                        ) {
                             const npcName = file.replace('.js', '');
-                            _areasCache[d][z][locationName].npcs[npcName] = require(`.${path}/${d}/locations/${locationName}/npcs/${file}`);
+                            _areasCache[d][z][locationName].npcs[
+                                npcName
+                            ] = require(`.${path}/${d}/locations/${locationName}/npcs/${file}`);
                         }
-                    })
+                    });
                 }
             });
         }
     },
 
-    async getAreaModules(area)
-    {
-        if(_areasCache[area]) return _areasCache[area];
+    async getAreaModules(area) {
+        if (_areasCache[area]) return _areasCache[area];
         return null;
     },
 
-    getLocation(area, location)
-    {
+    getLocation(area, location) {
         return _areasCache[area].locations[location];
     },
 
-    getLocationNameForLabelAndArea(area, locationLabel)
-    {
+    getLocationNameForLabelAndArea(area, locationLabel) {
         const locations = _areasCache[area].locations;
-        for(let i in locations) {
-            if(locations[i].label.toLowerCase() === locationLabel.toLowerCase()) return i;
+        for (let i in locations) {
+            if (
+                locations[i].label.toLowerCase() === locationLabel.toLowerCase()
+            )
+                return i;
         }
         return false;
     },
 
-    getNPCsForLocation(area, location)
-    {
+    getNPCsForLocation(area, location) {
         return _areasCache[area][location].npcs;
     },
 
-    getNpcLabelsForLocation(area, location)
-    {
-        return Object.values(_areasCache[area].locations[location].npcs).map(n => n.label)[0];
+    getNpcLabelsForLocation(area, location) {
+        return Object.values(_areasCache[area].locations[location].npcs).map(
+            (n) => n.label
+        )[0];
     },
 
-    getNpcForLabel(area, location, label)
-    {
+    getNpcForLabel(area, location, label) {
         const npcs = _areasCache[area].locations[location].npcs;
-        for(let i in npcs) {
-            if(npcs[i].label.toLowerCase() === label.toLowerCase()) return npcs[i];
+        for (let i in npcs) {
+            if (npcs[i].label.toLowerCase() === label.toLowerCase())
+                return npcs[i];
         }
 
         return false;
-    }
+    },
 };

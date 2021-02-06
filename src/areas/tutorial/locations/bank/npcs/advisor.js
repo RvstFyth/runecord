@@ -1,8 +1,7 @@
 module.exports = {
+    label: 'Financial advisor',
 
-  label: 'Financial advisor',
-
-  async talk(data) {
-    return 'Hi'
-  }
-}
+    async talk(data) {
+        return 'Hi';
+    },
+};

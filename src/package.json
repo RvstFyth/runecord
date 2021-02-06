@@ -1,26 +1,28 @@
 {
-  "name": "src",
-  "version": "1.0.0",
-  "description": "Panterra bot",
-  "main": "bot.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "canvas": "^2.6.1",
-    "chess.js": "^0.11.0",
-    "dblapi.js": "^2.4.1",
-    "discord.js": "^12.2.0",
-    "mysql": "^2.18.1",
-    "random-js": "^2.1.0",
-    "winston": "^3.2.1"
-  },
-  "devDependencies": {
-    "eslint": "^7.19.0",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.2.1"
-  }
+    "name": "src",
+    "version": "1.0.0",
+    "description": "Panterra bot",
+    "main": "bot.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "format": "prettier-eslint --write \"src/**/*.js\""
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "canvas": "^2.6.1",
+        "chess.js": "^0.11.0",
+        "dblapi.js": "^2.4.1",
+        "discord.js": "^12.2.0",
+        "mysql": "^2.18.1",
+        "random-js": "^2.1.0",
+        "winston": "^3.2.1"
+    },
+    "devDependencies": {
+        "eslint": "^7.19.0",
+        "eslint-config-prettier": "^7.2.0",
+        "eslint-plugin-prettier": "^3.3.1",
+        "prettier": "^2.2.1",
+        "prettier-eslint-cli": "^5.0.0"
+    }
 }
