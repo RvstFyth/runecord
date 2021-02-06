@@ -65,6 +65,15 @@ module.exports = {
         });
     },
 
+    removeObjectFromWorld(id, name, area, location)
+    {
+        const world = getWorldForId(id);
+        if(world.objects[area] && world.objects[area][location] && world.objects[area][location].length) {
+            const index = world.objects[area][location].findIndex(e => e.name === name);
+            world.objects[area][location].splice(index, 1);
+        }
+    },
+
     getWorldForId(id)
     {
         return worlds.filter(w => w.id === id)[0];
