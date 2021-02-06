@@ -41,8 +41,14 @@ module.exports = {
 
         const objects = worldsHelper.getObjectsOnLocation(data.user.world, data.user.area, data.user.location);
         if(objects && objects.length) {
+            const arr = objects.map(o => o.name);
+            const res = {};
+            for(let i in arr) {
+                if(!res[arr[i]]) res[arr[i]] = 1;
+                else res[arr[i]]++;
+            }
             const objectsField = {name: 'Objects', value: ``, inline: true};
-            for(let i of objects) objectsField.value += `${i.name}\n`;
+            for(let i in res) objectsField.value += `${i} ${res[i] > 1 ? `(${res[i]})` : ''}\n`;
             fields.push(objectsField)
         }
 
