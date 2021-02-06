@@ -1,6 +1,7 @@
 const inventoryModel = require('../models/usersInventory');
 const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
+const questsHelper = require('../helpers/quests');
 
 const itemMapping = {
     
@@ -66,6 +67,8 @@ module.exports = {
             await skillsModel.addXp(skillRecord.id, xpGain);
         }
 
+        
+        await questsHelper.check('smelt', args[0], 1, data.user, msg);
         return msg.channel.send(`**${data.user.name}** smelted ${amount} x ${args[0]} ${xpGain > 0 ? ` and got ${xpGain} xp` : ''}`);
     }
 };
