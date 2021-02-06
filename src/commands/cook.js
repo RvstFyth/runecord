@@ -66,7 +66,6 @@ module.exports = {
         for(let i in requestedItem.ingredients) {
             let amountToDeplete = requestedItem.ingredients[i] * amount;
             const userItems = await inventoryModel.getFor(data.user.id, i, '');
-            // return console.log(userItems)
             for(let i in userItems) {
                 const rAmount = parseInt(userItems[i].amount);
                 if(rAmount > amount) await inventoryModel.setAmount(userItems[i].id, rAmount - amount);

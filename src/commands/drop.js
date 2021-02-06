@@ -31,7 +31,7 @@ module.exports = {
 
         let remaining = amount;
         for(let i = 0; i < amount; i++) worldsHelper.addObjectToWorld(data.user.world, item.name, data.user.area, data.user.location);
-
+        
         for(let i = 0, iEnd = userItems.length; i < iEnd; i++) {
             const rAmount = parseInt(userItems[i].amount);
             if(rAmount > amount) await inventoryModel.setAmount(userItems[i].id, rAmount - amount);
