@@ -60,7 +60,7 @@ module.exports = {
         }
 
         for(let i = 0; i < amount; i++) {
-            await this.create(userID, itemID, amount, prefix);
+            await this.create(userID, itemID, 1, prefix);
         }
     },
 
