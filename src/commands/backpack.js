@@ -1,5 +1,5 @@
 const inventoryModel = require('../models/usersInventory');
-
+const valuesHelper = require('../helpers/values');
 module.exports = {
 
     aliasses: ['bp'],
@@ -21,10 +21,11 @@ module.exports = {
         }
 
         const goldEmoji = msg.client.emojis.cache.get('807562416854401094');
+        const rcCoinEmoji = msg.client.emojis.cache.get('807599790359183390');
 
         fields.push({
             name: '\u200b',
-            value: `${goldEmoji} ${data.user.gold}`
+            value: `${goldEmoji} ${valuesHelper.formatXP(data.user.gold)}\n${rcCoinEmoji} ${valuesHelper.formatXP(data.user.rccoins)}`
         });
 
         fields.push({
