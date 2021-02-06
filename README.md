@@ -1,1 +1,1 @@
-# panterra-discord-bot
+# RuneCord discord bot
