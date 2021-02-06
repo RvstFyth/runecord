@@ -39,10 +39,16 @@ module.exports = {
             }
         ];
 
+
+        fields.push({
+            name: '\u200b',
+            value: `[Support server](https://discord.gg/UNJKYz244a)`
+        });
+
         return msg.channel.send({
             embed: {
                 fields
-            }
+            },
         })
     }
 };
