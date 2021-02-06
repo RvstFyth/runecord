@@ -32,7 +32,10 @@ module.exports = {
     async getAllForPaginated(userID, offset, limit) {
         return new Promise((resolve) => {
             db.query(
-                `SELECT * FROM ${this.table} WHERE user_id = ? LIMIT ?, ?`,
+                `SELECT b.*, i.name AS itemName 
+                FROM ${this.table} AS b 
+                INNER JOIN items AS i ON i.id = b.item_id 
+                WHERE b.user_id = ? LIMIT ?, ?`,
                 [userID, offset, limit],
                 (err, rows) => {
                     if (err) console.log(err);
