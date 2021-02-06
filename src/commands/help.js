@@ -16,7 +16,8 @@ module.exports = {
                 name: `Character`,
                 value: `` +
                     `\`${data.prefix}skills\` Displays your characters skills\n` +
-                    `\`${data.prefix}skill [name]\`  Displays details about selected skill\n`
+                    `\`${data.prefix}skill [name]\`  Displays details about selected skill\n` +
+                    `\`${data.prefix}wearing\` Displays what your character has equipped \n`
             },
             {
                 name: 'Resources',
@@ -24,7 +25,12 @@ module.exports = {
                     `\`${data.prefix}backpack\` Displays the content of your backpack\n` +
                     `\`${data.prefix}drop [amount] [item]\` Discard a item from your backpack\n` +
                     `\`${data.prefix}mine [type]\` Mine for resources\n` +
-                    `\`${data.prefix}chop [type]\` Chop for wood\n`
+                    `\`${data.prefix}chop [type]\` Chop for wood\n` +
+                    `\`${data.prefix}fish [type]\` \n` +
+                    `\`${data.prefix}cook [type]\` \n` +
+                    `\`${data.prefix}smelt [type]\` \n` +
+                    `\`${data.prefix}light [type]\` \n`
+                    
             },
             {
                 name: `NPC's`,
