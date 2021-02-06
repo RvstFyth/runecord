@@ -24,7 +24,6 @@ module.exports = {
             },
         ];
 
-
         const slotsUsed = await bankModel.getTotalCountFor(data.user.id);
         const maxSlots = data.user.supporter ? 800 : 400;
 
@@ -33,8 +32,8 @@ module.exports = {
             description,
             fields,
             footer: {
-                text: `Slots ${slotsUsed}/${maxSlots}`
-            }
+                text: `Slots ${slotsUsed}/${maxSlots}`,
+            },
         };
 
         return msg.channel.send({ embed });
