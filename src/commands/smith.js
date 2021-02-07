@@ -4,6 +4,8 @@ const itemsModel = require('../models/items');
 const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
 
+const questsHelper = require('../helpers/quests');
+
 module.exports = {
     async run(msg, args, data) {
         if (!args[0])
@@ -83,6 +85,8 @@ module.exports = {
             xpGain = diff;
         }
         if (xpGain > 0) await skillsModel.addXp(skillRecord.id, xpGain);
+
+        await questsHelper.check('smith', input, amount, data.user, msg);
 
         return msg.channel.send(
             `**${data.user.name}** smithed ${amount} x ${input}` +
