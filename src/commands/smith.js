@@ -1,6 +1,8 @@
 const recipesModel = require('../models/recipesSmithing');
 const inventoryModel = require('../models/usersInventory');
 const itemsModel = require('../models/items');
+const skillsModel = require('../models/usersSkills');
+const skillsHelper = require('../helpers/skills');
 
 module.exports = {
     async run(msg, args, data) {
@@ -69,8 +71,22 @@ module.exports = {
 
         await inventoryModel.add(data.user.id, recipe.item_id, amount);
 
+        const skillRecord = await skillsModel.getFor(data.user.id, 'smithing');
+
+        let xpGain = parseInt(recipe.xp) * amount;
+        if (
+            data.user.max_area === 'tutorial' &&
+            parseInt(skillRecord.xp) + xpGain > skillsHelper.xpForLevel(3)
+        ) {
+            let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);
+            if (diff < 0) diff = 0;
+            xpGain = diff;
+        }
+        if (xpGain > 0) await skillsModel.addXp(skillRecord.id, xpGain);
+
         return msg.channel.send(
-            `**${data.user.name}** smithed ${amount} x ${input}`
+            `**${data.user.name}** smithed ${amount} x ${input}` +
+                `${xpGain > 0 ? ` and got ${xpGain} xp!` : ''}`
         );
     },
 };
