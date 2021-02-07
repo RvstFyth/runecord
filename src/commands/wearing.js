@@ -1,5 +1,6 @@
 const equippedModel = require('../models/usersEquipped');
 const valuesHelper = require('../helpers/values');
+const itemsModel = require('../models/items');
 
 module.exports = {
     async run(msg, args, data) {
@@ -9,7 +10,8 @@ module.exports = {
         for (let i in userRecord) {
             if (i !== 'user_id') {
                 let value = '...';
-                // TODO: Actual item values lmao
+                const tmpItem = await itemsModel.get(userRecord[i]);
+                if(tmpItem) value = tmpItem.name;
                 fields.push({
                     name: valuesHelper.ucfirst(i),
                     value: value,
