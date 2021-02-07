@@ -18,6 +18,7 @@ module.exports = {
             return `Intro about how to use smith command. New Quest: smith a bronze dagger`;
         } else if (secondQuest && !secondQuest.completed)
             return `You will need that bronze dagger before you continue..`;
-        else return `The combat instructor is waiting on you. You should hurry up!`;
+        else
+            return `The combat instructor is waiting on you. You should hurry up!`;
     },
 };
