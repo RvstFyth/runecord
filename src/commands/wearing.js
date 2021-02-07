@@ -11,7 +11,7 @@ module.exports = {
             if (i !== 'user_id') {
                 let value = '...';
                 const tmpItem = await itemsModel.get(userRecord[i]);
-                if(tmpItem) value = tmpItem.name;
+                if (tmpItem) value = tmpItem.name;
                 fields.push({
                     name: valuesHelper.ucfirst(i),
                     value: value,
