@@ -34,4 +34,17 @@ module.exports = {
             );
         });
     },
+
+    async setSlot(userID, slot, value) {
+        return new Promise((resolve) => {
+            db.query(
+                `UPDATE ${this.table} SET ${slot} = ? WHERE user_id = ?`,
+                [value, userID],
+                (err) => {
+                    if (err) console.log(err);
+                    else resolve(true);
+                }
+            );
+        });
+    },
 };
