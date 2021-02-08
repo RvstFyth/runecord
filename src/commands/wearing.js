@@ -7,18 +7,7 @@ module.exports = {
         const userRecord = await equippedModel.getFor(data.user.id);
 
         const fields = [];
-        for (let i in userRecord) {
-            if (i !== 'user_id') {
-                let value = '...';
-                const tmpItem = await itemsModel.get(userRecord[i]);
-                if (tmpItem) value = tmpItem.name;
-                fields.push({
-                    name: valuesHelper.ucfirst(i),
-                    value: value,
-                    inline: true,
-                });
-            }
-        }
+
         const attackBonus = {
             stab: 0,
             slash: 0,
@@ -37,7 +26,42 @@ module.exports = {
             melee: 0,
             ranged: 0,
             magic: 0,
+            prayer: 0,
         };
+
+        for (let i in userRecord) {
+            if (i !== 'user_id') {
+                let value = '...';
+                const tmpItem = await itemsModel.get(userRecord[i]);
+                if (tmpItem) {
+                    value = tmpItem.name;
+                    if (tmpItem.meta) {
+                        const metaParsed = JSON.parse(tmpItem.meta);
+                        if (metaParsed && metaParsed.stats) {
+                            if (metaParsed.stats.attack)
+                                for (let i in metaParsed.stats.attack)
+                                    attackBonus[i] +=
+                                        metaParsed.stats.attack[i];
+
+                            if (metaParsed.stats.defence)
+                                for (let i in metaParsed.stats.defence)
+                                    defenceBonus[i] +=
+                                        metaParsed.stats.defence[i];
+
+                            if (metaParsed.stats.other)
+                                for (let i in metaParsed.stats.other)
+                                    otherBonusses[i] +=
+                                        metaParsed.stats.other[i];
+                        }
+                    }
+                }
+                fields.push({
+                    name: valuesHelper.ucfirst(i),
+                    value: value,
+                    inline: true,
+                });
+            }
+        }
 
         fields.push({
             name: 'Attack bonus',
