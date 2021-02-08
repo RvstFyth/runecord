@@ -32,6 +32,11 @@ module.exports = {
                 `**${data.user.name}** you can't smith ${input}..`
             );
 
+        if (data.char.skills.smithing.level < recipe.level)
+            return msg.channel.send(
+                `**${data.user.name}** you need smithing level ${recipe.level} for this..`
+            );
+
         const itemsNeeded = {};
         const itemsParsed = recipe.items.split(';');
         for (let i of itemsParsed) {
