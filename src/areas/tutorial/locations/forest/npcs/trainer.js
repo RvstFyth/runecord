@@ -1,4 +1,5 @@
 const questsModel = require('../../../../../models/usersQuests');
+const inventoryModel = require('../../../../../models/usersInventory');
 
 module.exports = {
     label: `Survival expert`,
@@ -20,6 +21,7 @@ module.exports = {
                 });
 
                 await questsModel.create(data.userID, 2);
+                await inventoryModel.add(data.userID, 39, 1);
                 return `**TODO (text):**\nFirst quest is completed here. SE should introduce himself a bit, and a new quest is given here: chop a tree`;
             }
         } else
@@ -32,6 +34,7 @@ module.exports = {
         const thirdQuest = await questsModel.getFor(data.userID, 3);
         if (!thirdQuest) {
             await questsModel.create(data.userID, 3);
+            await inventoryModel.add(data.userID, 38, 1);
             return `Chop a tree is completed here... New quests will be make a fire`;
         }
         if (thirdQuest && !thirdQuest.completed)
@@ -40,6 +43,7 @@ module.exports = {
         const fourthQuest = await questsModel.getFor(data.userID, 4);
         if (!fourthQuest) {
             await questsModel.create(data.userID, 4);
+            await inventoryModel.add(data.userID, 40, 1);
             return `Make a fire is completed here... New quests will be catch some shrimps`;
         }
         if (fourthQuest && !fourthQuest.completed)

@@ -20,5 +20,19 @@ module.exports = {
                 label: 'raw shrimps',
             },
         },
+        attack: {
+            rat: {
+                xp: 10,
+                level: 1,
+                stats: {
+                    hitpoints: 2,
+                    attack: 1,
+                    strength: 1,
+                    defence: 1,
+                    magic: 1,
+                    ranged: 1,
+                },
+            },
+        },
     },
 };

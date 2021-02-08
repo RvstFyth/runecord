@@ -1,5 +1,5 @@
 const userQuestsModel = require('../../../../../models/usersQuests');
-
+const inventoryModel = require('../../../../../models/usersInventory');
 module.exports = {
     label: 'mining trainer',
     description: '',
@@ -8,6 +8,7 @@ module.exports = {
         const firstQuest = await userQuestsModel.getFor(data.userID, 6);
         if (!firstQuest) {
             await userQuestsModel.create(data.userID, 6);
+            await inventoryModel.add(data.userID, 41, 1);
             return `Mining trainer should introduce theirself. New quest: mine copper and tin ore and smelt a bronze bar`;
         } else if (firstQuest && !firstQuest.completed)
             return `Did you get a bronze bar already?`;
