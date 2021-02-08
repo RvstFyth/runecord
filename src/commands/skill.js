@@ -4,24 +4,16 @@ const skillsHelper = require('../helpers/skills');
 module.exports = {
     async run(msg, args, data) {
         if (args[0]) {
-            const skillRecord = await skillsModel.getFor(
-                data.user.id,
-                args[0].toLowerCase()
-            );
-            if (skillRecord) {
-                const level = skillsHelper.levelForXp(skillRecord.xp);
-                const totalForNextLevel = skillsHelper.xpForLevel(level + 1);
-                const totalXp = parseInt(skillRecord.xp);
-                const remainder = totalForNextLevel - totalXp;
-
+            const skill = data.char.skills[args[0]];
+            if (skill) {
                 const embed = {
-                    title: `${data.user.name} ${skillRecord.skill}`,
+                    title: `${data.user.name} ${skill.name}`,
                     description:
                         `` +
-                        `Level: ${level}\n` +
-                        `Total xp: ${skillRecord.xp}\n` +
-                        `Total next level: ${totalForNextLevel}\n` +
-                        `Remaining: ${remainder}`,
+                        `Level: ${skill.level}\n` +
+                        `Total xp: ${skill.xp}\n` +
+                        `Total next level: ${skill.nextLevel}\n` +
+                        `Remaining: ${skill.remainder}`,
                 };
 
                 await msg.channel.send({ embed });

@@ -45,6 +45,19 @@ module.exports = {
         });
     },
 
+    async setArea(id, area) {
+        return new Promise((resolve) => {
+            db.query(
+                `UPDATE ${this.table} SET area = ? WHERE id = ?`,
+                [area, id],
+                (err) => {
+                    if (err) console.log(err);
+                    else resolve(true);
+                }
+            );
+        });
+    },
+
     async setLocation(id, location) {
         return new Promise((resolve) => {
             db.query(
