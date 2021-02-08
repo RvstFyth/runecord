@@ -84,7 +84,7 @@ module.exports = {
         fields.push({
             name: 'Other bonusses',
             inline: true,
-            value: `Melee: ${otherBonusses.melee}\nRanged: ${otherBonusses.ranged}\nMagic: ${otherBonusses.magic}`,
+            value: `Melee: ${otherBonusses.melee}\nRanged: ${otherBonusses.ranged}\nMagic: ${otherBonusses.magic}\nPrayer: ${otherBonusses.prayer}`,
         });
 
         const embed = {
