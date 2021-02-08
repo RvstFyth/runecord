@@ -64,6 +64,12 @@ module.exports = {
         }
 
         fields.push({
+            name: '\u200b',
+            inline: true,
+            value: '\u200b',
+        });
+
+        fields.push({
             name: 'Attack bonus',
             inline: true,
             value: `Stab: ${attackBonus.stab}\nSlash: ${attackBonus.slash}\nCrush: ${attackBonus.crush}\nMagic: ${attackBonus.magic}\nRange: ${attackBonus.ranged}`,
