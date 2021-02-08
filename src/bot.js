@@ -10,13 +10,15 @@ const valuesHelper = require('./helpers/values');
 
 // Initialize modules
 db.init();
-commandsHelper.loadCommands(__dirname + '/commands/');
+commandsHelper.loadCommands(`${__dirname}/commands/`);
 logger.init();
 
 const usersModel = require('./models/users');
 const guildSettingsModel = require('./models/guildSettings');
 const usersLocksModel = require('./models/usersLocks');
 const worldsHelper = require('./helpers/worlds');
+const characterHelper = require('./helpers/character');
+const Character = require('./classes/character');
 
 const client = new discord.Client();
 
@@ -67,7 +69,7 @@ client.on('message', async (msg) => {
             .filter((c) => c)[0];
         if (commandsHelper.isAllowedCommand(command)) {
             logger.info(
-                msg.author.username + ' -- ' + msg.content.toLowerCase()
+                `${msg.author.username} -- ${msg.content.toLowerCase()}`
             );
 
             const user = await usersModel.getForDiscordID(msg.author.id);
@@ -105,9 +107,11 @@ client.on('message', async (msg) => {
             ]);
             const module = commandsHelper.getModuleForCommand(command);
 
+            const char = await characterHelper.composeFromUserRecord(user);
             const data = {
                 prefix,
                 user,
+                char,
             };
 
             if (args[0] && module.sub && module.sub[args[0]]) {
