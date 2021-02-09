@@ -1,6 +1,7 @@
 const inventoryModel = require('../models/usersInventory');
-const skillsModel = require('../models/usersSkills');
 const usersModel = require('../models/users');
+const itemsModel = require('../models/items');
+const equippedModel = require('../models/usersEquipped');
 
 class Character {
     constructor(id, name) {
@@ -15,6 +16,43 @@ class Character {
         this.supporter = false;
 
         this.skills = {};
+        this.equipped = {};
+        this.equippedBonus = {
+            attack: {
+                stab: 0,
+                slash: 0,
+                crush: 0,
+                magic: 0,
+                ranged: 0,
+            },
+            defence: {
+                stab: 0,
+                slash: 0,
+                crush: 0,
+                magic: 0,
+                ranged: 0,
+            },
+            other: {
+                melee: 0,
+                ranged: 0,
+                magic: 0,
+                prayer: 0,
+            },
+        };
+    }
+
+    async getEquipped() {
+        if (!Object.keys(this.equipped).length) {
+            await this.loadEquipment();
+        }
+        return this.equipped;
+    }
+
+    async getEquippedBonus() {
+        if (!Object.keys(this.equipped).length) {
+            await this.loadEquipment();
+        }
+        return this.equippedBonus;
     }
 
     setSupporter() {
@@ -45,6 +83,31 @@ class Character {
 
     setSkill(skillInstance) {
         this.skills[skillInstance.name] = skillInstance;
+    }
+
+    async loadEquipment() {
+        const userRecord = await equippedModel.getFor(this.id);
+        for (let i in userRecord) {
+            if (i === 'user_id') continue;
+            this.equipped[i] = userRecord[i];
+            if (this.equipped[i]) {
+                const item = await itemsModel.get(this.equipped[i]);
+                if (item) {
+                    const parsedMeta = JSON.parse(item.meta);
+                    if (parsedMeta && parsedMeta.stats) {
+                        item.stats = parsedMeta.stats;
+                        for (let i in item.stats.attack)
+                            this.equippedBonus.attack[i] = item.stats.attack[i];
+                        for (let i in item.stats.defence)
+                            this.equippedBonus.defence[i] =
+                                item.stats.defence[i];
+                        for (let i in item.stats.other)
+                            this.equippedBonus.other[i] = item.stats.other[i];
+                    }
+                    this.equipped[i] = item;
+                }
+            }
+        }
     }
 }
 
