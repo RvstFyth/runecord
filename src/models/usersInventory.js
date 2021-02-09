@@ -34,6 +34,24 @@ module.exports = {
         });
     },
 
+    async getWithTypeAndHighestLevel(userID, itemType) {
+        return new Promise((resolve) => {
+            db.query(
+                `SELECT ui.*, it.name, it.level 
+                        FROM ${this.table} AS ui
+                        INNER JOIN items AS it ON ui.item_id = it.id
+                        WHERE it.type = ? AND ui.user_id = ?
+                        ORDER BY it.level DESC LIMIT 1
+            `,
+                [itemType, userID],
+                (err, rows) => {
+                    if (err) console.log(err);
+                    else resolve(rows[0]);
+                }
+            );
+        });
+    },
+
     async getFor(userID, itemID, prefix = '') {
         return new Promise((resolve) => {
             db.query(

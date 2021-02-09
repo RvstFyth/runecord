@@ -37,6 +37,15 @@ module.exports = {
                 `**${data.user.name}** your backpack is full..`
             );
 
+        const axe = await inventoryModel.getWithTypeAndHighestLevel(
+            data.user.id,
+            'axe'
+        );
+        if (!axe || axe.amount < 1)
+            return msg.channel.send(
+                `**${data.user.name}** you need to carry a axe for this..`
+            );
+
         const skillRecord = await skillsModel.getFor(
             data.user.id,
             'woodcutting'
