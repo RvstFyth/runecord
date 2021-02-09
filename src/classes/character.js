@@ -120,12 +120,13 @@ class Character {
                     if (parsedMeta && parsedMeta.stats) {
                         item.stats = parsedMeta.stats;
                         for (let i in item.stats.attack)
-                            this.equippedBonus.attack[i] = item.stats.attack[i];
+                            this.equippedBonus.attack[i] +=
+                                item.stats.attack[i];
                         for (let i in item.stats.defence)
-                            this.equippedBonus.defence[i] =
+                            this.equippedBonus.defence[i] +=
                                 item.stats.defence[i];
                         for (let i in item.stats.other)
-                            this.equippedBonus.other[i] = item.stats.other[i];
+                            this.equippedBonus.other[i] += item.stats.other[i];
                     }
                     if (parsedMeta && i === 'weapon' && parsedMeta.type) {
                         this.combatType = parsedMeta.type;
