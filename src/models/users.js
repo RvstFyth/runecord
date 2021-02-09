@@ -83,4 +83,33 @@ module.exports = {
             );
         });
     },
+
+    async setStyle(id, style, value) {
+        let column;
+        switch (style) {
+            case 'melee':
+                column = 'melee_style';
+                break;
+            case 'ranged':
+                column = 'ranged_style';
+                break;
+            case 'magic':
+                column = 'magic_style';
+                break;
+        }
+        if (column) {
+            return new Promise((resolve) => {
+                db.query(
+                    `UPDATE ${this.table} SET ${column} = ? WHERE id = ?`,
+                    [value, id],
+                    (err) => {
+                        if (err) console.log(err);
+                        else resolve(true);
+                    }
+                );
+            });
+        }
+
+        return false;
+    },
 };

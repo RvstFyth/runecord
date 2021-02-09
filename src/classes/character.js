@@ -15,6 +15,11 @@ class Character {
         this.location = 'start';
         this.supporter = false;
 
+        this.meleeStyle = 1;
+        this.rangedStyle = 1;
+        this.magicStyle = 1;
+        this.combatType = 'melee';
+
         this.skills = {};
         this.equipped = {};
         this.equippedBonus = {
@@ -39,6 +44,21 @@ class Character {
                 prayer: 0,
             },
         };
+    }
+
+    setStyle(type, val) {
+        val = parseInt(val);
+        switch (type) {
+            case 'melee':
+                this.meleeStyle = val;
+                break;
+            case 'ranged':
+                this.rangedStyle = val;
+                break;
+            case 'magic':
+                this.magicStyle = val;
+                break;
+        }
     }
 
     async getEquipped() {
@@ -104,6 +124,8 @@ class Character {
                         for (let i in item.stats.other)
                             this.equippedBonus.other[i] = item.stats.other[i];
                     }
+                    if (parsedMeta && i === 'weapon' && parsedMeta.type)
+                        this.combatType = parsedMeta.type;
                     this.equipped[i] = item;
                 }
             }
