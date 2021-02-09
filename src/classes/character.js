@@ -19,6 +19,9 @@ class Character {
         this.rangedStyle = 1;
         this.magicStyle = 1;
         this.combatType = 'melee';
+        this.combatStyle = '';
+        this.attackType = '';
+        this.attackStyle = '';
 
         this.skills = {};
         this.equipped = {};
@@ -124,8 +127,23 @@ class Character {
                         for (let i in item.stats.other)
                             this.equippedBonus.other[i] = item.stats.other[i];
                     }
-                    if (parsedMeta && i === 'weapon' && parsedMeta.type)
+                    if (parsedMeta && i === 'weapon' && parsedMeta.type) {
                         this.combatType = parsedMeta.type;
+                        let styleIndex = this[this.combatStyle + 'Style'] - 1;
+                        const stylesKeys = Object.keys(parsedMeta.styles);
+                        if (!stylesKeys[styleIndex]) styleIndex = 1;
+                        this.combatStyle = stylesKeys[styleIndex];
+                        this.attackType =
+                            parsedMeta.styles[this.combatStyle].type;
+                        this.attackStyle =
+                            parsedMeta.styles[this.combatStyle].style;
+
+                        console.log(
+                            this.combatStyle,
+                            this.attackType,
+                            this.attackStyle
+                        );
+                    }
                     this.equipped[i] = item;
                 }
             }
