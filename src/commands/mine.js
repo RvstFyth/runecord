@@ -35,6 +35,15 @@ module.exports = {
                 `**${data.user.name}** your backpack is full..`
             );
 
+        const pickaxe = await inventoryModel.getWithTypeAndHighestLevel(
+            data.user.id,
+            'pickaxe'
+        );
+        if (!pickaxe || pickaxe.amount < 1)
+            return msg.channel.send(
+                `**${data.user.name}** you have to carry a pickaxe for this..`
+            );
+
         const skillRecord = await skillsModel.getFor(data.user.id, 'mining');
 
         const result = { ...locationDetails.commands.mine[args[0]] };
