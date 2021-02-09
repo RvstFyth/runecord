@@ -14,7 +14,7 @@ module.exports = {
         const potionBonus = 0; // TODO
         const prayerBonus = 1; // TODO
 
-        const attackStyle = 'controlled'; // TODO: should be a char setting
+        const attackStyle = charInstance.attackStyle; // TODO: should be a char setting
         const attackStyleBonus = attackStyleBonuses[attackStyle]
             ? attackStyleBonuses[attackStyle]
             : 0;
@@ -48,18 +48,18 @@ module.exports = {
             controlled: 1,
             accurate: 3,
         };
-        const strength = parseInt(charInstance.skills.attack.level);
+        const attack = parseInt(charInstance.skills.attack.level);
 
         const potionBonus = 0; // TODO
         const prayerBonus = 1; // TODO
 
-        const attackStyle = 'accurate'; // TODO: should be a char setting
+        const attackStyle = charInstance.attackStyle; // TODO: should be a char setting
         const attackStyleBonus = attackStyleBonuses[attackStyle]
             ? attackStyleBonuses[attackStyle]
             : 0;
 
         return (
-            parseInt((strength + potionBonus) * prayerBonus) +
+            parseInt((attack + potionBonus) * prayerBonus) +
             attackStyleBonus +
             8
         );
@@ -73,6 +73,8 @@ module.exports = {
             prayer
         );
 
-        return parseInt();
+        const equipmentBonus =
+            charInstance.equippedBonus.attack[charInstance.attackType];
+        return parseInt(effectiveLevel * (equipmentBonus + 64));
     },
 };

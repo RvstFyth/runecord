@@ -9,6 +9,7 @@ module.exports = {
             data.char
         );
         const maxHit = await combatHelper.calculateMaxHit(data.char);
+        const maxAttack = await combatHelper.calculateMaxAttack(data.char);
 
         return msg.channel.send({
             embed: {
@@ -17,7 +18,8 @@ module.exports = {
                     `` +
                     `Effective level max hit: ${effectiveLevelMaxHit}\n` +
                     `Max hit: ${maxHit}\n` +
-                    `Effective level max attack: ${effectiveLevelMaxAttack}\n`,
+                    `Effective level max attack: ${effectiveLevelMaxAttack}\n` +
+                    `Max attack: ${maxAttack}\n`,
             },
         });
     },
