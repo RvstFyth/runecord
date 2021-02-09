@@ -18,7 +18,6 @@ const guildSettingsModel = require('./models/guildSettings');
 const usersLocksModel = require('./models/usersLocks');
 const worldsHelper = require('./helpers/worlds');
 const characterHelper = require('./helpers/character');
-const Character = require('./classes/character');
 
 const client = new discord.Client();
 
