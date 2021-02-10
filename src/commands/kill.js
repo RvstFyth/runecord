@@ -103,7 +103,15 @@ module.exports = {
                 await char.skills.hitpoints.addXp(hpXpGain);
 
             // Loot drops
+            if (locationData.mobs[input].loot.gold) {
+                const goldAmount = random.number(
+                    locationData.mobs[input].loot.gold.min,
+                    locationData.mobs[input].loot.gold.max
+                );
+                await usersModel.addGold(data.user.id, goldAmount);
+            }
             for (let i in locationData.mobs[input].loot) {
+                if (i === 'gold') continue;
                 let valid =
                     locationData.mobs[input].loot[i].chance < 100
                         ? random.chance(locationData.mobs[input].loot[i].chance)
