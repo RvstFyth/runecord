@@ -24,6 +24,7 @@ module.exports = {
                 userID: data.user.id,
                 msg: msg,
                 user: data.user,
+                prefix: data.prefix,
             }),
         };
 
