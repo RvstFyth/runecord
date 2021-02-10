@@ -86,6 +86,7 @@ module.exports = {
 
     async setHealth(id, health) {
         return new Promise((resolve) => {
+            health = Math.max(0, health);
             db.query(
                 `UPDATE ${this.table} SET health = ? WHERE id = ?`,
                 [health, id],
