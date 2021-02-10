@@ -24,6 +24,7 @@ module.exports = {
     mobs: {
         rat: {
             xp: 8,
+            attackType: 'crush',
             stats: {
                 combat: {
                     hitpoints: 2,
