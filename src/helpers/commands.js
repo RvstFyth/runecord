@@ -30,7 +30,8 @@ module.exports = {
         }
         let args = message
             .split(' ')
-            .filter((a) => a && argsToRemove.indexOf(a) < 0);
+            .filter((a) => a && argsToRemove.indexOf(a) < 0)
+            .filter((a) => !a.startsWith('<@!'));
         if (quotedArgs && quotedArgs.length) args = [...args, ...quotedArgs];
         return args;
     },
