@@ -11,7 +11,7 @@ module.exports = {
 
         const input = args.join(' ');
         const item = await itemsModel.getForName(input);
-        if (!input)
+        if (!item)
             return msg.channel.send(
                 `**${data.user.name}** there is no item named ${item}..`
             );
