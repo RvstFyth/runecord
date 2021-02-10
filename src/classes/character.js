@@ -136,10 +136,10 @@ class Character {
                     }
                     if (parsedMeta && i === 'weapon' && parsedMeta.type) {
                         this.combatType = parsedMeta.type;
-                        let styleIndex = this[this.combatStyle + 'Style'] - 1;
+                        let styleIndex = this[this.combatType + 'Style'];
                         const stylesKeys = Object.keys(parsedMeta.styles);
-                        if (!stylesKeys[styleIndex]) styleIndex = 1;
-                        this.combatStyle = stylesKeys[styleIndex];
+                        if (!stylesKeys[styleIndex - 1]) styleIndex = 1;
+                        this.combatStyle = stylesKeys[styleIndex - 1];
                         this.attackType =
                             parsedMeta.styles[this.combatStyle].type;
                         this.attackStyle =

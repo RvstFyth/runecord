@@ -12,6 +12,7 @@ class Skill {
     }
 
     addXp(amount) {
+        console.log(`Added ${amount} for ${this.name}`);
         this.xp += parseInt(amount);
         skillsModel.addXp(this.id, amount);
     }

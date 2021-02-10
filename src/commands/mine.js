@@ -49,7 +49,7 @@ module.exports = {
         const result = { ...locationDetails.commands.mine[args[0]] };
 
         if (
-            data.user.max_area === 'tutorial' &&
+            data.user.area === 'tutorial' &&
             parseInt(skillRecord.xp) + result.xp > skillsHelper.xpForLevel(3)
         ) {
             let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);

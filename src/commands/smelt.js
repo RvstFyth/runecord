@@ -76,7 +76,7 @@ module.exports = {
         const skillRecord = await skillsModel.getFor(data.user.id, 'smithing');
         let xpGain = item.xp * amount;
         if (
-            data.user.max_area === 'tutorial' &&
+            data.user.area === 'tutorial' &&
             parseInt(skillRecord.xp) + xpGain > skillsHelper.xpForLevel(3)
         ) {
             let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);

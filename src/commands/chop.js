@@ -55,7 +55,7 @@ module.exports = {
 
         let xpGain = reward.xp;
         if (
-            data.user.max_area === 'tutorial' &&
+            data.user.area === 'tutorial' &&
             parseInt(skillRecord.xp) + reward.xp > skillsHelper.xpForLevel(3)
         ) {
             let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);

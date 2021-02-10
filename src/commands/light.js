@@ -40,7 +40,7 @@ module.exports = {
         else userLogs = userLogs[0];
 
         if (
-            data.user.max_area === 'tutorial' &&
+            data.user.area === 'tutorial' &&
             parseInt(skillRecord.xp) + logType.xp > skillsHelper.xpForLevel(3)
         ) {
             let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);
