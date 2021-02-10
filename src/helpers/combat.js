@@ -114,7 +114,7 @@ module.exports = {
         const potionBonus = 0; // TODO
         const prayerBonus = 1; // TODO
 
-        const attackStyle = charInstance.attackStyle; // TODO: should be a char setting
+        const attackStyle = charInstance.attackStyle;
         const attackStyleBonus = attackStyleBonuses[attackStyle]
             ? attackStyleBonuses[attackStyle]
             : 0;
