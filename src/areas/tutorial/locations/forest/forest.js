@@ -20,17 +20,41 @@ module.exports = {
                 label: 'raw shrimps',
             },
         },
-        attack: {
-            rat: {
-                xp: 10,
-                level: 1,
-                stats: {
+    },
+    mobs: {
+        rat: {
+            xp: 8,
+            stats: {
+                combat: {
                     hitpoints: 2,
                     attack: 1,
                     strength: 1,
                     defence: 1,
                     magic: 1,
                     ranged: 1,
+                },
+                aggressive: {
+                    attack: -47,
+                    strength: -53,
+                    magic: 0,
+                    magicDamage: 0,
+                    ranged: 0,
+                    rangedStrength: 0,
+                },
+                defence: {
+                    stab: -42,
+                    slash: -42,
+                    crush: -42,
+                    magic: -42,
+                    ranged: -42,
+                },
+                immunities: { poison: false, venom: false },
+            },
+            loot: {
+                53: {
+                    min: 1,
+                    max: 1,
+                    chance: 100,
                 },
             },
         },
