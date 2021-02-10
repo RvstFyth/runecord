@@ -38,6 +38,23 @@ module.exports = {
         }
 
         if (
+            areaData.locations[data.user.location].tools &&
+            Object.values(areaData.locations[data.user.location].tools).length
+        ) {
+            const toolsField = {
+                name: 'Tools',
+                value: '',
+                inline: true,
+            };
+
+            const tools = areaData.locations[data.user.location].tools;
+            for (let i of tools) {
+                toolsField.value += `${valuesHelper.ucfirst(i)}\n`;
+            }
+            fields.push(toolsField);
+        }
+
+        if (
             areaData.locations[data.user.location].mobs &&
             Object.values(areaData.locations[data.user.location].mobs).length
         ) {
