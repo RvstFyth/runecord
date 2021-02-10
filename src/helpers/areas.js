@@ -54,6 +54,10 @@ module.exports = {
         return Object.keys(_areasCache);
     },
 
+    getLocationLabels(area) {
+        return Object.values(_areasCache[area].locations).map((l) => l.label);
+    },
+
     getLocation(area, location) {
         return _areasCache[area].locations[location];
     },

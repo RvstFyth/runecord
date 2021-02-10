@@ -11,7 +11,14 @@ module.exports = {
                 `**${data.user.name}** please specify which location you want to travel too`
             );
 
-        let input = args.join(' ');
+        let input;
+        if (!isNaN(args[0])) {
+            const areas = areasHelper.getLocationLabels(data.user.area);
+            if (areas[args[0] - 1]) {
+                input = areas[args[0] - 1].toLowerCase();
+            }
+        }
+        if (!input) input = args.join(' ');
 
         const areaDetails = await areasHelper.getAreaModules(data.user.area);
         // console.log(areaDetails)

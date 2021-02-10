@@ -9,8 +9,10 @@ module.exports = {
             value: '',
         };
 
+        let counter = 1;
         for (let i in areaDetails.locations) {
-            locationsField.value += `${areaDetails.locations[i].label}\n`;
+            locationsField.value += `${counter}. ${areaDetails.locations[i].label}\n`;
+            counter++;
         }
 
         const explanationField = {
