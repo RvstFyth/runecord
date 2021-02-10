@@ -1,6 +1,17 @@
 const bankModel = require('../models/usersBank');
+const areaHelper = require('../helpers/areas');
+
 module.exports = {
     async run(msg, args, data) {
+        const locationData = areaHelper.getLocation(
+            data.user.area,
+            data.user.location
+        );
+        if (!locationData.tools || locationData.tools.indexOf('bank') < 0)
+            return msg.channel.send(
+                `**${data.user.name}** you need to be at a bank for this command..`
+            );
+
         let offset = 0,
             limit = 15;
 

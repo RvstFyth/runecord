@@ -1,11 +1,20 @@
 const bankModel = require('../../models/usersBank');
 const inventoryModel = require('../../models/usersInventory');
 const itemsModel = require('../../models/items');
+const areaHelper = require('../../helpers/areas');
 
 module.exports = {
     aliasses: ['bwith', 'bget'],
 
     async run(msg, args, data) {
+        const locationData = areaHelper.getLocation(
+            data.user.area,
+            data.user.location
+        );
+        if (!locationData.tools || locationData.tools.indexOf('bank') < 0)
+            return msg.channel.send(
+                `**${data.user.name}** you need to be at a bank for this command..`
+            );
         if (!args[0])
             return msg.channel.send(
                 `**${data.user.name}** what are you trying to withdraw?!?`
