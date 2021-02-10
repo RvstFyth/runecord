@@ -1,5 +1,8 @@
+const random = require('../helpers/random');
+
 module.exports = {
     async simulateAgaianstNpc(charInstance, mobDefinition) {
+        await charInstance.loadEquipment();
         let pIndex = 0;
         const log = [];
         while (true) {
@@ -30,16 +33,16 @@ module.exports = {
             if (maxAttackRoll > maxDefenceRoll) {
                 hitChance =
                     1 - (maxDefenceRoll + 2) / (2 * (maxAttackRoll + 1));
-            } else hitChance = maxAttackRoll / (2 * maxDefenceRoll + 1);
-            // dps = hit_chance * (max_hit / 2) / attack_interval
-            const dmg = parseInt(hitChance * (maxHitRoll / 2));
+            } else hitChance = maxAttackRoll / (2 * (maxDefenceRoll + 1));
 
-            otherPlayer.health -= parseInt(dmg);
-            if (dmg > 0)
+            hitChance = parseInt(hitChance * 100);
+            if (random.chance(hitChance)) {
+                const dmg = random.number(0, maxHitRoll);
+                otherPlayer.health -= parseInt(dmg);
                 log.push(
-                    `${currentPlayer.name} hit ${mobDefinition.name} for ${dmg} damage`
+                    `${currentPlayer.name} hit ${otherPlayer.name} for ${dmg} damage`
                 );
-            else log.push(`${currentPlayer.name} missed..`);
+            } else log.push(`${currentPlayer.name} missed..`);
 
             if (pIndex < 1) pIndex++;
             else pIndex = 0;
@@ -86,7 +89,9 @@ module.exports = {
         const prayerBonus = 1; // TODO
 
         const attackStyle = charInstance.attackStyle; // TODO: should be a char setting
-        const attackStyleBonus = attackStyleBonuses[attackStyle]
+        const attackStyleBonus = charInstance.npc
+            ? 1
+            : attackStyleBonuses[attackStyle]
             ? attackStyleBonuses[attackStyle]
             : 0;
 
@@ -98,7 +103,6 @@ module.exports = {
     },
 
     async calculateMaxHit(charInstance, activePotions, prayer) {
-        await charInstance.loadEquipment();
         const effectiveLevel = this.calculateEffectiveLevelMaxHit(
             charInstance,
             activePotions,
@@ -125,7 +129,9 @@ module.exports = {
         const prayerBonus = 1; // TODO
 
         const attackStyle = charInstance.attackStyle;
-        const attackStyleBonus = attackStyleBonuses[attackStyle]
+        const attackStyleBonus = charInstance.npc
+            ? 1
+            : attackStyleBonuses[attackStyle]
             ? attackStyleBonuses[attackStyle]
             : 0;
 
@@ -137,7 +143,6 @@ module.exports = {
     },
 
     async calculateMaxAttack(charInstance, activePotions, prayer) {
-        await charInstance.loadEquipment();
         const effectiveLevel = this.calculateEffectiveLevelMaxAttack(
             charInstance,
             activePotions,
