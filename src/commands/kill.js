@@ -2,6 +2,11 @@ const areasHelper = require('../helpers/areas');
 const combatHelper = require('../helpers/combat');
 const characterHelper = require('../helpers/character');
 const skillsHelper = require('../helpers/skills');
+const random = require('../helpers/random');
+const itemsModel = require('../models/items');
+const worldsHelper = require('../helpers/worlds');
+
+const logEmoji = '📖';
 
 module.exports = {
     async run(msg, args, data) {
@@ -88,9 +93,34 @@ module.exports = {
             )
                 await char.skills.hitpoints.addXp(hpXpGain);
 
-            return msg.channel.send(
-                `**${data.user.name}** won against ${input}`
-            );
+            // Loot drops
+            for (let i in locationData.mobs[input].loot) {
+                let valid =
+                    locationData.mobs[input].loot[i].chance < 100
+                        ? random.chance(locationData.mobs[input].loot[i].chance)
+                        : true;
+                if (valid) {
+                    const item = await itemsModel.get(i);
+                    const amount = random.number(
+                        locationData.mobs[input].loot[i].min,
+                        locationData.mobs[input].loot[i].max
+                    );
+                    for (let i = 0; i < amount; i++) {
+                        worldsHelper.addObjectToWorld(
+                            data.user.world,
+                            item.name,
+                            data.user.area,
+                            data.user.location
+                        );
+                    }
+                }
+            }
+
+            return msg.channel
+                .send(`**${data.user.name}** won against ${input}`)
+                .then(async (message) => {
+                    await message.react(logEmoji);
+                });
         } else
             return msg.channel.send(
                 `**${data.user.name}** lost against ${input}`
