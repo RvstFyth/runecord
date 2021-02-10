@@ -12,8 +12,10 @@ module.exports = {
 
         if (npcs && npcs.length) {
             const npcField = { name: 'NPCs', value: '', inline: true };
+            let counter = 1;
             for (let i in npcs) {
-                npcField.value += `- ${npcs[i].label}\n`;
+                npcField.value += `${counter}. ${npcs[i].label}\n`;
+                counter++;
             }
             fields.push(npcField);
         }
