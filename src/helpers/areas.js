@@ -50,6 +50,10 @@ module.exports = {
         return null;
     },
 
+    getAreas() {
+        return Object.keys(_areasCache);
+    },
+
     getLocation(area, location) {
         return _areasCache[area].locations[location];
     },
