@@ -84,6 +84,19 @@ module.exports = {
         });
     },
 
+    async setHealth(id, health) {
+        return new Promise((resolve) => {
+            db.query(
+                `UPDATE ${this.table} SET health = ? WHERE id = ?`,
+                [health, id],
+                (err) => {
+                    if (err) console.log(err);
+                    else resolve(true);
+                }
+            );
+        });
+    },
+
     async addGold(id, amount) {
         return new Promise((resolve) => {
             db.query(
