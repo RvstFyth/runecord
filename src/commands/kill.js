@@ -30,7 +30,7 @@ module.exports = {
         const char = data.char;
         const result = await combatHelper.simulateAgaianstNpc(char, npc);
 
-        if (result.health > 0) {
+        if (result.player.health > 0) {
             let xpGain = 0;
             xpGain = parseInt(
                 locationData.mobs[input].stats.combat.hitpoints * 4
@@ -120,6 +120,28 @@ module.exports = {
                 .send(`**${data.user.name}** won against ${input}`)
                 .then(async (message) => {
                     await message.react(logEmoji);
+                    const filter = (reaction, user) => {
+                        return (
+                            reaction.emoji.name === logEmoji &&
+                            user.id === msg.author.id
+                        );
+                    };
+                    message
+                        .awaitReactions(filter, { max: 1, time: 30 * 1000 })
+                        .then((collected) => {
+                            const reaction = collected.first();
+                            if (reaction) {
+                                let description = '';
+                                for (let i of result.log) {
+                                    description += `- ${i}\n`;
+                                }
+                                const embed = {
+                                    title: `${data.user.name}'s combat log`,
+                                    description,
+                                };
+                                return msg.channel.send({ embed });
+                            }
+                        });
                 });
         } else
             return msg.channel.send(
