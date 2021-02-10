@@ -1,4 +1,5 @@
 const skillsModel = require('../models/usersSkills');
+const skillsHelper = require('../helpers/skills');
 
 const Character = require('../classes/character');
 const Skill = require('../classes/skill');
@@ -14,6 +15,7 @@ module.exports = {
         char.setStyle('melee', record.melee_style);
         char.setStyle('ranged', record.ranged_style);
         char.setStyle('magic', record.magic_style);
+        char.setHealth(record.health);
 
         if (record.supporter) char.setSupporter();
 
@@ -28,5 +30,25 @@ module.exports = {
             );
         }
         return char;
+    },
+
+    composeNPC(name, mobDefinition) {
+        const mob = new Character(-1, name);
+        mob.setHealth(mobDefinition.stats.combat.hitpoints);
+
+        for (let i in mobDefinition.stats.combat) {
+            mob.setSkill(
+                new Skill(
+                    -1,
+                    i,
+                    skillsHelper.xpForLevel(mobDefinition.stats.combat[i])
+                )
+            );
+        }
+        for (let i in mobDefinition.stats.defence) {
+            mob.equippedBonus.defence[i] = mobDefinition.stats.defence[i];
+        }
+
+        return mob;
     },
 };

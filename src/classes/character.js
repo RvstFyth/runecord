@@ -14,6 +14,7 @@ class Character {
         this.area = 'tutorial';
         this.location = 'start';
         this.supporter = false;
+        this.health = 1;
 
         this.meleeStyle = 1;
         this.rangedStyle = 1;
@@ -47,6 +48,10 @@ class Character {
                 prayer: 0,
             },
         };
+    }
+
+    setHealth(val) {
+        this.health = parseInt(val);
     }
 
     setStyle(type, val) {

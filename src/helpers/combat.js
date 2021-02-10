@@ -1,4 +1,63 @@
 module.exports = {
+    simulateAgaianstNpc(charInstance, mobDefinition) {
+        let currentPlayer = charInstance;
+        let pIndex = 0;
+        while (true) {
+            if (
+                mobDefinition.stats.combat.hitpoints < 1 ||
+                charInstance.health < 1
+            )
+                break;
+
+            let maxAttackRoll,
+                maxDefenceRoll,
+                maxHitRoll,
+                hitChance,
+                currentPlayer,
+                otherPlayer;
+            if (pIndex === 0) {
+                // Player turn
+                currentPlayer = charInstance;
+                otherPlayer = mobDefinition;
+            }
+
+            maxAttackRoll = this.calculateMaxAttack(currentPlayer);
+            maxDefenceRoll = this.calculateMaxDefenceRoll(
+                currentPlayer,
+                otherPlayer
+            );
+            maxHitRoll = this.calculateMaxHit(currentPlayer);
+
+            if (maxAttackRoll > maxDefenceRoll) {
+                hitChance =
+                    1 - (maxDefenceRoll + 2) / (2 * (maxAttackRoll + 1));
+            } else hitChance = maxAttackRoll / (2 * maxDefenceRoll + 1);
+            // dps = hit_chance * (max_hit / 2) / attack_interval
+            otherPlayer.health -= parseInt(hitChance * (maxHitRoll / 2));
+
+            if (pIndex === 0) pIndex++;
+            else pIndex = 0;
+        }
+    },
+
+    calculateMaxDefenceRoll(attacker, defender) {
+        const equipmentBonus =
+            defender.equippedBonus.defence[attacker.attackType];
+        const effectiveLevel = this.calculateEffectiveLevelDefenceNpc(defender);
+
+        return effectiveLevel * (equipmentBonus + 64);
+    },
+
+    calculateEffectiveLevelDefenceNpc(charInstance, activePotions, prayer) {
+        let result = charInstance.skills.defence.level;
+
+        const potionBonus = 0; // TODO
+        const prayerBonus = 1; // TODO
+
+        if (charInstance.npc) result += 1;
+        return result + 8;
+    },
+
     calculateEffectiveLevelMaxHit(
         charInstance,
         activePotions = null,
