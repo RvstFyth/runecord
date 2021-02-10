@@ -6,6 +6,7 @@ const random = require('../helpers/random');
 const itemsModel = require('../models/items');
 const worldsHelper = require('../helpers/worlds');
 const usersModel = require('../models/users');
+const questsHelper = require('../helpers/quests');
 
 const logEmoji = '📖';
 
@@ -123,7 +124,7 @@ module.exports = {
                     }
                 }
             }
-
+            await questsHelper.check('kill', input, 1, data.user, msg);
             return msg.channel
                 .send(`**${data.user.name}** won against ${input}`)
                 .then(async (message) => {
