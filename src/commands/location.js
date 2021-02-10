@@ -37,6 +37,23 @@ module.exports = {
             fields.push(resourcesField);
         }
 
+        if (
+            areaData.locations[data.user.location].mobs &&
+            Object.values(areaData.locations[data.user.location].mobs).length
+        ) {
+            const mobsField = {
+                name: 'Mobs',
+                value: '',
+                inline: true,
+            };
+
+            const mobs = areaData.locations[data.user.location].mobs;
+            for (let i in mobs) {
+                mobsField.value += `${valuesHelper.ucfirst(i)}\n`;
+            }
+            fields.push(mobsField);
+        }
+
         const players = worldsHelper.getPlayersOnLocation(
             data.user.world,
             data.user.area,
