@@ -1,6 +1,7 @@
 module.exports = {
     async simulateAgaianstNpc(charInstance, mobDefinition) {
         let pIndex = 0;
+        const log = [];
         while (true) {
             if (mobDefinition.health < 1 || charInstance.health < 1) break;
 
@@ -34,12 +35,21 @@ module.exports = {
             const dmg = parseInt(hitChance * (maxHitRoll / 2));
 
             otherPlayer.health -= parseInt(dmg);
+            if (dmg > 0)
+                log.push(
+                    `${currentPlayer.name} hit ${mobDefinition.name} for ${dmg} damage`
+                );
+            else log.push(`${currentPlayer.name} missed..`);
 
             if (pIndex < 1) pIndex++;
             else pIndex = 0;
         }
 
-        return charInstance;
+        return {
+            player: charInstance,
+            npc: mobDefinition,
+            log,
+        };
     },
 
     calculateMaxDefenceRoll(attacker, defender) {
