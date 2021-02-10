@@ -106,7 +106,8 @@ client.on('message', async (msg) => {
             ]);
             const module = commandsHelper.getModuleForCommand(command);
 
-            const char = await characterHelper.composeFromUserRecord(user);
+            let char;
+            if (user) char = await characterHelper.composeFromUserRecord(user);
             const data = {
                 prefix,
                 user,
