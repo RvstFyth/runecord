@@ -35,6 +35,8 @@ module.exports = {
     composeNPC(name, mobDefinition) {
         const mob = new Character(-1, name);
         mob.setHealth(mobDefinition.stats.combat.hitpoints);
+        mob.npc = true;
+        mob.attackType = mobDefinition.attackType;
 
         for (let i in mobDefinition.stats.combat) {
             mob.setSkill(
@@ -48,7 +50,6 @@ module.exports = {
         for (let i in mobDefinition.stats.defence) {
             mob.equippedBonus.defence[i] = mobDefinition.stats.defence[i];
         }
-
         return mob;
     },
 };

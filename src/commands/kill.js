@@ -19,5 +19,18 @@ module.exports = {
             return msg.channel.send(
                 `**${data.user.name}** there is no ${input} at this location..`
             );
+
+        const npc = characterHelper.composeNPC(input, locationData.mobs[input]);
+        const char = data.char;
+        const result = await combatHelper.simulateAgaianstNpc(char, npc);
+
+        if (result.health > 0)
+            return msg.channel.send(
+                `**${data.user.name}** won against ${input}`
+            );
+        else
+            return msg.channel.send(
+                `**${data.user.name}** lost against ${input}`
+            );
     },
 };

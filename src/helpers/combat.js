@@ -1,13 +1,8 @@
 module.exports = {
-    simulateAgaianstNpc(charInstance, mobDefinition) {
-        let currentPlayer = charInstance;
+    async simulateAgaianstNpc(charInstance, mobDefinition) {
         let pIndex = 0;
         while (true) {
-            if (
-                mobDefinition.stats.combat.hitpoints < 1 ||
-                charInstance.health < 1
-            )
-                break;
+            if (mobDefinition.health < 1 || charInstance.health < 1) break;
 
             let maxAttackRoll,
                 maxDefenceRoll,
@@ -19,25 +14,32 @@ module.exports = {
                 // Player turn
                 currentPlayer = charInstance;
                 otherPlayer = mobDefinition;
+            } else {
+                currentPlayer = mobDefinition;
+                otherPlayer = charInstance;
             }
 
-            maxAttackRoll = this.calculateMaxAttack(currentPlayer);
+            maxAttackRoll = await this.calculateMaxAttack(currentPlayer);
             maxDefenceRoll = this.calculateMaxDefenceRoll(
                 currentPlayer,
                 otherPlayer
             );
-            maxHitRoll = this.calculateMaxHit(currentPlayer);
+            maxHitRoll = await this.calculateMaxHit(currentPlayer);
 
             if (maxAttackRoll > maxDefenceRoll) {
                 hitChance =
                     1 - (maxDefenceRoll + 2) / (2 * (maxAttackRoll + 1));
             } else hitChance = maxAttackRoll / (2 * maxDefenceRoll + 1);
             // dps = hit_chance * (max_hit / 2) / attack_interval
-            otherPlayer.health -= parseInt(hitChance * (maxHitRoll / 2));
+            const dmg = parseInt(hitChance * (maxHitRoll / 2));
 
-            if (pIndex === 0) pIndex++;
+            otherPlayer.health -= parseInt(dmg);
+
+            if (pIndex < 1) pIndex++;
             else pIndex = 0;
         }
+
+        return charInstance;
     },
 
     calculateMaxDefenceRoll(attacker, defender) {

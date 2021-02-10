@@ -23,6 +23,7 @@ class Character {
         this.combatStyle = '';
         this.attackType = '';
         this.attackStyle = '';
+        this.npc = false;
 
         this.skills = {};
         this.equipped = {};
@@ -144,11 +145,11 @@ class Character {
                         this.attackStyle =
                             parsedMeta.styles[this.combatStyle].style;
 
-                        console.log(
-                            this.combatStyle,
-                            this.attackType,
-                            this.attackStyle
-                        );
+                        // console.log(
+                        //     this.combatStyle,
+                        //     this.attackType,
+                        //     this.attackStyle
+                        // );
                     }
                     this.equipped[i] = item;
                 }
