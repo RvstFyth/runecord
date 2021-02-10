@@ -3,11 +3,20 @@ const inventoryModel = require('../models/usersInventory');
 const itemsModel = require('../models/items');
 const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
-
+const areaHelper = require('../helpers/areas');
 const questsHelper = require('../helpers/quests');
 
 module.exports = {
     async run(msg, args, data) {
+        const locationData = areaHelper.getLocation(
+            data.user.area,
+            data.user.location
+        );
+        if (!locationData.tools || locationData.tools.indexOf('furnace') < 0)
+            return msg.channel.send(
+                `**${data.user.name}** you need to be at a anvil for this command..`
+            );
+
         if (!args[0])
             return msg.channel.send(
                 `**${data.user.name}** what are you trying to smith?!?`

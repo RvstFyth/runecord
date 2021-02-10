@@ -2,6 +2,7 @@ const inventoryModel = require('../models/usersInventory');
 const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
 const questsHelper = require('../helpers/quests');
+const areaHelper = require('../helpers/areas');
 
 const itemMapping = {
     bronze: {
@@ -16,6 +17,14 @@ const itemMapping = {
 
 module.exports = {
     async run(msg, args, data) {
+        const locationData = areaHelper.getLocation(
+            data.user.area,
+            data.user.location
+        );
+        if (!locationData.tools || locationData.tools.indexOf('furnace') < 0)
+            return msg.channel.send(
+                `**${data.user.name}** you need to be at a furnace for this command..`
+            );
         let amount = 1;
         if (!isNaN(args[0])) {
             amount = parseInt(args[0]);
