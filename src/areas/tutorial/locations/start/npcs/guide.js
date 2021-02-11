@@ -6,16 +6,17 @@ module.exports = {
 
     async talk(data) {
         const survivalQuest = await questsModel.getFor(data.userID, 1);
-        if (!survivalQuest || !survivalQuest.completed) {
+        if (1 === 1 || !survivalQuest || !survivalQuest.completed) {
             if (!survivalQuest) await questsModel.create(data.userID, 1);
             return (
                 `` +
-                `Hello, and welcome to runecord!\n` +
+                `Hello, and welcome to runecord!\n\n` +
                 `I will teach you some basic commands to move around in runecord.\n` +
-                `The world is divided in *area's*, and each area has multiple *locations*.'\n` +
-                `To see which locations you can *walk* to in your area, you can use the \`${data.prefix}area\` command. ou can use the \`${data.prefix}walk n\` command. Replace \`n\` with the number you see in front of the location name\n` +
+                `The world is divided in *area's*, and each area has multiple *locations*.\n` +
+                `To see which locations you can *walk* to in your area, you can use the \`${data.prefix}area\` command. ou can use the \`${data.prefix}walk n\` command. Replace \`n\` with the number you see in front of the location name\n\n` +
                 `The \`${data.prefix}location\` command will show you information about the location you are in.\n` +
-                `You will see NPC's you can interact with, for this use the \`${data.prefix}talk n\`, where you replace \`n\` with the number in front of the NPC name.\n\n` +
+                `You will see NPC's you can interact with, for this use the \`${data.prefix}talk n\`, where you replace \`n\` with the number in front of the NPC name.` +
+                `There is a some more info in that prompt, but you will learn during this tutorial. For now, you should find the survival expert and *talk* to him. You can find him in the forest!\n\n` +
                 `I have assigned your first quest to you. You can use the \`${data.prefix}quests\` command to get a overview of your active quests.`
             );
             //return `Explanation about walk and travel command\n\nExplanation on the area and location command\n\nI have assigned your first quest to you.\nYou can use the \`${data.prefix}quests\` command to get a overview of your active quests.`;
