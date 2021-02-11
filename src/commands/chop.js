@@ -37,10 +37,17 @@ module.exports = {
                 `**${data.user.name}** your backpack is full..`
             );
 
-        const axe = await inventoryModel.getWithTypeAndHighestLevel(
+        let axe = await inventoryModel.getWithTypeAndHighestLevel(
             data.user.id,
             'axe'
         );
+        if (!axe) {
+            /// Check if the user has one equipped
+            await data.char.loadEquipment();
+            if (data.char.equipped.weapon.type === 'axe') {
+                axe = data.char.equipped.weapon;
+            }
+        }
         if (!axe || axe.amount < 1)
             return msg.channel.send(
                 `**${data.user.name}** you need to carry a axe for this..`
