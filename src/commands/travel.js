@@ -1,7 +1,7 @@
 const usersModel = require('../models/users');
 
 const startLocations = {
-    lumbridge: 'castlecourtyard',
+    lumbridgecastle: 'courtyard',
 };
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
             return msg.channel.send(
                 `**${data.user.name}** you can't travel back to tutorial island...`
             );
-        args[0] = args.join(' ');
+        args[0] = args.join(' ').replace(' ', '');
         if (!startLocations[args[0]])
             return msg.channel.send(
                 `**${data.user.name}** invalid area name provided. See \`${data.prefix}areas\` command for valid area's`

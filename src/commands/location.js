@@ -7,6 +7,7 @@ module.exports = {
 
     async run(msg, args, data) {
         const areaData = await areasHelper.getAreaModules(data.user.area);
+
         const npcs = Object.values(areaData.locations[data.user.location].npcs);
         const fields = [];
 

@@ -2,7 +2,7 @@ const fs = require('fs');
 
 function getDirectories(path) {
     return fs.readdirSync(path).filter(function (file) {
-        return fs.statSync(path + '/' + file).isDirectory();
+        return fs.statSync(`${path}/${file}`).isDirectory();
     });
 }
 
@@ -43,6 +43,16 @@ module.exports = {
                 }
             });
         }
+    },
+
+    getAreaLabels() {
+        return Object.values(_areasCache).map((a) => a.area.label);
+    },
+
+    getAreaForLabel(label) {
+        return Object.values(_areasCache).filter(
+            (a) => a.area.label.toLowerCase() === label.toLowerCase()
+        )[0];
     },
 
     async getAreaModules(area) {
