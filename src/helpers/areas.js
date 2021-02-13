@@ -61,7 +61,7 @@ module.exports = {
     },
 
     getAreas() {
-        return Object.keys(_areasCache);
+        return _areasCache;
     },
 
     getLocationLabels(area) {

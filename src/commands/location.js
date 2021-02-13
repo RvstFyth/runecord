@@ -57,19 +57,23 @@ module.exports = {
             fields.push(toolsField);
         }
 
-        if (
-            areaData.locations[data.user.location].mobs &&
-            Object.values(areaData.locations[data.user.location].mobs).length
-        ) {
+        const mobs = worldsHelper.getMobs(
+            data.user.world,
+            data.user.area,
+            data.user.location
+        );
+        if (mobs && Object.values(mobs).length) {
             const mobsField = {
                 name: 'Mobs',
                 value: '',
                 inline: true,
             };
 
-            const mobs = areaData.locations[data.user.location].mobs;
             for (let i in mobs) {
-                mobsField.value += `${valuesHelper.ucfirst(i)}\n`;
+                const alive = mobs[i].filter(
+                    (m) => m.mob.health > 0 && !m.occupied
+                ).length;
+                mobsField.value += `${valuesHelper.ucfirst(i)} (${alive})\n`;
             }
             fields.push(mobsField);
         }

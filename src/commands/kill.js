@@ -7,6 +7,7 @@ const itemsModel = require('../models/items');
 const worldsHelper = require('../helpers/worlds');
 const usersModel = require('../models/users');
 const questsHelper = require('../helpers/quests');
+const valuesHelper = require('../helpers/values');
 
 const logEmoji = '📖';
 
@@ -23,14 +24,33 @@ module.exports = {
             data.user.location
         );
 
-        if (!locationData.mobs[input])
+        let mobs = worldsHelper.getMobs(
+            data.user.world,
+            data.user.area,
+            data.user.location
+        );
+        if (!mobs[input])
             return msg.channel.send(
                 `**${data.user.name}** there is no ${input} at this location..`
             );
 
-        const npc = characterHelper.composeNPC(input, locationData.mobs[input]);
+        const filteredMobs = mobs[input].filter(
+            (m) => m.mob.health > 0 && !m.occupied
+        );
+        if (!filteredMobs || !filteredMobs.length)
+            return msg.channel.send(
+                `**${data.user.name}** there is no ${input} here right now..`
+            );
+
+        const npc = filteredMobs[0].mob;
+        filteredMobs[0].occupied = true;
         const char = await characterHelper.composeFromUserRecord(data.user);
         const result = await combatHelper.simulateAgaianstNpc(char, npc);
+        filteredMobs[0].occupied = false;
+
+        if (result.npc.health < 1) {
+            filteredMobs[0].diedTimestamp = valuesHelper.currentTimestamp();
+        }
 
         if (result.player.health > 0) {
             await usersModel.setHealth(

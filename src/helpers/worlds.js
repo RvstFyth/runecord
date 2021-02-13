@@ -1,4 +1,6 @@
 const valuesHelper = require('../helpers/values');
+const areasHelper = require('../helpers/areas');
+const characterHelper = require('../helpers/character');
 
 const worlds = [
     {
@@ -7,6 +9,7 @@ const worlds = [
         premium: false,
         players: {},
         objects: {},
+        mobs: {},
     },
     {
         id: 2,
@@ -14,6 +17,7 @@ const worlds = [
         premium: false,
         players: {},
         objects: {},
+        mobs: {},
     },
     {
         id: 3,
@@ -21,6 +25,7 @@ const worlds = [
         premium: false,
         players: {},
         objects: {},
+        mobs: {},
     },
     {
         id: 4,
@@ -28,6 +33,7 @@ const worlds = [
         premium: true,
         players: {},
         objects: {},
+        mobs: {},
     },
     {
         id: 5,
@@ -35,6 +41,7 @@ const worlds = [
         premium: true,
         players: {},
         objects: {},
+        mobs: {},
     },
     {
         id: 6,
@@ -42,6 +49,7 @@ const worlds = [
         premium: true,
         players: {},
         objects: {},
+        mobs: {},
     },
 ];
 
@@ -51,6 +59,43 @@ const getWorldForId = (id) => {
 
 module.exports = {
     init() {
+        // Spawn mobs in each world
+        const areas = areasHelper.getAreas();
+        for (let w of worlds) {
+            for (let a in areas) {
+                w.mobs[a] = {};
+                for (let l in areas[a].locations) {
+                    w.mobs[a][l] = {};
+                    if (
+                        areas[a].locations[l].mobs &&
+                        Object.keys(areas[a].locations[l].mobs).length
+                    ) {
+                        for (let m in areas[a].locations[l].mobs) {
+                            w.mobs[a][l][m] = [];
+                            for (
+                                let i = 0;
+                                i < areas[a].locations[l].mobs[m].amount;
+                                i++
+                            ) {
+                                w.mobs[a][l][m].push({
+                                    mob: characterHelper.composeNPC(
+                                        m,
+                                        areas[a].locations[l].mobs[m]
+                                    ),
+                                    occupied: false,
+                                    respawnTicks: areas[a].locations[l].mobs[m]
+                                        .respawnTicks
+                                        ? areas[a].locations[l].mobs[m]
+                                              .respawnTicks
+                                        : 10,
+                                    diedTimestamp: 0,
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
         setInterval(() => {
             for (let w of worlds) {
                 for (let p in w.players) {
@@ -72,8 +117,33 @@ module.exports = {
                         ].filter((o) => o);
                     }
                 }
+                // Respawn mobs
+                for (let a in w.mobs) {
+                    for (let l in w.mobs[a]) {
+                        for (let m in w.mobs[a][l]) {
+                            for (let mm in w.mobs[a][l][m]) {
+                                if (
+                                    w.mobs[a][l][m][mm].mob.health < 1 &&
+                                    valuesHelper.currentTimestamp() >
+                                        w.mobs[a][l][m][mm].diedTimestamp +
+                                            w.mobs[a][l][m][mm].respawnTicks
+                                ) {
+                                    w.mobs[a][l][m][mm].mob.health =
+                                        w.mobs[a][l][m][
+                                            mm
+                                        ].mob.skills.hitpoints.level;
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        }, 2 * 1000);
+        }, 1000);
+    },
+
+    getMobs(id, area, location) {
+        const world = this.getWorldForId(id);
+        return world.mobs[area][location];
     },
 
     addObjectToWorld(id, object, area, location, removeAfter) {
