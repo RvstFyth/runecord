@@ -153,33 +153,49 @@ module.exports = {
                 }
             }
             await questsHelper.check('kill', input, 1, data.user, msg);
-            return msg.channel
-                .send(`**${data.user.name}** won against ${input}`)
-                .then(async (message) => {
-                    await message.react(logEmoji);
-                    const filter = (reaction, user) => {
-                        return (
-                            reaction.emoji.name === logEmoji &&
-                            user.id === msg.author.id
-                        );
-                    };
-                    message
-                        .awaitReactions(filter, { max: 1, time: 30 * 1000 })
-                        .then((collected) => {
-                            const reaction = collected.first();
-                            if (reaction) {
-                                let description = '';
-                                for (let i of result.log) {
-                                    description += `- ${i}\n`;
-                                }
-                                const embed = {
-                                    title: `${data.user.name}'s combat log`,
-                                    description,
-                                };
-                                return msg.channel.send({ embed });
+            const hearthEmoji = msg.client.emojis.cache.get(
+                '810245315860496415'
+            );
+            const embed = {
+                title: `${data.user.name}`,
+                fields: [
+                    {
+                        name: char.name,
+                        value: `${hearthEmoji} ${char.health}/${char.skills.hitpoints.level}`,
+                        inline: true,
+                    },
+                    {
+                        name: npc.name,
+                        value: `${hearthEmoji} 0/${npc.skills.hitpoints.level}`,
+                        inline: true,
+                    },
+                ],
+            };
+            return msg.channel.send({ embed }).then(async (message) => {
+                await message.react(logEmoji);
+                const filter = (reaction, user) => {
+                    return (
+                        reaction.emoji.name === logEmoji &&
+                        user.id === msg.author.id
+                    );
+                };
+                message
+                    .awaitReactions(filter, { max: 1, time: 30 * 1000 })
+                    .then((collected) => {
+                        const reaction = collected.first();
+                        if (reaction) {
+                            let description = '';
+                            for (let i of result.log) {
+                                description += `- ${i}\n`;
                             }
-                        });
-                });
+                            const embed = {
+                                title: `${data.user.name}'s combat log`,
+                                description,
+                            };
+                            return msg.channel.send({ embed });
+                        }
+                    });
+            });
         } else await usersModel.setHealth(data.user.id, 0);
         return msg.channel
             .send(`**${data.user.name}** lost against ${input}`)
