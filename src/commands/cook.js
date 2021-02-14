@@ -23,6 +23,14 @@ const itemsMapping = {
         burnTill: 31,
         ingredients: { 56: 1 },
     },
+    rawchicken: {
+        level: 1,
+        resultId: 61,
+        burntId: 61,
+        xp: 30,
+        burnTill: 1,
+        ingredients: { 60: 1 },
+    },
 };
 
 module.exports = {
