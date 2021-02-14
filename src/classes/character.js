@@ -24,6 +24,7 @@ class Character {
         this.attackType = '';
         this.attackStyle = '';
         this.npc = false;
+        this.npc_maxHit = false;
 
         this.skills = {};
         this.equipped = {};

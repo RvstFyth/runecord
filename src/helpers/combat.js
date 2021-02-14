@@ -28,7 +28,10 @@ module.exports = {
                 currentPlayer,
                 otherPlayer
             );
-            maxHitRoll = await this.calculateMaxHit(currentPlayer);
+
+            if (currentPlayer.npc && currentPlayer.npc_maxHit !== false) {
+                maxHitRoll = currentPlayer.npc_maxHit;
+            } else maxHitRoll = await this.calculateMaxHit(currentPlayer);
 
             if (maxAttackRoll > maxDefenceRoll) {
                 hitChance =

@@ -37,6 +37,9 @@ module.exports = {
         mob.setHealth(mobDefinition.stats.combat.hitpoints);
         mob.npc = true;
         mob.attackType = mobDefinition.attackType;
+        if (typeof mobDefinition.maxHit !== 'undefined') {
+            mob.npc_maxHit = parseInt(mobDefinition.maxHit);
+        }
 
         for (let i in mobDefinition.stats.combat) {
             mob.setSkill(
