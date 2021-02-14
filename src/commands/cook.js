@@ -7,33 +7,6 @@ const questsHelper = require('../helpers/quests');
 const random = require('../helpers/random');
 const recipesModel = require('../models/recipesCooking');
 
-const itemsMapping = {
-    shrimps: {
-        level: 1,
-        resultId: 34,
-        burntId: 35,
-        xp: 30,
-        burnTill: 33,
-        ingredients: { 33: 1 },
-    },
-    rawbeef: {
-        level: 1,
-        resultId: 58,
-        burntId: 59,
-        xp: 30,
-        burnTill: 31,
-        ingredients: { 56: 1 },
-    },
-    rawchicken: {
-        level: 1,
-        resultId: 61,
-        burntId: 61,
-        xp: 30,
-        burnTill: 1,
-        ingredients: { 60: 1 },
-    },
-};
-
 module.exports = {
     async run(msg, args, data) {
         let amount = 1;
