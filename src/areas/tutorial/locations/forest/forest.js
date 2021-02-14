@@ -25,6 +25,9 @@ module.exports = {
         rat: {
             xp: 8,
             attackType: 'crush',
+            respawnTicks: 1,
+            amount: 5,
+            maxHit: 0,
             stats: {
                 combat: {
                     hitpoints: 2,

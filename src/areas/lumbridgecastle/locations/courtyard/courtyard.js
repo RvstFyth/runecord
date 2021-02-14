@@ -4,6 +4,7 @@ module.exports = {
     mobs: {
         rat: {
             amount: 3,
+            maxHit: 0,
             respawnTicks: 1,
             xp: 8,
             attackType: 'crush',

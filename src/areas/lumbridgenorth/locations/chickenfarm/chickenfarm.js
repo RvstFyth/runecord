@@ -9,6 +9,7 @@ module.exports = {
             respawnTicks: 3,
             xp: 8,
             attackType: 'stab',
+            maxHit: 0,
             stats: {
                 combat: {
                     hitpoints: 3,
@@ -50,6 +51,45 @@ module.exports = {
                     min: 5,
                     max: 5,
                     chance: 50,
+                },
+            },
+        },
+        goblin: {
+            amount: 5,
+            respawnTicks: 10,
+            xp: 8,
+            attackType: 'crush',
+            stats: {
+                combat: {
+                    hitpoints: 12,
+                    attack: 3,
+                    strength: 1,
+                    defence: 4,
+                    magic: 1,
+                    ranged: 1,
+                },
+                aggressive: {
+                    attack: 12,
+                    strength: -12,
+                    magic: 0,
+                    magicDamage: 0,
+                    ranged: 0,
+                    rangedStrength: 0,
+                },
+                defence: {
+                    stab: 0,
+                    slash: 0,
+                    crush: 0,
+                    magic: 0,
+                    ranged: 0,
+                },
+                immunities: { poison: false, venom: false },
+            },
+            loot: {
+                53: {
+                    min: 1,
+                    max: 1,
+                    chance: 100,
                 },
             },
         },
