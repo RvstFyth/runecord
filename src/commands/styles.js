@@ -63,6 +63,8 @@ module.exports = {
             counter++;
         }
 
+        description += `\n\`${data.prefix}styles [no]\` to switch the active combat style.`;
+
         const embed = {
             title: data.char.equipped.weapon.name,
             description,
