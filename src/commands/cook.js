@@ -5,6 +5,7 @@ const itemsModel = require('../models/items');
 const skillsHelper = require('../helpers/skills');
 const questsHelper = require('../helpers/quests');
 const random = require('../helpers/random');
+const recipesModel = require('../models/recipesCooking');
 
 const itemsMapping = {
     shrimps: {
@@ -46,31 +47,35 @@ module.exports = {
                 `**${data.user.name}** what are you trying to cook?!?`
             );
 
-        if (!itemsMapping[args.join(' ').replace(' ', '')])
+        const input = args.join(' ');
+        const item = await itemsModel.getForName(input);
+        if (!item)
             return msg.channel.send(
-                `**${data.user.name}** you can't cook ${args[0]}..`
+                `**${data.user.name}** there is no item named ${input}..`
             );
 
-        const requestedItem = itemsMapping[args.join('')];
+        const recipe = await recipesModel.getForItemID(item.id);
+        if (!recipe)
+            return msg.channel.send(
+                `**${data.user.name}** recipe not found for ${input}`
+            );
 
         const skillRecord = await skillsModel.getFor(data.user.id, 'cooking');
         const skillLevel = skillsHelper.levelForXp(skillRecord.xp);
-        if (skillLevel < requestedItem.level)
+        if (skillLevel < recipe.level)
             return msg.channel.send(
-                `**${data.user.name}** you need cooking level ${requestedItem.level} to cook ${args[0]}..`
+                `**${data.user.name}** you need cooking level ${recipe.level} to cook ${input}..`
             );
 
         const maxPerItem = [];
-        for (let i in requestedItem.ingredients) {
+        for (let i in recipe.items) {
             const userAmount = await inventoryModel.getTotalAmountFor(
                 data.user.id,
                 i
             );
             if (userAmount > 0)
                 maxPerItem.push(
-                    Math.floor(
-                        parseInt(userAmount) / requestedItem.ingredients[i]
-                    )
+                    Math.floor(parseInt(userAmount) / recipe.items[i])
                 );
             else maxPerItem.push(0);
         }
@@ -86,13 +91,10 @@ module.exports = {
         let successCount = 0;
         for (let i = 0; i < amount; i++) {
             let tmpItem;
-            if (
-                skillLevel < requestedItem.burnTill &&
-                random.number(1, 100) > 90
-            ) {
-                tmpItem = await itemsModel.get(requestedItem.burntId);
+            if (skillLevel < recipe.burnTill && random.number(1, 100) > 90) {
+                tmpItem = await itemsModel.get(recipe.burnt_id);
             } else {
-                tmpItem = await itemsModel.get(requestedItem.resultId);
+                tmpItem = await itemsModel.get(recipe.item_id);
                 successCount++;
                 await questsHelper.check('cook', args[0], 1, data.user, msg);
             }
@@ -105,8 +107,8 @@ module.exports = {
         }
 
         // deplete items from inv
-        for (let i in requestedItem.ingredients) {
-            let amountToDeplete = requestedItem.ingredients[i] * amount;
+        for (let i in recipe.ingredients) {
+            let amountToDeplete = recipe.items[i] * amount;
             const userItems = await inventoryModel.getFor(data.user.id, i, '');
             for (let i in userItems) {
                 const rAmount = parseInt(userItems[i].amount);
@@ -133,7 +135,7 @@ module.exports = {
             data.user.area === 'tutorial' &&
             skillsHelper.levelForXp(skillRecord.xp) > 2
                 ? 0
-                : requestedItem.xp * successCount;
+                : recipe.xp * successCount;
         let description;
         if (xpGain > 0) {
             fields.push({
