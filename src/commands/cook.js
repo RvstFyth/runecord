@@ -15,13 +15,13 @@ const itemsMapping = {
         burnTill: 33,
         ingredients: { 33: 1 },
     },
-    test: {
-        level: 999,
-        resultId: 34,
-        burntId: 35,
+    rawbeef: {
+        level: 1,
+        resultId: 58,
+        burntId: 59,
         xp: 30,
-        burnTill: 33,
-        ingredients: { 33: 1 },
+        burnTill: 31,
+        ingredients: { 56: 1 },
     },
 };
 
@@ -37,12 +37,13 @@ module.exports = {
             return msg.channel.send(
                 `**${data.user.name}** what are you trying to cook?!?`
             );
-        if (!itemsMapping[args[0]])
+
+        if (!itemsMapping[args.join(' ').replace(' ', '')])
             return msg.channel.send(
                 `**${data.user.name}** you can't cook ${args[0]}..`
             );
 
-        const requestedItem = itemsMapping[args[0]];
+        const requestedItem = itemsMapping[args.join('')];
 
         const skillRecord = await skillsModel.getFor(data.user.id, 'cooking');
         const skillLevel = skillsHelper.levelForXp(skillRecord.xp);
