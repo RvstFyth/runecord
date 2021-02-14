@@ -5,7 +5,7 @@ module.exports = {
     mobs: {
         cow: {
             amount: 10,
-            respawnTicks: 1,
+            respawnTicks: 4,
             xp: 8,
             attackType: 'crush',
             stats: {
