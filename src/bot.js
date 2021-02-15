@@ -65,8 +65,6 @@ client.on('message', async (msg) => {
     )
         return;
     if (msg.author.bot) return;
-    if (msg.mentions.has(client.user))
-        return require('./commands/help').run(msg, []);
 
     let prefix = config.botPrefix;
     // let guildSettings = await guildSettingsModel.getFor(msg.guild.id);
@@ -129,6 +127,9 @@ client.on('message', async (msg) => {
                 user,
                 char,
             };
+
+            if (msg.mentions.has(client.user))
+                return require('./commands/help').run(msg, []);
 
             if (args[0] && module.sub && module.sub[args[0]]) {
                 module.sub[args[0]].run(msg, args.splice(1), data);
