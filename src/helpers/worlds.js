@@ -1,6 +1,7 @@
 const valuesHelper = require('../helpers/values');
 const areasHelper = require('../helpers/areas');
 const characterHelper = require('../helpers/character');
+const itemsModel = require('../models/items');
 
 const worlds = [
     {
@@ -58,14 +59,16 @@ const getWorldForId = (id) => {
 };
 
 module.exports = {
-    init() {
+    async init() {
         // Spawn mobs in each world
         const areas = areasHelper.getAreas();
         for (let w of worlds) {
             for (let a in areas) {
                 w.mobs[a] = {};
+                w.objects[a] = {};
                 for (let l in areas[a].locations) {
                     w.mobs[a][l] = {};
+                    w.objects[a][l] = [];
                     if (
                         areas[a].locations[l].mobs &&
                         Object.keys(areas[a].locations[l].mobs).length
@@ -93,6 +96,21 @@ module.exports = {
                             }
                         }
                     }
+                    if (
+                        areas[a].locations[l].itemSpawns &&
+                        Object.keys(areas[a].locations[l].itemSpawns).length
+                    ) {
+                        for (let i in areas[a].locations[l].itemSpawns) {
+                            const tmpItem = await itemsModel.get(i);
+                            for (
+                                let j = 0;
+                                j < areas[a].locations[l].itemSpawns[i].amount;
+                                j++
+                            ) {
+                                this.addObjectToWorld(w.id, tmpItem.name, a, l);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -115,6 +133,49 @@ module.exports = {
                         w.objects[area][location] = w.objects[area][
                             location
                         ].filter((o) => o);
+
+                        // respawn new items
+                        if (
+                            parseInt(valuesHelper.currentTimestamp()) % 123 ===
+                            0
+                        ) {
+                            const areaInfo = areasHelper.getLocation(
+                                area,
+                                location
+                            );
+                            if (
+                                areaInfo &&
+                                areaInfo.itemSpawns &&
+                                Object.keys(areaInfo.itemSpawns).length
+                            ) {
+                                // count the number that is on the floor already
+                                for (let i in areaInfo.itemSpawns) {
+                                    const count = w.objects[area][
+                                        location
+                                    ].filter(
+                                        (o) =>
+                                            o.name ===
+                                            areaInfo.itemSpawns[i].label
+                                    ).length;
+                                    if (count < areaInfo.itemSpawns[i].amount) {
+                                        const diff =
+                                            areaInfo.itemSpawns[i].amount -
+                                            count;
+                                        if (diff > 0) {
+                                            for (let x = 0; x < diff; x++) {
+                                                this.addObjectToWorld(
+                                                    w.id,
+                                                    areaInfo.itemSpawns[i]
+                                                        .label,
+                                                    area,
+                                                    location
+                                                );
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 // Respawn mobs
