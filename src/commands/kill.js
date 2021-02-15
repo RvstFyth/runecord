@@ -119,7 +119,10 @@ module.exports = {
             );
 
             // Loot drops
-            if (locationData.mobs[input].loot.gold) {
+            if (
+                locationData.mobs[input].loot &&
+                locationData.mobs[input].loot.gold
+            ) {
                 const goldAmount = random.number(
                     locationData.mobs[input].loot.gold.min,
                     locationData.mobs[input].loot.gold.max
