@@ -29,6 +29,16 @@ module.exports = {
                 `**${data.user.name}** you can't chop ${args[0]} here..`
             );
 
+        if (
+            data.char.skills.woodcutting.level <
+            locationDetails.commands.chop[args[0]].level
+        )
+            return msg.channel.send(
+                `**${data.user.name}** you need woodcutting level ${
+                    locationDetails.commands.chop[args[0]].level
+                } for this..`
+            );
+
         const occupiedSlots = await inventoryModel.getOccupiedSlotCount(
             data.user.id
         );
@@ -76,7 +86,7 @@ module.exports = {
 
         const item = await itemsModel.get(reward.id);
         return msg.channel.send(
-            `**${data.user.name}** chopped a tree and got a ${item.name} ${
+            `**${data.user.name}** got a ${item.name} ${
                 xpGain > 0 ? `and ${xpGain}xp!` : ''
             }`
         );
