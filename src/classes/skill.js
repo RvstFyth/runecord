@@ -11,9 +11,20 @@ class Skill {
         this.remainder = this.nextLevel - this.xp;
     }
 
-    addXp(amount) {
-        this.xp += parseInt(amount);
-        skillsModel.addXp(this.id, amount);
+    async addXp(amount, maxLevel = false) {
+        if (maxLevel) {
+            const maxXp = skillsHelper.xpForLevel(3);
+            if (this.xp + amount > maxXp) {
+                let diff = maxXp - this.xp;
+                if (diff < 0) diff = 0;
+                amount = diff;
+            }
+        }
+        if (amount > 0) {
+            this.xp += parseInt(amount);
+            await skillsModel.addXp(this.id, amount);
+        }
+        return amount;
     }
 }
 

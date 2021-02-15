@@ -8,6 +8,7 @@ const worldsHelper = require('../helpers/worlds');
 const usersModel = require('../models/users');
 const questsHelper = require('../helpers/quests');
 const valuesHelper = require('../helpers/values');
+const emojisHelper = require('../helpers/emojis');
 
 const logEmoji = '📖';
 
@@ -19,6 +20,7 @@ module.exports = {
             );
 
         // Line below is so this command doesn't crash when a user has no weapon equipped and the npc monster has a maxHit of 0. This can be solved by requiring a min strength level, but needs testing
+        await data.char.loadEquipment();
         if (!data.char.equipped.weapon)
             return msg.channel.send(
                 `**${data.user.name}** you don't have a weapon equipped..`
@@ -74,58 +76,47 @@ module.exports = {
                 locationData.mobs[input].stats.combat.hitpoints * 1.33
             );
 
+            const xpAdded = {};
             switch (char.attackStyle) {
                 case 'accurate':
-                    if (
-                        char.area !== 'tutorial' ||
-                        char.skills.attack.xp + xpGain <
-                            skillsHelper.xpForLevel(3)
-                    )
-                        await char.skills.attack.addXp(xpGain);
+                    xpAdded['attack'] = await data.char.skills.attack.addXp(
+                        xpGain,
+                        3
+                    );
                     break;
                 case 'aggressive':
-                    if (
-                        char.area !== 'tutorial' ||
-                        char.skills.strength.xp + xpGain <
-                            skillsHelper.xpForLevel(3)
-                    )
-                        await char.skills.strength.addXp(xpGain);
+                    xpAdded['strength'] = await char.skills.strength.addXp(
+                        xpGain,
+                        3
+                    );
                     break;
                 case 'defensive':
-                    if (
-                        char.area !== 'tutorial' ||
-                        char.skills.defence.xp + xpGain <
-                            skillsHelper.xpForLevel(3)
-                    )
-                        await char.skills.defence.addXp(xpGain);
+                    xpAdded['defence'] = await char.skills.defence.addXp(
+                        xpGain,
+                        3
+                    );
                     break;
                 case 'controlled':
                     xpGain = parseInt(xpGain * 1.33);
-                    if (
-                        char.area !== 'tutorial' ||
-                        char.skills.attack.xp + xpGain <
-                            skillsHelper.xpForLevel(3)
-                    )
-                        await char.skills.attack.addXp(xpGain);
-                    if (
-                        char.area !== 'tutorial' ||
-                        char.skills.strength.xp + xpGain <
-                            skillsHelper.xpForLevel(3)
-                    )
-                        await char.skills.strength.addXp(xpGain);
-                    if (
-                        char.area !== 'tutorial' ||
-                        char.skills.defence.xp + xpGain <
-                            skillsHelper.xpForLevel(3)
-                    )
-                        await char.skills.defence.addXp(xpGain);
+                    xpAdded['attack'] = await char.skills.attack.addXp(
+                        xpGain,
+                        3
+                    );
+                    xpAdded['strength'] = await char.skills.strength.addXp(
+                        xpGain,
+                        3
+                    );
+                    xpAdded['defence'] = await char.skills.defence.addXp(
+                        xpGain,
+                        3
+                    );
                     break;
             }
-            if (
-                char.area !== 'tutorial' ||
-                char.skills.hitpoints.xp + hpXpGain < skillsHelper.xpForLevel(3)
-            )
-                await char.skills.hitpoints.addXp(hpXpGain);
+
+            xpAdded['hitpoints'] = await char.skills.hitpoints.addXp(
+                hpXpGain,
+                3
+            );
 
             // Loot drops
             if (locationData.mobs[input].loot.gold) {
@@ -158,9 +149,15 @@ module.exports = {
                 }
             }
             await questsHelper.check('kill', input, 1, data.user, msg);
-            const hearthEmoji = msg.client.emojis.cache.get(
-                '810245315860496415'
-            );
+            const hearthEmoji = await emojisHelper.get(msg.client, 'heart');
+
+            const xpField = { name: 'XP', value: '', inline: true };
+
+            for (let i in xpAdded) {
+                const em = await emojisHelper.get(msg.client, i);
+                xpField.value += `${em} ${xpAdded[i]} \n`;
+            }
+
             const embed = {
                 title: `${data.user.name}`,
                 fields: [
@@ -174,6 +171,7 @@ module.exports = {
                         value: `${hearthEmoji} 0/${npc.skills.hitpoints.level}`,
                         inline: true,
                     },
+                    xpField,
                 ],
             };
             return msg.channel.send({ embed }).then(async (message) => {
