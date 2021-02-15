@@ -7,4 +7,38 @@ module.exports = {
             label: 'knife',
         },
     },
+    mobs: {
+        spider: {
+            amount: 2,
+            respawnTicks: 5,
+            xp: 8,
+            attackType: 'stab',
+            stats: {
+                combat: {
+                    hitpoints: 2,
+                    attack: 1,
+                    strength: 1,
+                    defence: 1,
+                    magic: 1,
+                    ranged: 1,
+                },
+                aggressive: {
+                    attack: -35,
+                    strength: -58,
+                    magic: 0,
+                    magicDamage: 0,
+                    ranged: 0,
+                    rangedStrength: 0,
+                },
+                defence: {
+                    stab: -53,
+                    slash: -53,
+                    crush: -53,
+                    magic: -53,
+                    ranged: -53,
+                },
+                immunities: { poison: false, venom: false },
+            },
+        },
+    },
 };
