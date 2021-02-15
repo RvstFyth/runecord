@@ -3,6 +3,7 @@ const usersModel = require('../models/users');
 const startLocations = {
     lumbridgecastle: 'courtyard',
     lumbridgenorth: 'sheepmeadow',
+    lumbridgewest: 'forest',
 };
 
 module.exports = {
