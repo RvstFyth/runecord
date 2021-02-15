@@ -2,7 +2,7 @@ const questsModel = require('../../../../../models/usersQuests');
 
 module.exports = {
     label: 'combat instructor',
-
+    chatHead: 'Vannaka_chathead.png',
     async talk(data) {
         const firstQuest = await questsModel.getFor(data.userID, 9);
         if (!firstQuest) {
