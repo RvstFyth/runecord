@@ -20,14 +20,20 @@ module.exports = {
                 `**${data.user.name}** what are you trying to cook?!?`
             );
 
+        let item;
         const input = args.join(' ');
-        const item = await itemsModel.getForName(input);
-        if (!item)
-            return msg.channel.send(
-                `**${data.user.name}** there is no item named ${input}..`
-            );
+        let recipe = await recipesModel.getForAlias(input);
+        if (recipe) {
+            item = await itemsModel.getForName(recipe.item_id);
+        } else {
+            item = await itemsModel.getForName(input);
+            if (!item)
+                return msg.channel.send(
+                    `**${data.user.name}** there is no item named ${input}..`
+                );
 
-        const recipe = await recipesModel.getForItemID(item.id);
+            recipe = await recipesModel.getForItemID(item.id);
+        }
         if (!recipe)
             return msg.channel.send(
                 `**${data.user.name}** recipe not found for ${input}`
