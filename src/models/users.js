@@ -1,4 +1,5 @@
 const db = require('../db').getConnection();
+const valuesHelper = require('../helpers/values');
 
 module.exports = {
     table: 'users',
@@ -6,8 +7,8 @@ module.exports = {
     create(discord_id, name) {
         return new Promise((resolve) => {
             db.query(
-                "INSERT INTO users (`discord_id`, `name`, `location`) VALUES (?,?, 'start')",
-                [discord_id, name],
+                "INSERT INTO users (`discord_id`, `name`, `location`, `created_timestamp`) VALUES (?,?, 'start', ?)",
+                [discord_id, name, valuesHelper.currentTimestamp()],
                 (err, res) => {
                     if (err) {
                         console.log(err);

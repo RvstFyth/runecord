@@ -15,6 +15,7 @@ module.exports = {
             );
             if (npcs && npcs[args[0] - 1]) {
                 npc = npcs[args[0] - 1];
+                args = args.splice(1);
             }
         } else {
             const argument = args.join(' ').toLowerCase();
@@ -23,6 +24,9 @@ module.exports = {
                 data.user.location,
                 argument
             );
+            if (!isNaN(args[args.length - 1])) {
+                args = [args[args.length - 1]];
+            }
         }
         if (!npc)
             return msg.channel.send(
@@ -38,6 +42,7 @@ module.exports = {
                 msg: msg,
                 user: data.user,
                 prefix: data.prefix,
+                args,
             }),
         };
 

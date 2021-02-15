@@ -201,8 +201,17 @@ module.exports = {
             });
         } else await usersModel.setHealth(data.user.id, 0);
         return msg.channel
-            .send(`**${data.user.name}** lost against ${input}`)
+            .send(
+                `**${data.user.name}** Oh dear, you are dead!\n\nYou respawned in Lumbridge`
+            )
             .then(async (message) => {
+                await usersModel.setArea(data.user.id, 'lumbridgecastle');
+                await usersModel.setLocation(data.user.id, 'courtyard');
+                await usersModel.setHealth(
+                    data.user.id,
+                    data.char.skills.hitpoints.level
+                );
+
                 await message.react(logEmoji);
                 const filter = (reaction, user) => {
                     return (
