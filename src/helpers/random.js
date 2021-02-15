@@ -9,4 +9,7 @@ module.exports = {
     chance: function (chanceToBeTrue) {
         return randomInstance.bool(chanceToBeTrue);
     },
+    arrayValue: function (arr) {
+        return randomInstance.pick(arr);
+    },
 };

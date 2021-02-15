@@ -4,6 +4,7 @@ const inventoryModel = require('../models/usersInventory');
 const itemsModel = require('../models/items');
 const skillsHelper = require('../helpers/skills');
 const questsHelper = require('../helpers/quests');
+const random = require('../helpers/random');
 
 module.exports = {
     async run(msg, args, data) {
@@ -21,11 +22,11 @@ module.exports = {
 
         if (!args[0])
             return msg.channel.send(
-                `**${data.user.name}** what are you trying to fish?!?`
+                `**${data.user.name}** what are you trying to fish with?!?`
             );
         if (!locationDetails.commands.fish[args[0]])
             return msg.channel.send(
-                `**${data.user.name}** you can't fish for ${args[0]} here..`
+                `**${data.user.name}** you can't fish with a ${args[0]} here..`
             );
 
         const occupiedSlots = await inventoryModel.getOccupiedSlotCount(
@@ -38,7 +39,11 @@ module.exports = {
 
         const skillRecord = await skillsModel.getFor(data.user.id, 'fishing');
 
-        const reward = locationDetails.commands.fish[args[0]];
+        const rewards = Object.values(
+            locationDetails.commands.fish[args[0]]
+        ).filter((o) => o.level <= data.char.skills.fishing.level);
+
+        const reward = random.arrayValue(rewards);
 
         if (
             data.user.area === 'tutorial' &&
@@ -51,9 +56,9 @@ module.exports = {
         if (reward.xp > 0) await skillsModel.addXp(skillRecord.id, reward.xp);
         await inventoryModel.add(data.user.id, reward.id, 1);
 
-        await questsHelper.check('fish', args[0], 1, data.user, msg);
-
         const item = await itemsModel.get(reward.id);
+        await questsHelper.check('fish', item.name, 1, data.user, msg);
+
         return msg.channel.send(
             `**${data.user.name}** caught a ${item.name} ${
                 reward.xp > 0 ? `and ${reward.xp}xp!` : ''

@@ -16,11 +16,13 @@ module.exports = {
             },
         },
         fish: {
-            shrimps: {
-                xp: 10,
-                id: 33,
-                level: 1,
-                label: 'raw shrimps',
+            net: {
+                shrimps: {
+                    xp: 10,
+                    id: 33,
+                    level: 1,
+                    label: 'raw shrimps',
+                },
             },
         },
     },

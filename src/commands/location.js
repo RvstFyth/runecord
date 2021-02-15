@@ -34,7 +34,9 @@ module.exports = {
             const commands = areaData.locations[data.user.location].commands;
             for (let i in commands) {
                 for (let j in commands[i]) {
-                    resourcesField.value += `${valuesHelper.ucfirst(j)}\n`;
+                    resourcesField.value += `${
+                        i === 'fish' ? valuesHelper.ucfirst(i) : ''
+                    } ${valuesHelper.ucfirst(j)}\n`;
                 }
             }
             fields.push(resourcesField);
