@@ -19,6 +19,15 @@ module.exports = {
         });
     },
 
+    async getAll() {
+        return new Promise((resolve) => {
+            db.query('SELECT * FROM `users` WHERE 1', (err, rows) => {
+                if (err) console.log(err);
+                else resolve(rows);
+            });
+        });
+    },
+
     getForDiscordID(discord_id) {
         return new Promise((resolve) => {
             db.query(

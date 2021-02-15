@@ -21,6 +21,22 @@ const characterHelper = require('./helpers/character');
 
 const client = new discord.Client();
 
+const skillsHelper = require('./helpers/skills');
+const skillsModel = require('./models/usersSkills');
+setInterval(async () => {
+    const users = await usersModel.getAll();
+    for (let i in users) {
+        const skill = await skillsModel.getFor(users[i].id, 'hitpoints');
+        const maxHp = skillsHelper.levelForXp(skill.xp);
+        if (users[i].health < maxHp) {
+            await usersModel.setHealth(
+                users[i].id,
+                parseInt(users[i].health) + 1
+            );
+        }
+    }
+}, 60 * 2 * 1000);
+
 require('./helpers/areas').init('./areas');
 
 worldsHelper.init();
