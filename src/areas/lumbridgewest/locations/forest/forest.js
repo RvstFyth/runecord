@@ -58,5 +58,37 @@ module.exports = {
                 },
             },
         },
+        giantspider: {
+            amount: 6,
+            respawnTicks: 10,
+            xp: 8,
+            attackType: 'stab',
+            stats: {
+                combat: {
+                    hitpoints: 5,
+                    attack: 1,
+                    strength: 1,
+                    defence: 1,
+                    magic: 1,
+                    ranged: 1,
+                },
+                aggressive: {
+                    attack: -10,
+                    strength: -10,
+                    magic: 0,
+                    magicDamage: 0,
+                    ranged: 0,
+                    rangedStrength: 0,
+                },
+                defence: {
+                    stab: -10,
+                    slash: -10,
+                    crush: -10,
+                    magic: -10,
+                    ranged: -10,
+                },
+                immunities: { poison: false, venom: false },
+            },
+        },
     },
 };
