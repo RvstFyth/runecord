@@ -1,4 +1,5 @@
 const areasHelper = require('../helpers/areas');
+const fs = require('fs');
 
 module.exports = {
     async run(msg, args, data) {
@@ -40,6 +41,20 @@ module.exports = {
             }),
         };
 
-        return msg.channel.send({ embed });
+        const files = [];
+        if (
+            npc.chatHead &&
+            fs.existsSync(`./assets/images/npcs/${npc.chatHead}`)
+        ) {
+            files.push({
+                attachment: `./assets/images/npcs/${npc.chatHead}`,
+                name: npc.chatHead,
+            });
+            embed.thumbnail = {
+                url: `attachment://${npc.chatHead}`,
+            };
+        }
+
+        return msg.channel.send({ embed, files });
     },
 };
