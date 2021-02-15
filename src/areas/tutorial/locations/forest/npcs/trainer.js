@@ -72,7 +72,12 @@ module.exports = {
         const fifthQuest = await questsModel.getFor(data.userID, 5);
         if (!fifthQuest) {
             await questsModel.create(data.userID, 5);
-            return `User caught shrimps... New quests will be cook shrimps`;
+            return (
+                `Good job on catching those shrimps. Now let's cook them.\n` +
+                `You can eat cooked food to recover hitpoints. The amount depends on the food you eat.\n` +
+                `For cooking you need to be at a cooking range or make a fire. The cooking range gives a slight bonus in success chance.\n\n` +
+                `Use the \`${data.prefix}cook shrimps\` command for this quest.`
+            );
         }
         if (fifthQuest && !fifthQuest.completed)
             return `**${data.user.name}** did you cook those shrimps already?`;
