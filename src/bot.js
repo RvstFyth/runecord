@@ -60,7 +60,7 @@ client.on('ready', async () => {
 
 client.on('message', async (msg) => {
     if (
-        !msg.guild ||
+        msg.guild &&
         !msg.guild.me.permissionsIn(msg.channel.id).has('SEND_MESSAGES')
     )
         return;
