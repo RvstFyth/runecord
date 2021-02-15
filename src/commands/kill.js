@@ -18,6 +18,11 @@ module.exports = {
                 `**${data.user.name}** please specify a mob to attack..`
             );
 
+        // Line below is so this command doesn't crash when a user has no weapon equipped and the npc monster has a maxHit of 0. This can be solved by requiring a min strength level, but needs testing
+        if (!data.char.equipped.weapon)
+            return msg.channel.send(
+                `**${data.user.name}** you don't have a weapon equipped..`
+            );
         const input = args.join(' ');
         const locationData = await areasHelper.getLocation(
             data.user.area,
