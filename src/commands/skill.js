@@ -1,6 +1,3 @@
-const skillsModel = require('../models/usersSkills');
-const skillsHelper = require('../helpers/skills');
-
 module.exports = {
     async run(msg, args, data) {
         if (args[0]) {
