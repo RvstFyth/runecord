@@ -81,41 +81,41 @@ module.exports = {
                 case 'accurate':
                     xpAdded['attack'] = await data.char.skills.attack.addXp(
                         xpGain,
-                        3
+                        data.user.area === 'tutorial' ? 3 : false
                     );
                     break;
                 case 'aggressive':
                     xpAdded['strength'] = await char.skills.strength.addXp(
                         xpGain,
-                        3
+                        data.user.area === 'tutorial' ? 3 : false
                     );
                     break;
                 case 'defensive':
                     xpAdded['defence'] = await char.skills.defence.addXp(
                         xpGain,
-                        3
+                        data.user.area === 'tutorial' ? 3 : false
                     );
                     break;
                 case 'controlled':
                     xpGain = parseInt(xpGain * 1.33);
                     xpAdded['attack'] = await char.skills.attack.addXp(
                         xpGain,
-                        3
+                        data.user.area === 'tutorial' ? 3 : false
                     );
                     xpAdded['strength'] = await char.skills.strength.addXp(
                         xpGain,
-                        3
+                        data.user.area === 'tutorial' ? 3 : false
                     );
                     xpAdded['defence'] = await char.skills.defence.addXp(
                         xpGain,
-                        3
+                        data.user.area === 'tutorial' ? 3 : false
                     );
                     break;
             }
 
             xpAdded['hitpoints'] = await char.skills.hitpoints.addXp(
                 hpXpGain,
-                3
+                data.user.area === 'tutorial' ? 3 : false
             );
 
             // Loot drops
