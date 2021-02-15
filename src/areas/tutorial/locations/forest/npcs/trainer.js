@@ -4,6 +4,7 @@ const inventoryModel = require('../../../../../models/usersInventory');
 module.exports = {
     label: `Survival expert`,
     description: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.`,
+    chatHead: 'Survival_Expert_chathead.webp',
 
     async talk(data) {
         const firstQuest = await questsModel.getFor(data.userID, 1);
@@ -22,7 +23,13 @@ module.exports = {
 
                 await questsModel.create(data.userID, 2);
                 await inventoryModel.add(data.userID, 39, 1);
-                return `**TODO (text):**\nFirst quest is completed here. SE should introduce himself a bit, and a new quest is given here: chop a tree`;
+                return (
+                    `**Hello there!**\n\n` +
+                    `I will teach you the basics of survival.\nThe first skill we will be looking at is woodcutting.\n` +
+                    `If you use the \`${data.prefix}loc\` command, you will see a field with resources. As you can see we are surrounded by \`tree\`s here.\n` +
+                    `Go chop a tree with the \`${data.prefix}chop tree\` command, and return to me.\n` +
+                    `\n\nThe survival expert just gave you a copper axe. You can see your inventory with the \`${data.prefix}backpack\` command.`
+                );
             }
         } else
             return `You might want to talk with the Runecord guide first.. You should have passed him on your way to here.`;
@@ -35,7 +42,14 @@ module.exports = {
         if (!thirdQuest) {
             await questsModel.create(data.userID, 3);
             await inventoryModel.add(data.userID, 38, 1);
-            return `Chop a tree is completed here... New quests will be make a fire`;
+            return (
+                `You got the logs i see. Let's continue with the next skill, firemaking.\n` +
+                `To make a fire you need a tinderbox and something to burn.\n` +
+                `Here, take this..` +
+                `\n\nYou received a tinderbox\n\n` +
+                `For your next quest i want you to make a fire, you can use the \`${data.prefix}light logs\` command for this. ` +
+                `Don't worry if you fail the first time, it get's easier when you train that skill.`
+            );
         }
         if (thirdQuest && !thirdQuest.completed)
             return `You have to make a fire to to continue..`;
@@ -44,7 +58,13 @@ module.exports = {
         if (!fourthQuest) {
             await questsModel.create(data.userID, 4);
             await inventoryModel.add(data.userID, 40, 1);
-            return `Make a fire is completed here... New quests will be catch some shrimps`;
+            return (
+                `That was easy, wasn't it? The next skill we will be looking at is fishing.\n` +
+                `Fishing is a excellent way to gather some food. It might be hard at first, but it gets easier the more you level this skill.\n` +
+                `You can only fish at fishing spots, which are marked in the resources field in the \`${data.prefix}loc\` command.\n\n` +
+                `Here take this, and try to catch some shrimps!\n\n` +
+                `You received a small fishing net. Use the \`${data.prefix}fish net\` command to use it!`
+            );
         }
         if (fourthQuest && !fourthQuest.completed)
             return `You have the raw shrimps already?`;
