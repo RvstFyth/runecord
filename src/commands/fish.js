@@ -2,7 +2,7 @@ const areasHelper = require('../helpers/areas');
 const skillsModel = require('../models/usersSkills');
 const inventoryModel = require('../models/usersInventory');
 const itemsModel = require('../models/items');
-const skillsHelper = require('../helpers/skills');
+const emojisHelper = require('../helpers/emojis');
 const questsHelper = require('../helpers/quests');
 const random = require('../helpers/random');
 
@@ -37,32 +37,22 @@ module.exports = {
                 `**${data.user.name}** your backpack is full..`
             );
 
-        const skillRecord = await skillsModel.getFor(data.user.id, 'fishing');
-
         const rewards = Object.values(
             locationDetails.commands.fish[args[0]]
         ).filter((o) => o.level <= data.char.skills.fishing.level);
 
         const reward = random.arrayValue(rewards);
 
-        if (
-            data.user.area === 'tutorial' &&
-            parseInt(skillRecord.xp) + reward.xp > skillsHelper.xpForLevel(3)
-        ) {
-            let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);
-            if (diff < 0) diff = 0;
-            reward.xp = diff;
-        }
-        if (reward.xp > 0) await skillsModel.addXp(skillRecord.id, reward.xp);
+        const xpGain = await data.char.skills.fishing.addXp(reward.xp);
         await inventoryModel.add(data.user.id, reward.id, 1);
 
         const item = await itemsModel.get(reward.id);
         await questsHelper.check('fish', item.name, 1, data.user, msg);
 
-        return msg.channel.send(
-            `**${data.user.name}** caught a ${item.name} ${
-                reward.xp > 0 ? `and ${reward.xp}xp!` : ''
-            }`
-        );
+        const em = await emojisHelper.get(msg.client, 'fishing');
+        const embed = {
+            description: `**${data.user.name}** caught a ${item.name} ${em} +${xpGain}`,
+        };
+        return msg.channel.send({ embed });
     },
 };

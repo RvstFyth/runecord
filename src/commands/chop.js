@@ -4,6 +4,7 @@ const inventoryModel = require('../models/usersInventory');
 const itemsModel = require('../models/items');
 const skillsHelper = require('../helpers/skills');
 const questsHelper = require('../helpers/quests');
+const emojiHelper = require('../helpers/emojis');
 
 module.exports = {
     async run(msg, args, data) {
@@ -71,24 +72,16 @@ module.exports = {
         const reward = locationDetails.commands.chop[args[0]];
 
         let xpGain = reward.xp;
-        if (
-            data.user.area === 'tutorial' &&
-            parseInt(skillRecord.xp) + reward.xp > skillsHelper.xpForLevel(3)
-        ) {
-            let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);
-            if (diff < 0) diff = 0;
-            xpGain = diff;
-        }
-        if (xpGain > 0) await skillsModel.addXp(skillRecord.id, xpGain);
+        xpGain = await data.char.skills.woodcutting.addXp(xpGain);
         await inventoryModel.add(data.user.id, reward.id, 1);
 
         await questsHelper.check('chop', args[0], 1, data.user, msg);
 
         const item = await itemsModel.get(reward.id);
-        return msg.channel.send(
-            `**${data.user.name}** got a ${item.name} ${
-                xpGain > 0 ? `and ${xpGain}xp!` : ''
-            }`
-        );
+        const em = await emojiHelper.get(msg.client, 'woodcutting');
+        const embed = {
+            description: `**${data.user.name}** got a ${item.name} ${em} +${xpGain}`,
+        };
+        return msg.channel.send({ embed });
     },
 };

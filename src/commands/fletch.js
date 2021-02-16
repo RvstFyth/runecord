@@ -71,7 +71,7 @@ module.exports = {
 
         const em = await emojisHelper.get(msg.client, 'fletching');
         const embed = {
-            description: `**${data.user.name}**'s fletch result\n+ ${result.amount} x ${resultItem.name}\n ${em} ${xpGain}`,
+            description: `**${data.user.name}**'s fletch result\n+ ${result.amount} x ${resultItem.name}\n ${em} +${xpGain}`,
         };
 
         return msg.channel.send({ embed });

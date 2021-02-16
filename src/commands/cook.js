@@ -6,6 +6,7 @@ const skillsHelper = require('../helpers/skills');
 const questsHelper = require('../helpers/quests');
 const random = require('../helpers/random');
 const recipesModel = require('../models/recipesCooking');
+const emojisHelper = require('../helpers/emojis');
 
 module.exports = {
     async run(msg, args, data) {
@@ -110,25 +111,16 @@ module.exports = {
             };
         });
 
-        const xpGain =
-            data.user.area === 'tutorial' &&
-            skillsHelper.levelForXp(skillRecord.xp) > 2
-                ? 0
-                : recipe.xp * successCount;
-        let description;
-        if (xpGain > 0) {
-            fields.push({
-                name: `\u200b`,
-                value: `+${xpGain}xp`,
-                inline: false,
-            });
-            await skillsModel.addXp(skillRecord.id, xpGain);
-        }
-
+        const xpGain = await data.char.skills.cooking.addXp(
+            recipe.xp * successCount
+        );
+        const em = await emojisHelper.get(msg.client, 'cooking');
+        fields.push({
+            name: '\u200b',
+            value: `${em} +${xpGain}`,
+        });
         const embed = {
-            title: `${data.user.name}'s cook result`,
             fields,
-            description,
         };
 
         return msg.channel.send({ embed });
