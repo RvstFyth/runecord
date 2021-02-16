@@ -13,7 +13,7 @@ module.exports = {
     },
 
     isAllowedCommand(val) {
-        return allowedCommands.indexOf(val.toLowerCase()) > -1;
+        return val && allowedCommands.indexOf(val.toLowerCase()) > -1;
     },
 
     parseArguments(discordMsgObject, argsToRemove) {
