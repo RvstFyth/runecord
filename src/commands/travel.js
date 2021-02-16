@@ -22,7 +22,13 @@ module.exports = {
                 `**${data.user.name}** invalid area number provided. See \`${data.prefix}areas\` for valid numbers..`
             );
 
-        const area = areasHelper.getAreaForLabel(Object.values(areas)[index]);
+        const area = areasHelper.getAreaForLabel(
+            Object.values(areas)[index - 1]
+        );
+        if (area.name === 'tutorial')
+            return msg.channel.send(
+                `**${data.user.name}** you can't travel back to turorial island..`
+            );
         const startLocation = area.area.startLocation;
         if (!startLocation)
             return msg.channel.send(
