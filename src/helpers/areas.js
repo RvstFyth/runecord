@@ -16,6 +16,7 @@ module.exports = {
                 locations: [],
                 npcs: [],
                 area: require(`.${path}/${d}/${d}.json`),
+                name: d,
             };
 
             const z = 'locations';
