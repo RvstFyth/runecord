@@ -19,9 +19,9 @@ module.exports = {
             return msg.channel.send(
                 `**${data.user.name}** there is no item named ${input}..`
             );
-        if (validSlots.indexOf(item.slot) < -1)
+        if (!item.slot || validSlots.indexOf(item.slot) < -1)
             return msg.channel.send(
-                `*${data.user.name}** you can't equip ${input}..`
+                `**${data.user.name}** you can't equip ${input}..`
             );
 
         const userEquipped = await equippedModel.getFor(data.user.id);
