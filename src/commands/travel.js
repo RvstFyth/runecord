@@ -4,6 +4,7 @@ const startLocations = {
     lumbridgecastle: 'courtyard',
     lumbridgenorth: 'sheepmeadow',
     lumbridgewest: 'forest',
+    lumbridgesquare: 'generalgoods',
 };
 
 module.exports = {
