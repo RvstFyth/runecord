@@ -10,7 +10,10 @@ module.exports = {
             );
 
         await inventoryModel.delete(bones[0].id);
-        const xpGain = await data.char.skills.prayer.addXp(4);
+        const xpGain = await data.char.skills.prayer.addXp(
+            4,
+            data.user.area === 'tutorial' ? 3 : false
+        );
 
         const em = await emojiHelper.get(msg.client, 'prayer');
 

@@ -43,7 +43,10 @@ module.exports = {
 
         const reward = random.arrayValue(rewards);
 
-        const xpGain = await data.char.skills.fishing.addXp(reward.xp);
+        const xpGain = await data.char.skills.fishing.addXp(
+            reward.xp,
+            data.user.area === 'tutorial' ? 3 : false
+        );
         await inventoryModel.add(data.user.id, reward.id, 1);
 
         const item = await itemsModel.get(reward.id);

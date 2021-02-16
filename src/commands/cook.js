@@ -112,7 +112,8 @@ module.exports = {
         });
 
         const xpGain = await data.char.skills.cooking.addXp(
-            recipe.xp * successCount
+            recipe.xp * successCount,
+            data.user.area === 'tutorial' ? 3 : false
         );
         const em = await emojisHelper.get(msg.client, 'cooking');
         fields.push({

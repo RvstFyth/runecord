@@ -5,6 +5,7 @@ const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
 const areaHelper = require('../helpers/areas');
 const questsHelper = require('../helpers/quests');
+const emojisHelper = require('../helpers/emojis');
 
 module.exports = {
     async run(msg, args, data) {
@@ -87,24 +88,17 @@ module.exports = {
 
         await inventoryModel.add(data.user.id, recipe.item_id, amount);
 
-        const skillRecord = await skillsModel.getFor(data.user.id, 'smithing');
-
-        let xpGain = parseInt(recipe.xp) * amount;
-        if (
-            data.user.area === 'tutorial' &&
-            parseInt(skillRecord.xp) + xpGain > skillsHelper.xpForLevel(3)
-        ) {
-            let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);
-            if (diff < 0) diff = 0;
-            xpGain = diff;
-        }
-        if (xpGain > 0) await skillsModel.addXp(skillRecord.id, xpGain);
+        const xpGain = await data.char.skills.smithing.addXp(
+            parseInt(recipe.xp) * amount,
+            data.user.area === 'tutorial' ? 3 : false
+        );
 
         await questsHelper.check('smith', input, amount, data.user, msg);
 
-        return msg.channel.send(
-            `**${data.user.name}** smithed ${amount} x ${input}` +
-                `${xpGain > 0 ? ` and got ${xpGain} xp!` : ''}`
-        );
+        const em = await emojisHelper.get(msg.client, 'smithing');
+        const embed = {
+            description: `**${data.user.name}** smithed ${amount} x ${input} ${em} +${xpGain}`,
+        };
+        return msg.channel.send({ embed });
     },
 };

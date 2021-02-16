@@ -67,7 +67,10 @@ module.exports = {
 
         const resultItem = await itemsModel.get(result.id);
         await inventoryModel.add(data.user.id, resultItem.id, result.amount);
-        const xpGain = await data.char.skills.fletching.addXp(result.xp);
+        const xpGain = await data.char.skills.fletching.addXp(
+            result.xp,
+            data.user.area === 'tutorial' ? 3 : false
+        );
 
         const em = await emojisHelper.get(msg.client, 'fletching');
         const embed = {

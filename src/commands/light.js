@@ -3,6 +3,7 @@ const areasHelper = require('../helpers/areas');
 const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
 const questsHelper = require('../helpers/quests');
+const emojisHelper = require('../helpers/emojis');
 
 const logsMapping = {
     logs: { id: 1, label: 'logs', level: 1, xp: 40 },
@@ -39,21 +40,20 @@ module.exports = {
             );
         else userLogs = userLogs[0];
 
-        if (
-            data.user.area === 'tutorial' &&
-            parseInt(skillRecord.xp) + logType.xp > skillsHelper.xpForLevel(3)
-        ) {
-            let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);
-            if (diff < 0) diff = 0;
-            logType.xp = diff;
-        }
-        if (logType.xp > 0) await skillsModel.addXp(skillRecord.id, logType.xp);
+        const xpGain = await data.char.skills.firemaking.addXp(
+            logType.xp,
+            data.user.area === 'tutorial' ? 3 : false
+        );
         await inventoryModel.delete(userLogs.id);
 
         await questsHelper.check('light', args[0], 1, data.user, msg);
 
-        return msg.channel.send(
-            `**${data.user.name}** lighted made a fire and got ${logType.xp}xp`
-        );
+        const em = await emojisHelper.get(msg.client, 'firemaking');
+
+        const embed = {
+            description: `**${data.user.name}** made a fire ${em} +${xpGain}`,
+        };
+
+        return msg.channel.send({ embed });
     },
 };

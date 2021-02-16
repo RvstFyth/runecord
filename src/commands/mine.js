@@ -3,6 +3,7 @@ const areasHelper = require('../helpers/areas');
 const skillsModel = require('../models/usersSkills');
 const skillsHelper = require('../helpers/skills');
 const questHelper = require('../helpers/quests');
+const emojisHelper = require('../helpers/emojis');
 
 module.exports = {
     async run(msg, args, data) {
@@ -44,27 +45,21 @@ module.exports = {
                 `**${data.user.name}** you have to carry a pickaxe for this..`
             );
 
-        const skillRecord = await skillsModel.getFor(data.user.id, 'mining');
-
         const result = { ...locationDetails.commands.mine[args[0]] };
 
-        if (
-            data.user.area === 'tutorial' &&
-            parseInt(skillRecord.xp) + result.xp > skillsHelper.xpForLevel(3)
-        ) {
-            let diff = skillsHelper.xpForLevel(3) - parseInt(skillRecord.xp);
-            if (diff < 0) diff = 0;
-            result.xp = diff;
-        }
-        if (result.xp > 0) await skillsModel.addXp(skillRecord.id, result.xp);
+        const xpGain = await data.char.skills.mining.addXp(
+            result.xp,
+            data.user.area === 'tutorial' ? 3 : false
+        );
+
         await inventoryModel.add(data.user.id, result.id, 1);
 
         await questHelper.check('mine', args[0], 1, data.user, msg);
 
-        return msg.channel.send(
-            `**${data.user.name}** got 1 ${result.label} ${
-                result.xp > 0 ? `and ${result.xp}xp!` : ''
-            }`
-        );
+        const em = await emojisHelper.get(msg.client, 'mining');
+        const embed = {
+            description: `**${data.user.name}** got 1 ${result.label} ${em} +${xpGain}`,
+        };
+        return msg.channel.send({ embed });
     },
 };

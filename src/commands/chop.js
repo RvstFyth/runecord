@@ -64,15 +64,13 @@ module.exports = {
                 `**${data.user.name}** you need to carry a axe for this..`
             );
 
-        const skillRecord = await skillsModel.getFor(
-            data.user.id,
-            'woodcutting'
-        );
-
         const reward = locationDetails.commands.chop[args[0]];
 
         let xpGain = reward.xp;
-        xpGain = await data.char.skills.woodcutting.addXp(xpGain);
+        xpGain = await data.char.skills.woodcutting.addXp(
+            xpGain,
+            data.user.area === 'tutorial' ? 3 : false
+        );
         await inventoryModel.add(data.user.id, reward.id, 1);
 
         await questsHelper.check('chop', args[0], 1, data.user, msg);
