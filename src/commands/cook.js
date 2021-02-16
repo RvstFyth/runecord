@@ -87,7 +87,7 @@ module.exports = {
         }
 
         // deplete items from inv
-        for (let i in recipe.ingredients) {
+        for (let i in recipe.items) {
             let amountToDeplete = recipe.items[i] * amount;
             const userItems = await inventoryModel.getFor(data.user.id, i, '');
             for (let i in userItems) {
