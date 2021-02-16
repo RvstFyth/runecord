@@ -1,4 +1,5 @@
 const inventoryModel = require('../models/usersInventory');
+const emojiHelper = require('../helpers/emojis');
 
 module.exports = {
     async run(msg, args, data) {
@@ -9,9 +10,13 @@ module.exports = {
             );
 
         await inventoryModel.delete(bones[0].id);
-        data.char.skills.prayer.addXp(4);
-        return msg.channel.send(
-            `**${data.user.name}** buried bones and got 4 xp!`
-        );
+        const xpGain = await data.char.skills.prayer.addXp(4);
+
+        const em = await emojiHelper.get(msg.client, 'prayer');
+
+        const embed = {
+            description: `**${data.user.name}** buried bones ${em} +${xpGain}`,
+        };
+        return msg.channel.send({ embed });
     },
 };

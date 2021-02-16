@@ -33,7 +33,7 @@ module.exports = {
             );
 
         let userLogs = await inventoryModel.getFor(data.user.id, 1);
-        if (!userLogs || userLogs.amount < 1)
+        if (!userLogs[0] || userLogs[0].amount < 1)
             return msg.channel.send(
                 `**${data.user.name}** you don't have any ${args[0]}`
             );
@@ -48,10 +48,7 @@ module.exports = {
             logType.xp = diff;
         }
         if (logType.xp > 0) await skillsModel.addXp(skillRecord.id, logType.xp);
-        await inventoryModel.setAmount(
-            userLogs.id,
-            parseInt(userLogs.amount) - 1
-        );
+        await inventoryModel.delete(userLogs.id);
 
         await questsHelper.check('light', args[0], 1, data.user, msg);
 
