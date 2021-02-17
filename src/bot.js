@@ -51,9 +51,11 @@ client.on('ready', async () => {
         dbl.on('posted', () => {
             console.log('Server count posted!');
         });
-        await dbl.postStats(client.guilds.cache.size);
+
         setInterval(() => {
-            dbl.postStats(client.guilds.cache.size);
+            dbl.postStats(client.guilds.cache.size)
+                .then(() => console.log(`Posted stats to top.gg`))
+                .catch((e) => console.log(e));
         }, 5 * 60 * 1000);
     }
 });
