@@ -121,6 +121,19 @@ module.exports = {
         });
     },
 
+    async setGold(id, amount) {
+        return new Promise((resolve) => {
+            db.query(
+                `UPDATE ${this.table} SET gold = ? WHERE id = ?`,
+                [amount, id],
+                (err) => {
+                    if (err) console.log(err);
+                    else resolve(true);
+                }
+            );
+        });
+    },
+
     async addRcCoins(id, amount) {
         return new Promise((resolve) => {
             db.query(

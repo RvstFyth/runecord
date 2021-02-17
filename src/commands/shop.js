@@ -40,10 +40,22 @@ module.exports = {
             ];
 
             const embed = {
+                title: npc.label,
                 description,
                 fields,
             };
-            return msg.channel.send({ embed });
+            const files = [];
+            if (npc.chatHead) {
+                files.push({
+                    attachment: `./assets/images/npcs/${npc.chatHead}`,
+                    name: npc.chatHead,
+                });
+                embed.thumbnail = {
+                    url: `attachment://${npc.chatHead}`,
+                };
+            }
+
+            return msg.channel.send({ embed, files });
         } else
             return msg.channel.send(
                 `**${data.user.name}** invalid arguments provided...`
