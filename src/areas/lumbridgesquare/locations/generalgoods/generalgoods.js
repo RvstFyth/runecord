@@ -1,6 +1,10 @@
 module.exports = {
     label: 'General goods store',
-    description: `Small explanation about how shops work`,
+    description:
+        `` +
+        `\`shop [no]\` to open the shop interface for a NPC. Replace [no] with the NPC number.\n\n` +
+        `\`buy [no] <amount> [item]\` to buy a item, replace [item] with the NPC number, <amount> with the amount you like to buy and [item] with the item name or the item number in the shop\n\n` +
+        `\`sell [no] <amount> [item]\``,
     mobs: {
         woman: {
             amount: 1,

@@ -1,0 +1,1 @@
+INSERT INTO `runecord`.`items` (`name`, `level`, `stacks`) VALUES ('pot', '1', '0');

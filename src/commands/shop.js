@@ -35,7 +35,7 @@ module.exports = {
             const fields = [
                 {
                     name: '\u200b',
-                    value: `\`${data.prefix}buy ${npcIndex} <amount> [no]\` to buy a item. Replace [no] with the number in front of the item you want to buy. Amount is optional`,
+                    value: `\`${data.prefix}buy ${npcIndex} <amount> [item]\` to buy a item. Replace [item] with the name, or the number in front of the item you want to buy. Amount is optional`,
                 },
             ];
 
