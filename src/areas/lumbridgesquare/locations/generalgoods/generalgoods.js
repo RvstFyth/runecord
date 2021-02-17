@@ -43,6 +43,11 @@ module.exports = {
                     max: 1,
                     chance: 100,
                 },
+                69: {
+                    min: 1,
+                    max: 1,
+                    chance: 2,
+                },
             },
         },
     },
