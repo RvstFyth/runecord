@@ -3,6 +3,7 @@ const itemsModel = require('../models/items');
 const emojiHelper = require('../helpers/emojis');
 const inventoryModel = require('../models/usersInventory');
 const usersModel = require('../models/users');
+const input = require('../helpers/input');
 
 module.exports = {
     async run(msg, args, data) {
@@ -45,8 +46,8 @@ module.exports = {
 
         let itemIndex,
             amount = 1;
-        if (args[0] && !isNaN(args[0])) {
-            if (args[1] && !isNaN(args[1])) {
+        if (args[0]) {
+            if (args[1]) {
                 amount = parseInt(args[0]);
                 itemIndex = parseInt(args[1]) - 1;
             } else itemIndex = parseInt(args[0]) - 1;
@@ -69,15 +70,22 @@ module.exports = {
                 return msg.channel.send({ embed, files });
             }
 
-            await usersModel.setGold(
-                data.user.id,
-                parseInt(data.user.gold) - price
-            );
-            await inventoryModel.add(data.user.id, shopItem.id, amount);
-
             const em = await emojiHelper.get(msg.client, 'gold');
-            embed.description = `**${data.user.name}**, it was my pleasure doing business with you!\n\n+ ${amount} x ${item.name}\n-${em} ${price}`;
-            return msg.channel.send({ embed, files });
+
+            const confirmed = await input.askUserToConfirm(
+                `**${data.user.name}**\nConfirm to buy ${amount} x ${item.name} for ${em} ${price}`,
+                msg
+            );
+            if (confirmed) {
+                await usersModel.setGold(
+                    data.user.id,
+                    parseInt(data.user.gold) - price
+                );
+                await inventoryModel.add(data.user.id, shopItem.id, amount);
+
+                embed.description = `**${data.user.name}**, it was my pleasure doing business with you!\n\n+ ${amount} x ${item.name}\n-${em} ${price}`;
+                return msg.channel.send({ embed, files });
+            }
         } else
             return msg.channel.send(`**${data.user.name}** invalid syntax..`);
     },
