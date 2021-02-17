@@ -50,9 +50,14 @@ module.exports = {
             if (args[1]) {
                 amount = parseInt(args[0]);
                 itemIndex = parseInt(args[1]) - 1;
+                args = args.splice(1);
             } else itemIndex = parseInt(args[0]) - 1;
 
-            const shopItem = npc.shop[itemIndex];
+            const item = await itemsModel.getForName(args.join(' '));
+            const shopItem = npc.shop.filter(
+                (r) => r.id === parseInt(item.id)
+            )[0];
+
             if (!shopItem) {
                 embed.description = `**${data.user.name}**\n i don't sell this item. You can see what i offer with the \`${data.prefix}shop ${npcIndex}\` command`;
                 return msg.channel.send({ embed, files });
@@ -61,8 +66,6 @@ module.exports = {
             // check if amount > free slots, if so amount = free slots
             const freeSlots = 28 - occupiedSlots;
             if (amount > freeSlots) amount = freeSlots;
-
-            const item = await itemsModel.get(shopItem.id);
 
             const price = shopItem.price * amount;
             if (price > data.user.gold) {
