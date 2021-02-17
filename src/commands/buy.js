@@ -53,10 +53,17 @@ module.exports = {
                 args = args.splice(1);
             } else itemIndex = parseInt(args[0]) - 1;
 
-            const item = await itemsModel.getForName(args.join(' '));
-            const shopItem = npc.shop.filter(
-                (r) => r.id === parseInt(item.id)
-            )[0];
+            let item, shopItem;
+            if (!isNaN(args[0])) {
+                shopItem = npc.shop[itemIndex];
+                if (shopItem)
+                    item = await itemsModel.get(npc.shop[itemIndex].id);
+            } else {
+                item = await itemsModel.getForName(args.join(' '));
+                shopItem = npc.shop.filter(
+                    (r) => r.id === parseInt(item.id)
+                )[0];
+            }
 
             if (!shopItem) {
                 embed.description = `**${data.user.name}**\n i don't sell this item. You can see what i offer with the \`${data.prefix}shop ${npcIndex}\` command`;
