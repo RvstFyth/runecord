@@ -34,6 +34,12 @@ module.exports = {
                 `**${data.user.name}** your backpack is full..`
             );
 
+        const shears = await inventoryModel.getFor(data.user.id, 68);
+        if (!shears[0] || shears[0].amount < 1)
+            return msg.channel.send(
+                `**${data.user.name}** you need shears for this..`
+            );
+
         await questsHelper.check('shear', args[0], 1, data.user, msg);
         await inventoryModel.add(
             data.user.id,
