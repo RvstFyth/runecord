@@ -6,6 +6,10 @@ module.exports = {
             amount: 1,
             label: 'knife',
         },
+        70: {
+            amount: 1,
+            label: 'bucket',
+        },
     },
     mobs: {
         spider: {
