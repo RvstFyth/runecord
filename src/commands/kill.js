@@ -131,9 +131,11 @@ module.exports = {
             }
             for (let i in locationData.mobs[input].loot) {
                 if (i === 'gold') continue;
+                console.log(locationData.mobs[input].loot[i].chance);
                 let valid =
                     locationData.mobs[input].loot[i].chance < 100
-                        ? random.chance(locationData.mobs[input].loot[i].chance)
+                        ? random.number(1, 100) <=
+                          locationData.mobs[input].loot[i].chance
                         : true;
                 if (valid) {
                     const item = await itemsModel.get(i);
