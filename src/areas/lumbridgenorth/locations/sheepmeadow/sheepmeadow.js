@@ -9,4 +9,10 @@ module.exports = {
             },
         },
     },
+    itemSpawns: {
+        68: {
+            amount: 1,
+            label: 'shears',
+        },
+    },
 };
