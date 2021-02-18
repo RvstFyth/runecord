@@ -1,13 +1,6 @@
 const usersModel = require('../models/users');
 const areasHelper = require('../helpers/areas');
 
-const startLocations = {
-    lumbridgecastle: 'courtyard',
-    lumbridgenorth: 'sheepmeadow',
-    lumbridgewest: 'forest',
-    lumbridgesquare: 'generalgoods',
-};
-
 module.exports = {
     async run(msg, args, data) {
         const areas = areasHelper.getAreaLabels();
