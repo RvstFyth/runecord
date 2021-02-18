@@ -133,9 +133,9 @@ client.on('message', async (msg) => {
             if (msg.mentions.has(client.user))
                 return require('./commands/help').run(msg, []);
 
-            if (args[0] && module.sub && module.sub[args[0]]) {
+            if (args[0] && module && module.sub && module.sub[args[0]]) {
                 module.sub[args[0]].run(msg, args.splice(1), data);
-            } else module.main.run(msg, args, data);
+            } else if (module && module.main) module.main.run(msg, args, data);
         }
     }
 });
