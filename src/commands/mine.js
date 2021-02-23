@@ -47,6 +47,11 @@ module.exports = {
 
         const result = { ...locationDetails.commands.mine[args[0]] };
 
+        if (result.level && result.level > data.char.skills.mining.level)
+            return msg.channel.send(
+                `**${data.user.name}** you need mining level ${result.level} for this...`
+            );
+
         const xpGain = await data.char.skills.mining.addXp(
             result.xp,
             data.user.area === 'tutorial' ? 3 : false

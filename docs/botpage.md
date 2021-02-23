@@ -1,5 +1,6 @@
 # RuneCord
-A OSRS experience in discord. 
+A OSRS experience in discord.  
+**Note, this bot is still in development, to follow recent changes, or if you want to help somehow, feel free to join our support server**
 
 ## Getting started
 In all example commands below `<argument>` means optional and  `[argument]` means required!  
