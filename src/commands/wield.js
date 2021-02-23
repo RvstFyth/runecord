@@ -43,8 +43,8 @@ module.exports = {
             );
         } else await inventoryModel.delete(userItems[0].id);
 
-        if (userEquipped.weapon) {
-            await inventoryModel.add(data.user.id, userEquipped.weapon, 1);
+        if (userEquipped[item.slot]) {
+            await inventoryModel.add(data.user.id, userEquipped[item.slot], 1);
         }
 
         await equippedModel.setSlot(data.user.id, item.slot, item.id);
