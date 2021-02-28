@@ -13,9 +13,9 @@ module.exports = {
 
         const embed = {
             title: `${data.char.name}`,
-            description: `Not enough arguments, please supply one of the following arguments:\n ${validArgs.join(
-                ', '
-            )}`,
+            description: `Not enough arguments, please supply one of the following arguments:\n ${validArgs
+                .map((t) => `**${t}**`)
+                .join(', ')}`,
         };
 
         return msg.channel.send({ embed });

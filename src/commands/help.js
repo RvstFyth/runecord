@@ -37,6 +37,7 @@ const a = (data) => {
                     `\`${data.prefix}smelt [type]\` \n` +
                     `\`${data.prefix}light [type]\` \n` +
                     `\`${data.prefix}bury\` Bury bones\n` +
+                    `\`${data.prefix}recipes\` See which items can be made with skilling commands\n` +
                     `\`${data.prefix}pu [amount] [item]\` Pickup a item from the floor`,
             },
             {
