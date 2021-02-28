@@ -10,6 +10,15 @@ module.exports = {
             if (validArgs.indexOf(args[0]) > -1)
                 return this.smithing(msg, args, data);
         }
+
+        const embed = {
+            title: `${data.char.name}`,
+            description: `Not enough arguments, please supply one of the following arguments:\n ${validArgs.join(
+                ', '
+            )}`,
+        };
+
+        return msg.channel.send({ embed });
     },
 
     async smithing(msg, args, data) {
