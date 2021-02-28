@@ -54,4 +54,17 @@ module.exports = {
             );
         });
     },
+
+    async getForLevel(level) {
+        return new Promise((resolve) => {
+            db.query(
+                `SELECT * FROM ${this.table} WHERE level <= ? ORDER BY level DESC`,
+                [level],
+                (err, rows) => {
+                    if (err) console.log(err);
+                    else resolve(rows);
+                }
+            );
+        });
+    },
 };
