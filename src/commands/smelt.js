@@ -3,6 +3,7 @@ const inventoryModel = require('../models/usersInventory');
 const questsHelper = require('../helpers/quests');
 const areaHelper = require('../helpers/areas');
 const emojisHelper = require('../helpers/emojis');
+const valuesHelper = require('../helpers/values');
 
 const itemMapping = {
     bronze: {
@@ -95,6 +96,12 @@ module.exports = {
         const embed = {
             description: `**${data.user.name}** started to smelt ${amount} x ${args[0]}`,
         };
+        await usersLocksModel.create(
+            data.user.id,
+            `**${data.user.name}** please wait on your previous command..`,
+            valuesHelper.currentTimestamp() + seconds
+        );
+
         msg.channel
             .send({ embed })
             .then(async (message) => {

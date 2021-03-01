@@ -1,9 +1,11 @@
+const usersLocksModel = require('../models/usersLocks');
 const recipesModel = require('../models/recipesSmithing');
 const inventoryModel = require('../models/usersInventory');
 const itemsModel = require('../models/items');
 const areaHelper = require('../helpers/areas');
 const questsHelper = require('../helpers/quests');
 const emojisHelper = require('../helpers/emojis');
+const valuesHelper = require('../helpers/values');
 
 module.exports = {
     async run(msg, args, data) {
@@ -97,9 +99,16 @@ module.exports = {
         const embed = {
             description: `**${data.user.name}** started to smith ${amount} x ${input}`,
         };
+
+        const seconds = parseInt(recipe.ticks) * 0.6;
+        await usersLocksModel.create(
+            data.user.id,
+            `**${data.user.name}** please wait on your previous command..`,
+            valuesHelper.currentTimestamp() + seconds
+        );
+
         return msg.channel.send({ embed }).then(async (message) => {
             embed.description = `**${data.user.name}** smithed ${amount} x ${input} ${em} +${xpGain}`;
-            const seconds = parseInt(recipe.ticks) * 0.6;
             setTimeout(async () => {
                 await message.edit({ embed });
             }, seconds * 1000);
