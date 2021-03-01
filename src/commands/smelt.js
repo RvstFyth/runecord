@@ -1,3 +1,4 @@
+const usersLocksModel = require('../models/usersLocks');
 const inventoryModel = require('../models/usersInventory');
 const questsHelper = require('../helpers/quests');
 const areaHelper = require('../helpers/areas');
@@ -7,6 +8,7 @@ const itemMapping = {
     bronze: {
         id: 36,
         xp: 6.2,
+        ticks: 6,
         items: {
             3: 1,
             4: 1,
@@ -88,10 +90,19 @@ module.exports = {
 
         await questsHelper.check('smelt', args[0], 1, data.user, msg);
 
+        const seconds = item.ticks * 0.6;
         const em = await emojisHelper.get(msg.client, 'smithing');
         const embed = {
-            description: `**${data.user.name}** smelted ${amount} x ${args[0]} ${em} +${xpGain}`,
+            description: `**${data.user.name}** started to smelt ${amount} x ${args[0]}`,
         };
-        return msg.channel.send({ embed });
+        msg.channel
+            .send({ embed })
+            .then(async (message) => {
+                setTimeout(async () => {
+                    embed.description = `**${data.user.name}** smelted ${amount} x ${args[0]} ${em} +${xpGain}`;
+                    await message.edit({ embed });
+                }, seconds * 1000);
+            })
+            .catch((e) => console.log(e));
     },
 };
