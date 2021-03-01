@@ -95,8 +95,14 @@ module.exports = {
 
         const em = await emojisHelper.get(msg.client, 'smithing');
         const embed = {
-            description: `**${data.user.name}** smithed ${amount} x ${input} ${em} +${xpGain}`,
+            description: `**${data.user.name}** started to smith ${amount} x ${input}`,
         };
-        return msg.channel.send({ embed });
+        return msg.channel.send({ embed }).then(async (message) => {
+            embed.description = `**${data.user.name}** smithed ${amount} x ${input} ${em} +${xpGain}`;
+            const seconds = parseInt(recipe.ticks) * 0.6;
+            setTimeout(async () => {
+                await message.edit({ embed });
+            }, seconds * 1000);
+        });
     },
 };
