@@ -1,6 +1,4 @@
 const inventoryModel = require('../models/usersInventory');
-const skillsModel = require('../models/usersSkills');
-const skillsHelper = require('../helpers/skills');
 const questsHelper = require('../helpers/quests');
 const areaHelper = require('../helpers/areas');
 const emojisHelper = require('../helpers/emojis');
