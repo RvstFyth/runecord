@@ -57,7 +57,13 @@ module.exports = {
         const helpFields = a(data);
         let page = !isNaN(args[0]) ? args[0] : 1;
         if (!helpFields[page]) page = 1;
-        const fields = helpFields[page];
+        const fields = [
+            {
+                name: '\u200b',
+                value: `This bot is still in development and receives a lot of updates. You can join our [Support server](https://discord.gg/UNJKYz244a) to follow news about updates or if you have any queries!`,
+            },
+            ...helpFields[page],
+        ];
 
         fields.push({
             name: '\u200b',
