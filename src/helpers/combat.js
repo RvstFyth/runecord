@@ -49,6 +49,8 @@ module.exports = {
 
             if (pIndex < 1) pIndex++;
             else pIndex = 0;
+
+            await new Promise((resolve) => setTimeout(resolve, 600));
         }
 
         return {

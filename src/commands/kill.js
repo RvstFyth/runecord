@@ -9,6 +9,7 @@ const usersModel = require('../models/users');
 const questsHelper = require('../helpers/quests');
 const valuesHelper = require('../helpers/values');
 const emojisHelper = require('../helpers/emojis');
+const usersLockModel = require('../models/usersLocks');
 
 const logEmoji = '📖';
 
@@ -52,9 +53,20 @@ module.exports = {
         const npc = filteredMobs[0].mob;
         filteredMobs[0].occupied = true;
         const char = await characterHelper.composeFromUserRecord(data.user);
+        await msg.channel.send({
+            embed: {
+                title: `${data.user.name}`,
+                description: `Started to fight against ${args[0]}`,
+            },
+        });
+        const lockID = await usersLockModel.create(
+            data.user.id,
+            ` please wait on the result of your previous command..`,
+            -1
+        );
         const result = await combatHelper.simulateAgaianstNpc(char, npc);
         filteredMobs[0].occupied = false;
-
+        await usersLockModel.delete(lockID);
         if (result.npc.health < 1) {
             filteredMobs[0].diedTimestamp = valuesHelper.currentTimestamp();
         }
