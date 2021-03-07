@@ -51,7 +51,6 @@ module.exports = {
         await inventoryModel.add(data.user.id, reward.id, 1);
 
         const item = await itemsModel.get(reward.id);
-        await questsHelper.check('fish', item.name, 1, data.user, msg);
 
         const em = await emojisHelper.get(msg.client, 'fishing');
         const embed = {
@@ -72,6 +71,13 @@ module.exports = {
                     if (random.number(1, 100) <= chance) {
                         embed.description = `**${data.user.name}** caught a ${item.name} ${em} +${xpGain}`;
                         await usersLockModel.delete(lockID);
+                        await questsHelper.check(
+                            'fish',
+                            item.name,
+                            1,
+                            data.user,
+                            msg
+                        );
                         return message.edit({ embed });
                     }
 
