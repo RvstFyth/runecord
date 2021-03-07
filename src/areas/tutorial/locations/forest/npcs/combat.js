@@ -4,6 +4,10 @@ module.exports = {
     label: 'combat instructor',
     chatHead: 'Vannaka_chathead.png',
     async talk(data) {
+        const requiredQuest = await questsModel.getFor(data.userID, 7);
+        if (!requiredQuest || !requiredQuest.completed)
+            return `you should follow the quests. \`${data.prefix}quests\``;
+
         const firstQuest = await questsModel.getFor(data.userID, 9);
         if (!firstQuest) {
             await questsModel.create(data.userID, 9);

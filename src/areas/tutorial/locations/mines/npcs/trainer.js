@@ -6,6 +6,10 @@ module.exports = {
     chatHead: 'Mining_Instructor_chathead.png',
 
     async talk(data) {
+        const requiredQuest = await userQuestsModel.getFor(data.userID, 5);
+        if (!requiredQuest || !requiredQuest.completed)
+            return `you should follow the quests. \`${data.prefix}quests\``;
+
         const firstQuest = await userQuestsModel.getFor(data.userID, 6);
         if (!firstQuest) {
             await userQuestsModel.create(data.userID, 6);
