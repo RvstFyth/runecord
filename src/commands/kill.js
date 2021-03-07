@@ -1,7 +1,6 @@
 const areasHelper = require('../helpers/areas');
 const combatHelper = require('../helpers/combat');
 const characterHelper = require('../helpers/character');
-const skillsHelper = require('../helpers/skills');
 const random = require('../helpers/random');
 const itemsModel = require('../models/items');
 const worldsHelper = require('../helpers/worlds');
