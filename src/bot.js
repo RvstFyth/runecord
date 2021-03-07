@@ -43,7 +43,7 @@ worldsHelper.init();
 
 client.on('ready', async () => {
     logger.info(`Logged in as ${client.user.tag}!`);
-
+    await usersLocksModel.deleteWhereMinus();
     // TopGG bot listing API
     if (config.live && config.topgg_token) {
         const DBL = require('dblapi.js');
@@ -101,9 +101,10 @@ client.on('message', async (msg) => {
                         0,
                         true
                     );
-                    return msg.channel.send(
-                        `**${user.name}**, ${lockRecord.message}. ${timeLeft} left..`
-                    );
+                    let out = `**${user.name}**, ${lockRecord.message}.`;
+                    if (lockRecord.end_timestamp > -1)
+                        out += ` ${timeLeft} left`;
+                    return msg.channel.send(out);
                 }
 
                 worldsHelper.registerPlayer(

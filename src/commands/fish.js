@@ -5,6 +5,7 @@ const itemsModel = require('../models/items');
 const emojisHelper = require('../helpers/emojis');
 const questsHelper = require('../helpers/quests');
 const random = require('../helpers/random');
+const usersLockModel = require('../models/usersLocks');
 
 module.exports = {
     async run(msg, args, data) {
@@ -54,8 +55,29 @@ module.exports = {
 
         const em = await emojisHelper.get(msg.client, 'fishing');
         const embed = {
-            description: `**${data.user.name}** caught a ${item.name} ${em} +${xpGain}`,
+            description: `**${data.user.name}** you cast out your net..`,
+            // description: `**${data.user.name}** caught a ${item.name} ${em} +${xpGain}`,
         };
-        return msg.channel.send({ embed });
+
+        const lockID = await usersLockModel.create(
+            data.user.id,
+            ` You are still fishing..`,
+            -1
+        );
+        msg.channel
+            .send({ embed })
+            .then(async (message) => {
+                const chance = Math.min(data.char.skills.fishing.level, 100);
+                while (true) {
+                    if (random.number(1, 100) <= chance) {
+                        embed.description = `**${data.user.name}** caught a ${item.name} ${em} +${xpGain}`;
+                        await usersLockModel.delete(lockID);
+                        return message.edit({ embed });
+                    }
+
+                    await new Promise((resolve) => setTimeout(resolve, 600));
+                }
+            })
+            .catch((e) => console.log(e));
     },
 };
