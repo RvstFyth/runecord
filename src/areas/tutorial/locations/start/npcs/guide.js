@@ -13,7 +13,7 @@ module.exports = {
                 `Hello, and welcome to runecord!\n\n` +
                 `I will teach you some basic commands to move around in runecord.\n` +
                 `The world is divided in *area's*, and each area has multiple *locations*.\n` +
-                `To see which locations you can *walk* to in your area, you can use the \`${data.prefix}area\` command. ou can use the \`${data.prefix}walk n\` command. Replace \`n\` with the number you see in front of the location name\n\n` +
+                `To see which locations you can *walk* to in your area, you can use the \`${data.prefix}area\` command. You can use the \`${data.prefix}walk n\` command. Replace \`n\` with the number you see in front of the location name\n\n` +
                 `The \`${data.prefix}location\` command will show you information about the location you are in.\n` +
                 `You will see NPC's you can interact with, for this use the \`${data.prefix}talk n\`, where you replace \`n\` with the number in front of the NPC name.` +
                 `There is a some more info in that prompt, but you will learn during this tutorial. \n\nFor now, you should find the survival expert and *talk* to him. You can find him in the forest!\n\n` +
