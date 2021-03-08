@@ -7,6 +7,7 @@ const questsHelper = require('../helpers/quests');
 const random = require('../helpers/random');
 const recipesModel = require('../models/recipesCooking');
 const emojisHelper = require('../helpers/emojis');
+const usersLockModel = require('../models/usersLocks');
 
 module.exports = {
     async run(msg, args, data) {
@@ -67,11 +68,20 @@ module.exports = {
 
         if (amount > maxAmountPossible) amount = maxAmountPossible;
 
+        await msg.channel.send({
+            embed: {
+                description: `**${data.user.name}** started to cook..`,
+            },
+        });
+        await new Promise((resolve) =>
+            setTimeout(resolve, parseInt(recipe.ticks) * amount * 600)
+        );
+
         const result = {};
         let successCount = 0;
         for (let i = 0; i < amount; i++) {
             let tmpItem;
-            if (skillLevel < recipe.burnTill && random.number(1, 100) > 65) {
+            if (skillLevel < recipe.burn_till && random.number(1, 100) > 65) {
                 tmpItem = await itemsModel.get(recipe.burnt_id);
             } else {
                 tmpItem = await itemsModel.get(recipe.item_id);
@@ -119,8 +129,10 @@ module.exports = {
         fields.push({
             name: '\u200b',
             value: `${em} +${xpGain}`,
+            inline: true,
         });
         const embed = {
+            title: data.user.name,
             fields,
         };
 
