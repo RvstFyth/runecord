@@ -3,6 +3,8 @@ const inventoryModel = require('../models/usersInventory');
 const itemsModel = require('../models/items');
 const questsHelper = require('../helpers/quests');
 const emojiHelper = require('../helpers/emojis');
+const usersLockModel = require('../models/usersLocks');
+const random = require('../helpers/random');
 
 module.exports = {
     async run(msg, args, data) {
@@ -64,20 +66,45 @@ module.exports = {
 
         const reward = locationDetails.commands.chop[args[0]];
 
-        let xpGain = reward.xp;
-        xpGain = await data.char.skills.woodcutting.addXp(
-            xpGain,
-            data.user.area === 'tutorial' ? 3 : false
-        );
-        await inventoryModel.add(data.user.id, reward.id, 1);
-
-        await questsHelper.check('chop', args[0], 1, data.user, msg);
-
         const item = await itemsModel.get(reward.id);
         const em = await emojiHelper.get(msg.client, 'woodcutting');
         const embed = {
-            description: `**${data.user.name}** got a ${item.name} ${em} +${xpGain}`,
+            description: `**${data.user.name}** you swing your axe at the tree..`,
+            //description: `**${data.user.name}** got a ${item.name} ${em} +${xpGain}`,
         };
-        return msg.channel.send({ embed });
+        const lockID = await usersLockModel.create(
+            data.user.id,
+            ` You are still chopping..`,
+            -1
+        );
+
+        return msg.channel.send({ embed }).then(async (message) => {
+            const chance =
+                3 + Math.min(data.char.skills.woodcutting.level, 100);
+            while (true) {
+                if (random.number(1, 100) <= chance) {
+                    await usersLockModel.delete(lockID);
+
+                    let xpGain = reward.xp;
+                    xpGain = await data.char.skills.woodcutting.addXp(
+                        xpGain,
+                        data.user.area === 'tutorial' ? 3 : false
+                    );
+                    await inventoryModel.add(data.user.id, reward.id, 1);
+                    await questsHelper.check(
+                        'chop',
+                        args[0],
+                        1,
+                        data.user,
+                        msg
+                    );
+                    embed.description = `**${data.user.name}** got a ${item.name} ${em} +${xpGain}`;
+
+                    return msg.channel.send({ embed });
+                }
+
+                await new Promise((resolve) => setTimeout(resolve, 600));
+            }
+        });
     },
 };
