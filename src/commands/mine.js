@@ -1,9 +1,9 @@
 const inventoryModel = require('../models/usersInventory');
 const areasHelper = require('../helpers/areas');
-const skillsModel = require('../models/usersSkills');
-const skillsHelper = require('../helpers/skills');
 const questHelper = require('../helpers/quests');
 const emojisHelper = require('../helpers/emojis');
+const random = require('../helpers/random');
+const usersLockModel = require('../models/usersLocks');
 
 module.exports = {
     async run(msg, args, data) {
@@ -52,19 +52,34 @@ module.exports = {
                 `**${data.user.name}** you need mining level ${result.level} for this...`
             );
 
-        const xpGain = await data.char.skills.mining.addXp(
-            result.xp,
-            data.user.area === 'tutorial' ? 3 : false
-        );
-
-        await inventoryModel.add(data.user.id, result.id, 1);
-
-        await questHelper.check('mine', args[0], 1, data.user, msg);
-
         const em = await emojisHelper.get(msg.client, 'mining');
         const embed = {
-            description: `**${data.user.name}** got 1 ${result.label} ${em} +${xpGain}`,
+            description: `**${data.user.name}** started to mine..`,
         };
-        return msg.channel.send({ embed });
+        const lockID = await usersLockModel.create(
+            data.user.id,
+            ` You are still mining..`,
+            -1
+        );
+
+        return msg.channel.send({ embed }).then(async (message) => {
+            const chance = 3 + Math.min(data.char.skills.mining.level, 100);
+            while (true) {
+                if (random.number(1, 100) <= chance) {
+                    await usersLockModel.delete(lockID);
+                    const xpGain = await data.char.skills.mining.addXp(
+                        result.xp,
+                        data.user.area === 'tutorial' ? 3 : false
+                    );
+                    embed.description = `**${data.user.name}** got 1 ${result.label} ${em} +${xpGain}`;
+                    await inventoryModel.add(data.user.id, result.id, 1);
+
+                    await questHelper.check('mine', args[0], 1, data.user, msg);
+                    return msg.channel.send({ embed });
+                }
+
+                await new Promise((resolve) => setTimeout(resolve, 600));
+            }
+        });
     },
 };
