@@ -71,7 +71,7 @@ module.exports = {
         let successCount = 0;
         for (let i = 0; i < amount; i++) {
             let tmpItem;
-            if (skillLevel < recipe.burnTill && random.number(1, 100) > 90) {
+            if (skillLevel < recipe.burnTill && random.number(1, 100) > 65) {
                 tmpItem = await itemsModel.get(recipe.burnt_id);
             } else {
                 tmpItem = await itemsModel.get(recipe.item_id);
