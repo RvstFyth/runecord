@@ -45,8 +45,8 @@ module.exports = {
                 log.push(
                     `${currentPlayer.name} hit ${otherPlayer.name} for ${dmg} damage`
                 );
+                if (otherPlayer.health < 1) break;
             } else log.push(`${currentPlayer.name} missed..`);
-
             if (pIndex < 1) pIndex++;
             else pIndex = 0;
 
