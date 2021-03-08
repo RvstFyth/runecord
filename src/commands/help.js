@@ -8,10 +8,10 @@ const a = (data) => {
                     `\`${data.prefix}start [name]\` Creates a account with this bot\n` +
                     `\`${data.prefix}area\` Displays information about the area you are in\n` +
                     `\`${data.prefix}location\` Displays information about your current location\n` +
+                    `\`${data.prefix}areas\` Displays a list of the area's in runecord\n` +
                     `\`${data.prefix}walk [location]\` Walk to a location in the same area you are in\n` +
                     `\`${data.prefix}talk [name]\` Opens a dialog for the NPC\n` +
-                    `\`${data.prefix}quests\` See a list of your active quests` +
-                    `\`${data.prefix}areas\` Displays a list of the area's in runecord`,
+                    `\`${data.prefix}quests\` See a list of your active quests\n`,
             },
             {
                 name: `Character`,
@@ -71,7 +71,7 @@ module.exports = {
                 `` +
                 `\`${data.prefix}help 1\` Basic commands\n` +
                 `\`${data.prefix}help 2\` Resource commands\n\n` +
-                `[Support server](https://discord.gg/UNJKYz244a)`,
+                `[Support server](https://discord.gg/UNJKYz244a) | [Invite RuneCord](https://discord.com/oauth2/authorize?client_id=810939932817227786&permissions=3532864&scope=bot)`,
         });
 
         return msg.channel.send({
