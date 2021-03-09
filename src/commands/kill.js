@@ -220,7 +220,7 @@ module.exports = {
                 `**${data.user.name}** Oh dear, you are dead!\n\nYou respawned in Lumbridge`
             )
             .then(async (message) => {
-                await usersModel.setArea(data.user.id, 'lumbridgecastle');
+                await usersModel.setArea(data.user.id, 'lumbridge');
                 await usersModel.setLocation(data.user.id, 'courtyard');
                 await usersModel.setHealth(
                     data.user.id,
