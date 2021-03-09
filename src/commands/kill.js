@@ -221,7 +221,7 @@ module.exports = {
             )
             .then(async (message) => {
                 await usersModel.setArea(data.user.id, 'lumbridge');
-                await usersModel.setLocation(data.user.id, 'courtyard');
+                await usersModel.setLocation(data.user.id, '2courtyard');
                 await usersModel.setHealth(
                     data.user.id,
                     data.char.skills.hitpoints.level
