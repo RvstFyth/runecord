@@ -10,9 +10,19 @@ const itemMapping = {
         id: 36,
         xp: 6.2,
         ticks: 6,
+        level: 1,
         items: {
             3: 1,
             4: 1,
+        },
+    },
+    iron: {
+        id: 87,
+        xp: 12.5,
+        ticks: 4,
+        level: 15,
+        items: {
+            10: 1,
         },
     },
 };
@@ -47,6 +57,20 @@ module.exports = {
             );
 
         const item = itemMapping[args[0]];
+        if (data.char.skills.mining.level < item.level)
+            return msg.channel.send(
+                `**${data.user.name}** you need level ${item.level} smithing for this..`
+            );
+
+        const occupiedSlots = await inventoryModel.getOccupiedSlotCount(
+            data.user.id
+        );
+        const freeSlots = 28 - occupiedSlots;
+        if (freeSlots < 1)
+            return msg.channel.send(
+                `**${data.user.name}** your backpack is full..`
+            );
+
         const itemsCount = [];
         for (let i in item.items) {
             const itemRecord = await inventoryModel.getTotalAmountFor(
@@ -65,6 +89,7 @@ module.exports = {
             );
 
         if (amount > maxPossible) amount = maxPossible;
+        if (amount > freeSlots) amount = freeSlots;
 
         for (let i in item.items) {
             let amountToDeplete = item.items[i] * amount;
