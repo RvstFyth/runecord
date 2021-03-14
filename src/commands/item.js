@@ -24,8 +24,28 @@ module.exports = {
         const fields = [];
 
         if (item.meta) {
-            const metaField = { name: 'Meta', value: item.meta };
-            fields.push(metaField);
+            const parsed = JSON.parse(item.meta);
+            if (parsed.stats) {
+                for (let i in parsed.stats) {
+                    if (
+                        1 === 1 ||
+                        (typeof parsed[i] === 'object' && parsed[i] !== null)
+                    ) {
+                        const tmpField = { name: i, value: '', inline: true };
+                        for (let j in parsed.stats[i]) {
+                            tmpField.value += `${j}: ${parsed.stats[i][j]}\n`;
+                        }
+                        fields.push(tmpField);
+                    }
+                }
+            }
+            if (parsed.styles) {
+                const stylesField = { name: 'Styles', value: '', inline: true };
+                for (let i in parsed.styles) {
+                    stylesField.value += `${i}\n`;
+                }
+                fields.push(stylesField);
+            }
         }
 
         const smithingRecipe = await smithingModel.getForItemID(item.id);
