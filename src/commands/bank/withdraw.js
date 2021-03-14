@@ -41,6 +41,7 @@ module.exports = {
             return msg.channel.send(
                 `**${data.user.name}** your backpack is full..`
             );
+        if (amount > freeSlots) amount = freeSlots;
 
         const bankRecord = await bankModel.getFor(data.user.id, item.id);
         if (!bankRecord || bankRecord.amount < 1)
