@@ -6,6 +6,7 @@ const a = (data) => {
                 value:
                     `` +
                     `\`${data.prefix}start [name]\` Creates a account with this bot\n` +
+                    `\`${data.prefix}vote\` Vote for RuneCord and get rewarded!\n` +
                     `\`${data.prefix}area\` Displays information about the area you are in\n` +
                     `\`${data.prefix}location\` Displays information about your current location\n` +
                     `\`${data.prefix}areas\` Displays a list of the area's in runecord\n` +
@@ -38,7 +39,8 @@ const a = (data) => {
                     `\`${data.prefix}light [type]\` \n` +
                     `\`${data.prefix}bury\` Bury bones\n` +
                     `\`${data.prefix}recipes\` See which items can be made with skilling commands\n` +
-                    `\`${data.prefix}pu [amount] [item]\` Pickup a item from the floor`,
+                    `\`${data.prefix}pu [amount] [item]\` Pickup a item from the floor\n` +
+                    `\`${data.prefix}lamp [skill]\` Use a XP lamp and get XP in a skill of choice`,
             },
             {
                 name: '\u200b',
