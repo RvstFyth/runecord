@@ -66,10 +66,10 @@ module.exports = {
             data.user.id
         );
         const freeSlots = 28 - occupiedSlots;
-        if (freeSlots < 1)
+        /*if (freeSlots < 1)
             return msg.channel.send(
                 `**${data.user.name}** your backpack is full..`
-            );
+            );*/
 
         const itemsCount = [];
         for (let i in item.items) {
