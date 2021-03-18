@@ -12,7 +12,8 @@ const a = (data) => {
                     `\`${data.prefix}areas\` Displays a list of the area's in runecord\n` +
                     `\`${data.prefix}walk [location]\` Walk to a location in the same area you are in\n` +
                     `\`${data.prefix}talk [name]\` Opens a dialog for the NPC\n` +
-                    `\`${data.prefix}quests\` See a list of your active quests\n`,
+                    `\`${data.prefix}quests\` See a list of your active quests\n` +
+                    `\`${data.prefix}donate\` Support the development of this bot with a donation. See command for rewards.`,
             },
             {
                 name: `Character`,
@@ -73,7 +74,7 @@ module.exports = {
                 `` +
                 `\`${data.prefix}help 1\` Basic commands\n` +
                 `\`${data.prefix}help 2\` Resource commands\n\n` +
-                `[Support server](https://discord.gg/UNJKYz244a) | [Invite RuneCord](https://discord.com/oauth2/authorize?client_id=810939932817227786&permissions=3532864&scope=bot)`,
+                `[Support server](https://discord.gg/UNJKYz244a) | [Donate using donatebot.io (paypal)](https://donatebot.io/checkout/803223425258618901) | [Invite RuneCord](https://discord.com/oauth2/authorize?client_id=810939932817227786&permissions=3532864&scope=bot)`,
         });
 
         return msg.channel.send({
