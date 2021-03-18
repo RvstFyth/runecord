@@ -1,7 +1,6 @@
 const usersModel = require('../models/users');
 const characterHelper = require('../helpers/character');
 const bankModel = require('../models/usersBank');
-const Discord = require('discord.js');
 
 module.exports = {
     async run(bot, userID, weekend) {
