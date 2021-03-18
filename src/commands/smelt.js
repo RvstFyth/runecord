@@ -25,6 +25,16 @@ const itemMapping = {
             10: 1,
         },
     },
+    steel: {
+        id: 111,
+        xp: 17,
+        ticks: 4,
+        level: 30,
+        items: {
+            10: 1,
+            16: 2,
+        },
+    },
 };
 
 module.exports = {
