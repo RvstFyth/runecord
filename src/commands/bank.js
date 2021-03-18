@@ -16,7 +16,7 @@ module.exports = {
         if (!isNaN(args[0])) page = parseInt(args[0]);
 
         const slotsUsed = await bankModel.getTotalCountFor(data.user.id);
-        const limit = 2;
+        const limit = 15;
 
         const maxPage = Math.ceil(slotsUsed / limit);
         if (page > maxPage) page = maxPage;
