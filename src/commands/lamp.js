@@ -14,7 +14,7 @@ module.exports = {
         const lamps = await inventoryModel.getFor(data.user.id, 99);
         if (!lamps[0] || lamps[0].amount < 1)
             return msg.channel.send(
-                `**${data.user.name}** you don't have any lamps... You can get those by [voting](https://top.gg/bot/810939932817227786/vote)!`
+                `**${data.user.name}** you don't have any lamps... You can get those by voting for RuneCord https://top.gg/bot/810939932817227786/vote!`
             );
 
         const bonus = Math.min(data.char.skills[args[0]].level * 10, 1000);
