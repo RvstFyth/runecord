@@ -7,7 +7,11 @@ module.exports = {
 
         const embed = {
             title: 'RuneCord info',
-            description: `` + `Servers: ${guilds}\n` + `Users: ${users}`,
+            description:
+                `` +
+                `Servers: ${guilds}\n` +
+                `Users: ${users}` +
+                `\n\n[More bots from the creator of RuneCord](https://top.gg/user/8552059987788759040)`,
         };
 
         return msg.channel.send({ embed });
