@@ -58,6 +58,28 @@ client.on('ready', async () => {
                 .catch((e) => console.log(e));
         }, 5 * 60 * 1000);
     }
+
+    if (config.live) {
+        const voteModule = require('./webhooks/vote');
+        const DBL = require('dblapi.js');
+        const dbl = new DBL(
+            config.topgg_token,
+            {
+                webhookPort: 5010,
+                webhookAuth: 'cookiesisdabestbotdevever',
+            },
+            client
+        );
+        dbl.webhook.on('ready', (hook) => {
+            console.log(
+                `Webhook running at http://${hook.hostname}:${hook.port}${hook.path}`
+            );
+        });
+        dbl.webhook.on('vote', (vote) => {
+            console.log(`User with ID ${vote.user} just voted!`);
+            voteModule.run(client, vote.user, vote.isWeekend);
+        });
+    }
 });
 
 client.on('message', async (msg) => {
