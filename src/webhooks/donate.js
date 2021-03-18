@@ -16,6 +16,9 @@ app.post('/webhooks', async function (request, response) {
             const coins = Math.round(webhook.price);
             const user = await usersModel.getForDiscordID(discordID);
             if (user) {
+                console.log(
+                    `Received a ${webhook.price} USD dollar donation from ${user.name}`
+                );
                 await usersModel.addRcCoins(user.id, coins);
             }
         }
