@@ -11,6 +11,9 @@ app.post('/webhooks', async function (request, response) {
     const authenticationToken = 'cookiesisdabestdevever';
     if (request.headers.authorization === authenticationToken) {
         const webhook = request.body;
+        console.log(
+            `Donatebot.io webhook triggered | Status: ${webhook.status}`
+        );
         if (webhook.status.toLowerCase() === 'completed') {
             const discordID = webhook.buyer_id;
             const coins = Math.round(webhook.price);
