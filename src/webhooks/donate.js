@@ -23,7 +23,10 @@ app.post('/webhooks', async function (request, response) {
                     `Received a ${webhook.price} USD dollar donation from ${user.name}`
                 );
                 await usersModel.addRcCoins(user.id, coins);
-            }
+            } else
+                console.log(
+                    `Donatebot.io webhook, failed to find user with ID: ${discordID}`
+                );
         }
     }
 });
