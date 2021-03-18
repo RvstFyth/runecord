@@ -12,8 +12,16 @@ module.exports = {
                 `**${data.user.name}** you need to be at a bank for this command..`
             );
 
-        let offset = 0,
-            limit = 15;
+        let page = 1;
+        if (!isNaN(args[0])) page = parseInt(args[0]);
+
+        const slotsUsed = await bankModel.getTotalCountFor(data.user.id);
+        const limit = 2;
+
+        const maxPage = Math.ceil(slotsUsed / limit);
+        if (page > maxPage) page = maxPage;
+        let offset = page * limit - limit;
+        if (offset < 0) offset = 0;
 
         const bankRecords = await bankModel.getAllForPaginated(
             data.user.id,
@@ -29,13 +37,12 @@ module.exports = {
             {
                 name: '\u200b',
                 value:
-                    `` +
+                    `\`bank [pageNo]\` to change page\n` +
                     `\`bstore [amount] [item]\` to store items in your bank\n` +
                     `\`bget [amount] [item]\` to withdraw items from your bank \n`,
             },
         ];
 
-        const slotsUsed = await bankModel.getTotalCountFor(data.user.id);
         const maxSlots = data.user.supporter ? 800 : 400;
 
         const embed = {
@@ -43,7 +50,7 @@ module.exports = {
             description,
             fields,
             footer: {
-                text: `Slots ${slotsUsed}/${maxSlots}`,
+                text: `Slots ${slotsUsed}/${maxSlots} | Page ${page}/${maxPage}`,
             },
         };
 
