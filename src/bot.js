@@ -60,6 +60,7 @@ client.on('ready', async () => {
     }
 
     if (config.live) {
+        require('./webhooks/donate');
         const voteModule = require('./webhooks/vote');
         const DBL = require('dblapi.js');
         const dbl = new DBL(
