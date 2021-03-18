@@ -9,7 +9,7 @@ module.exports = {
             const char = await characterHelper.composeFromUserRecord(user);
             if (char) {
                 // lamp id = 99
-                await bankModel.add(user.id, 99, 1);
+                await bankModel.add(char.id, 99, 1);
 
                 const discUser = await bot.users.fetch(userID);
                 if (discUser) {
