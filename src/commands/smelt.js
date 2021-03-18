@@ -89,7 +89,6 @@ module.exports = {
             );
 
         if (amount > maxPossible) amount = maxPossible;
-        if (amount > freeSlots) amount = freeSlots;
 
         for (let i in item.items) {
             let amountToDeplete = item.items[i] * amount;
