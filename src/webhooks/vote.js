@@ -11,9 +11,9 @@ module.exports = {
                 // lamp id = 99
                 await bankModel.add(user.id, 99, 1);
 
-                const user = await bot.users.fetch(userID);
-                if (user) {
-                    await user.send(
+                const discUser = await bot.users.fetch(userID);
+                if (discUser) {
+                    await discUser.send(
                         `Thank you for voting! You received a XP lamp as reward. You can use it with the \`lamp [skill]\` reward to receive XP in a skill of choice! You can find the XP lamp in your bank account!`
                     );
                 }
