@@ -103,4 +103,17 @@ module.exports = {
 
         return false;
     },
+
+    getNpcFortype(area, location, type) {
+        const npcs = _areasCache[area].locations[location].npcs;
+        for (let i in npcs) {
+            if (
+                npcs[i].type &&
+                npcs[i].type.toLowerCase() === type.toLowerCase()
+            )
+                return npcs[i];
+        }
+
+        return false;
+    },
 };
