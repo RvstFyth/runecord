@@ -1,6 +1,7 @@
 module.exports = {
     label: 'Ellis',
     chatHead: 'Ellis_chathead.png',
+    type: 'tanner',
     async talk(data) {
         if (data.args[0]) {
             switch (data.args[0]) {
