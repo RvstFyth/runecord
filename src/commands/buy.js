@@ -72,7 +72,7 @@ module.exports = {
 
             // check if amount > free slots, if so amount = free slots
             const freeSlots = 28 - occupiedSlots;
-            if (amount > freeSlots) amount = freeSlots;
+            if (!item.stacks && amount > freeSlots) amount = freeSlots;
 
             const price = shopItem.price * amount;
             if (price > data.user.gold) {
