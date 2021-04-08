@@ -10,7 +10,7 @@ module.exports = {
 
     pushToCharLogChannel(msg) {
         if (config.support_member_log_channel_id) {
-            const channel = client.channels.cache.find(
+            const channel = this.client.channels.cache.find(
                 (c) => c.id == config.support_events_channel_id
             );
             if (channel) {
