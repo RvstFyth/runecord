@@ -25,7 +25,8 @@ module.exports = {
                 new Skill(
                     skillRecords[i].id,
                     skillRecords[i].skill,
-                    skillRecords[i].xp
+                    skillRecords[i].xp,
+                    char
                 )
             );
         }
