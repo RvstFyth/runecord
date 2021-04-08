@@ -1,8 +1,9 @@
 const recipesModel = require('../models/recipesSmithing');
 const itemsModel = require('../models/items');
 const cookingRecipesModel = require('../models/recipesCooking');
+const craftingRecipesModel = require('../models/recipesCrafting');
 
-const validArgs = ['smithing', 'smith', 'cooking', 'cook'];
+const validArgs = ['smithing', 'smith', 'cooking', 'cook', 'craft', 'crafting'];
 
 module.exports = {
     async run(msg, args, data) {
@@ -30,6 +31,10 @@ module.exports = {
         else if (args[0] === 'cook' || args[0] === 'cooking')
             recipes = await cookingRecipesModel.getForLevel(
                 data.char.skills.cooking.level
+            );
+        else if (args[0] === 'craft' || args[0] === 'crafting')
+            recipes = await craftingRecipesModel.getForLevel(
+                data.char.skills.crafting.level
             );
 
         const limit = 10;
