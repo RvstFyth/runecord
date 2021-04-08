@@ -20,7 +20,7 @@ const worldsHelper = require('./helpers/worlds');
 const characterHelper = require('./helpers/character');
 
 const client = new discord.Client();
-
+const supportServer = require('./helpers/supportServer');
 const skillsHelper = require('./helpers/skills');
 const skillsModel = require('./models/usersSkills');
 setInterval(async () => {
@@ -44,6 +44,7 @@ worldsHelper.init();
 client.on('ready', async () => {
     logger.info(`Logged in as ${client.user.tag}!`);
     await usersLocksModel.deleteWhereMinus();
+    supportServer.setClient(client);
     // TopGG bot listing API
     if (config.live && config.topgg_token) {
         const DBL = require('dblapi.js');
