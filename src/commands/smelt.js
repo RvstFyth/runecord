@@ -35,6 +35,24 @@ const itemMapping = {
             16: 2,
         },
     },
+    silver: {
+        id: 123,
+        xp: 14,
+        ticks: 4,
+        level: 20,
+        items: {
+            13: 1,
+        },
+    },
+    gold: {
+        id: 124,
+        xp: 23,
+        ticks: 4,
+        level: 40,
+        items: {
+            21: 1,
+        },
+    },
 };
 
 module.exports = {
