@@ -108,7 +108,7 @@ module.exports = {
                     );
                     break;
                 case 'controlled':
-                    xpGain = parseInt(xpGain * 1.33);
+                    xpGain = parseInt(xpGain * 0.33);
                     xpAdded['attack'] = await char.skills.attack.addXp(
                         xpGain,
                         data.user.area === 'tutorial' ? 3 : false
