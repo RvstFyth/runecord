@@ -5,6 +5,13 @@ const emojisHelper = require('../helpers/emojis');
 const random = require('../helpers/random');
 const usersLockModel = require('../models/usersLocks');
 
+const gems = {
+    sapphire: {
+        id: 121,
+        label: 'Uncut sapphire',
+    },
+};
+
 module.exports = {
     async run(msg, args, data) {
         const locationDetails = areasHelper.getLocation(
@@ -71,8 +78,15 @@ module.exports = {
                         result.xp,
                         data.user.area === 'tutorial' ? 3 : false
                     );
-                    embed.description = `**${data.user.name}** got 1 ${result.label} ${em} +${xpGain}`;
-                    await inventoryModel.add(data.user.id, result.id, 1);
+                    const gemChance = random.number(1, 256);
+                    if (random.number(1, 256) === gemChance) {
+                        const g = random.arrayValue(Object.values(gems));
+                        embed.description = `**${data.user.name}** got luck and got a ${g.label} ${em} +${xpGain}`;
+                        await inventoryModel.add(data.user.id, g.id, 1);
+                    } else {
+                        embed.description = `**${data.user.name}** got 1 ${result.label} ${em} +${xpGain}`;
+                        await inventoryModel.add(data.user.id, result.id, 1);
+                    }
 
                     await questHelper.check('mine', args[0], 1, data.user, msg);
                     return msg.channel.send({ embed });
