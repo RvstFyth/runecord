@@ -23,19 +23,25 @@ module.exports = {
     },
 
     async smithing(msg, args, data) {
-        let recipes;
-        if (args[0] === 'smithing' || args[0] === 'smith')
+        let recipes, cLevel;
+        if (args[0] === 'smithing' || args[0] === 'smith') {
             recipes = await recipesModel.getForLevel(
                 data.char.skills.smithing.level
             );
-        else if (args[0] === 'cook' || args[0] === 'cooking')
+            level = data.char.skills.smithing.level;
+        }
+        else if (args[0] === 'cook' || args[0] === 'cooking') {
             recipes = await cookingRecipesModel.getForLevel(
                 data.char.skills.cooking.level
             );
-        else if (args[0] === 'craft' || args[0] === 'crafting')
+            level = data.char.skills.cooking.level;
+        }
+        else if (args[0] === 'craft' || args[0] === 'crafting') {
             recipes = await craftingRecipesModel.getForLevel(
                 data.char.skills.crafting.level
             );
+            level = data.char.skills.crafting.level;
+        }
 
         const limit = 10;
         let page = args[1] && !isNaN(args[1]) ? parseInt(args[1]) : 1;
@@ -62,8 +68,9 @@ module.exports = {
                 inline: true,
             });
         }
+
         const embed = {
-            title: `Smithing recipes lvl ${data.char.skills.smithing.level}`,
+            title: `${args[0]} recipes lvl ${level}`,
             fields,
             footer: {
                 text: `Page ${page}/${maxPage}`,
