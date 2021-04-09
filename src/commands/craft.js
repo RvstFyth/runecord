@@ -66,7 +66,11 @@ module.exports = {
                 itemsRequired.push(`- ${recipe.items[i]} x ${tmpItem.name}`);
             }
             return msg.channel.send(
-                `**${data.user.name}** you don't have the materials required: \n${itemsRequired.join(`\n`)}`
+                `**${
+                    data.user.name
+                }** you don't have the materials required: \n${itemsRequired.join(
+                    `\n`
+                )}`
             );
         }
         if (amount > maxPossible) amount = maxPossible;
