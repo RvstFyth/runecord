@@ -4,6 +4,7 @@ const inventoryModel = require('../models/usersInventory');
 const emojiHelper = require('../helpers/emojis');
 const usersLocksModel = require('../models/usersLocks');
 const valuesHelper = require('../helpers/values');
+const areaHelper = require('../helpers/areas');
 
 module.exports = {
     async run(msg, args, data) {
@@ -29,6 +30,20 @@ module.exports = {
                 `**${data.user.name}** you can't craft ${input}...`
             );
 
+        if (recipe.tool) {
+            const locationData = areaHelper.getLocation(
+                data.user.area,
+                data.user.location
+            );
+            if (
+                !locationData.tools ||
+                locationData.tools.indexOf(recipe.tool) < 0
+            )
+                return msg.channel.send(
+                    `**${data.user.name}** you need to be at a furnace for this command..`
+                );
+        }
+
         if (data.char.skills.crafting.level < recipe.level)
             return msg.channel.send(
                 `**${data.user.name}** you need crafting level ${recipe.level} for this..`
@@ -44,10 +59,16 @@ module.exports = {
             counts.push(Math.floor(userItems / parseInt(recipe.items[i])));
         }
         const maxPossible = Math.min(...counts);
-        if (!maxPossible)
+        if (!maxPossible) {
+            let itemsRequired = [];
+            for (let i in recipe.items) {
+                const tmpItem = await itemsModel.get(i);
+                itemsRequired.push(`- ${recipe.items[i]} x ${tmpItem.name}`);
+            }
             return msg.channel.send(
-                `**${data.user.name}** you don't have the materials required..`
+                `**${data.user.name}** you don't have the materials required: \n${itemsRequired.join(`\n`)}`
             );
+        }
         if (amount > maxPossible) amount = maxPossible;
 
         let hasItemsRequired = true;
