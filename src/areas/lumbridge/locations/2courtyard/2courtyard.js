@@ -93,6 +93,26 @@ module.exports = {
                     max: 1,
                     chance: 2,
                 },
+                130: {
+                    min: 4,
+                    max: 4,
+                    chance: 3,
+                },
+                131: {
+                    min: 6,
+                    max: 6,
+                    chance: 3,
+                },
+                128: {
+                    min: 9,
+                    max: 9,
+                    chance: 3,
+                },
+                134: {
+                    min: 2,
+                    max: 2,
+                    chance: 2,
+                },
             },
         },
     },
