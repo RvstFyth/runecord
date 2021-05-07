@@ -140,6 +140,7 @@ module.exports = {
                 );
                 await usersModel.addGold(data.user.id, goldAmount);
             }
+            let drops = [];
             for (let i in locationData.mobs[input].loot) {
                 if (i === 'gold') continue;
                 let valid =
@@ -149,6 +150,7 @@ module.exports = {
                         : true;
                 if (valid) {
                     const item = await itemsModel.get(i);
+                    drops.push(item.name);
                     const amount = random.number(
                         locationData.mobs[input].loot[i].min,
                         locationData.mobs[input].loot[i].max
@@ -184,6 +186,11 @@ module.exports = {
                     {
                         name: npc.name,
                         value: `${hearthEmoji} 0/${npc.skills.hitpoints.level}`,
+                        inline: true,
+                    },
+                    {
+                        name: 'Drops',
+                        value: drops.length ? drops.join('\n') : '..',
                         inline: true,
                     },
                     xpField,
