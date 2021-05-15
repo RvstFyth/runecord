@@ -63,7 +63,8 @@ module.exports = {
         const fields = [
             {
                 name: '\u200b',
-                value: `This bot is still in development and receives a lot of updates. You can join our [Support server](https://discord.gg/UNJKYz244a) to follow news about updates or if you have any queries!`,
+                value: `This bot is still in development and receives a lot of updates. You can join our [Support server](https://discord.gg/UNJKYz244a) to follow news about updates or if you have any queries!\n` +
+                `This game can be overwhelming and hard to start, if you need any help, please join our support server.`,
             },
             ...helpFields[page],
         ];
