@@ -76,6 +76,7 @@ module.exports = {
             pickpocket: {
                 baseChance: 70,
                 xp: 8,
+                level: 1,
                 loot: {
                     gold: {
                         min: 3,
