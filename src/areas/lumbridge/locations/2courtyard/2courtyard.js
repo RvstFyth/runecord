@@ -73,6 +73,16 @@ module.exports = {
                 },
                 immunities: { poison: false, venom: false },
             },
+            pickpocket: {
+                baseChance: 70,
+                xp: 8,
+                loot: {
+                    gold: {
+                        min: 3,
+                        max: 3,
+                    },
+                },
+            },
             loot: {
                 gold: {
                     min: 3,
