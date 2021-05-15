@@ -13,6 +13,7 @@ module.exports = {
         }
 
         const mobsAtLocation = worldsHelper.getMobs(data.user.world, data.user.area, data.user.location);
+        if (!mobsAtLocation) return msg.channel.send(`**${data.char.name}** there are no mobs to pickpocket here...`);
         const filteredMobs = Object.values(mobsAtLocation[input]).filter((m) => m.mob.health > 0 && !m.occupied);
 
         if(!mobsAtLocation[input]) return msg.channel.send(`**${data.user.name}** there is no ${input} here...`);
