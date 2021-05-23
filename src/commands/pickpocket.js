@@ -23,9 +23,11 @@ module.exports = {
             return msg.channel.send(
                 `**${data.char.name}** there are no mobs to pickpocket here...`
             );
-        const filteredMobs = Object.values(mobsAtLocation[input]).filter(
-            (m) => m.mob.health > 0 && !m.occupied
-        );
+        const filteredMobs = mobsAtLocation[input]
+            ? Object.values(mobsAtLocation[input]).filter(
+                  (m) => m.mob.health > 0 && !m.occupied
+              )
+            : [];
 
         if (!mobsAtLocation[input])
             return msg.channel.send(
